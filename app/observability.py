@@ -49,17 +49,45 @@ class CallStore:
         stages: dict[str, list[float]] = {}
         failures: dict[str, int] = {}
         prompts: dict[str, int] = {}
+        prompt_tool_success: dict[str, list[int]] = {}
+        prompt_stages: dict[str, dict[str, list[float]]] = {}
+        guardrail_events: dict[str, int] = {}
+        tool_total = 0
+        tool_success = 0
         for call in calls:
             for stage, value in call.get("stage_seconds", {}).items():
                 stages.setdefault(stage, []).append(float(value))
+                prompt_stages.setdefault(str(call.get("prompt_version", "unknown")), {}).setdefault(stage, []).append(float(value))
             for failure in call.get("errors", []):
                 failures[str(failure)] = failures.get(str(failure), 0) + 1
             version = str(call.get("prompt_version", "unknown"))
             prompts[version] = prompts.get(version, 0) + 1
+            for item in call.get("tool_calls", []):
+                tool_total += 1
+                succeeded = isinstance(item.get("result"), dict) and "error" not in item["result"]
+                tool_success += int(succeeded)
+                counts = prompt_tool_success.setdefault(version, [0, 0])
+                counts[0] += int(succeeded)
+                counts[1] += 1
+            for event in call.get("guardrail_events", []):
+                guardrail_events[str(event)] = guardrail_events.get(str(event), 0) + 1
         percentiles = {
             name: {"p50": statistics.median(values), "p95": sorted(values)[min(len(values) - 1, math.ceil(len(values) * 0.95) - 1)]}
             for name, values in stages.items() if values
         }
         return {"call_count": len(calls), "stage_percentiles_seconds": percentiles,
                 "failure_tags": failures, "calls_by_prompt_version": prompts,
-                "tool_success_rate": None}
+                "tool_success_rate": tool_success / tool_total if tool_total else None,
+                "tool_calls": {"success": tool_success, "total": tool_total},
+                "guardrail_events": guardrail_events,
+                "prompt_versions": {
+                    version: {
+                        "calls": count,
+                        "tool_success_rate": (prompt_tool_success[version][0] / prompt_tool_success[version][1]
+                                              if version in prompt_tool_success else None),
+                        "stage_percentiles_seconds": {
+                            stage: {"p50": statistics.median(values), "p95": sorted(values)[min(len(values) - 1, math.ceil(len(values) * 0.95) - 1)]}
+                            for stage, values in prompt_stages.get(version, {}).items() if values
+                        },
+                    } for version, count in prompts.items()
+                }}

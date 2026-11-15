@@ -24,3 +24,14 @@ def test_feedback_validates_rating_and_redacts_free_text(tmp_path) -> None:
     with store.connect() as db:
         row = db.execute("SELECT free_text FROM feedback").fetchone()
     assert "+1 202 555 0101" not in row[0]
+
+
+def test_summary_reports_tools_guardrails_and_prompt_percentiles(tmp_path) -> None:
+    store = CallStore(tmp_path / "metrics.sqlite")
+    store.save_trace({"prompt_version": "emi-1", "stage_seconds": {"tts": 0.2},
+                      "tool_calls": [{"result": {"verified": True}}, {"result": {"error": "denied"}}],
+                      "guardrail_events": ["grounding_violation"]})
+    summary = store.summary()
+    assert summary["tool_success_rate"] == 0.5
+    assert summary["guardrail_events"] == {"grounding_violation": 1}
+    assert summary["prompt_versions"]["emi-1"]["stage_percentiles_seconds"]["tts"]["p95"] == 0.2

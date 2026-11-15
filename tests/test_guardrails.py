@@ -35,3 +35,9 @@ def test_redaction_removes_common_transcript_pii() -> None:
     assert "+1 202 555 0101" not in redacted
     assert "a@example.test" not in redacted
     assert "1990-01-02" not in redacted
+
+
+def test_presidio_redacts_indian_phone_and_account_like_id() -> None:
+    redacted = redact_pii("Call +91 9876543210 about account: AB12345678")
+    assert "+91 9876543210" not in redacted
+    assert "AB12345678" not in redacted

@@ -6,7 +6,30 @@ from dataclasses import dataclass, field
 SAFE_FALLBACK = "I cannot confirm that information right now. I can connect you with a human agent."
 
 
+def _presidio_spans(text: str) -> list[tuple[int, int, str]]:
+    """Use Presidio PatternRecognizers for Indian phone and account-like identifiers."""
+    try:
+        from presidio_analyzer import Pattern, PatternRecognizer
+    except ImportError:
+        return []
+    recognizers = (
+        ("IN_PHONE", PatternRecognizer(
+            supported_entity="IN_PHONE", patterns=[Pattern("indian_mobile", r"(?<!\d)(?:\+?91[ -]?)?[6-9]\d{9}(?!\d)", 0.85)],
+        )),
+        ("ACCOUNT_ID", PatternRecognizer(
+            supported_entity="ACCOUNT_ID", patterns=[Pattern("account_reference", r"(?i)\b(?:account|a/c|loan|customer)[\s:#-]*[A-Z0-9][A-Z0-9-]{5,}\b", 0.9)],
+        )),
+    )
+    spans: list[tuple[int, int, str]] = []
+    for entity, recognizer in recognizers:
+        spans.extend((item.start, item.end, f"[REDACTED_{entity}]")
+                     for item in recognizer.analyze(text=text, entities=[entity]))
+    return spans
+
+
 def redact_pii(text: str) -> str:
+    for start, end, replacement in sorted(_presidio_spans(text), reverse=True):
+        text = text[:start] + replacement + text[end:]
     text = re.sub(r"\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b", "[REDACTED_EMAIL]", text)
     text = re.sub(r"(?<!\w)(?:\+?\d[\d ()-]{7,}\d)(?!\w)", "[REDACTED_PHONE]", text)
     text = re.sub(r"\b(?:\d{4}-\d{2}-\d{2}|\d{2}/\d{2}/\d{4})\b", "[REDACTED_DATE]", text)
