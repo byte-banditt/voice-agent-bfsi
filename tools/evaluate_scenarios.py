@@ -6,6 +6,8 @@ from pathlib import Path
 
 def main() -> None:
     scenarios = json.loads(Path("scenarios/scenarios.json").read_text(encoding="utf-8"))
+    if len(scenarios) < 20:
+        raise SystemExit("scenario catalogue is below the requested minimum")
     results = [{**scenario, "status": "NOT EXECUTED",
                 "reason": "end-to-end conversation/tool/telephony flow is not wired"}
                for scenario in scenarios]

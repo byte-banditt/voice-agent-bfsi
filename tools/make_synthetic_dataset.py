@@ -66,7 +66,7 @@ def main() -> None:
     import asyncio
 
     rows = asyncio.run(synthesize(str(args.voice), args.output, args.noise_scale, args.seed))
-    print(f"classification=SYNTHETIC utterances={len(rows)} clean={sum(x['variant']=='clean' for x in rows)} noisy={sum(x['variant']=='noisy' for x in rows)} output={args.output}")
+    print(f"classification=SYNTHETIC utterances={len(rows)} clean={sum(x['variant']=='clean' for x in rows)} noisy={sum(x['variant']=='noisy' for x in rows)} noise_scale={args.noise_scale} seed={args.seed} output={args.output}")
 
 
 if __name__ == "__main__":
