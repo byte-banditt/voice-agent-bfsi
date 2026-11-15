@@ -51,7 +51,7 @@ See [RESULTS.md](RESULTS.md) for exact commands, raw artifacts, commit SHAs, and
 
 | Measurement | Observed result | Scope |
 |---|---|---|
-| Local tests | 34 passed, 0 failed | Fake providers; `raw-results/step1-pytest.txt` |
+| Local tests | 36 passed, 0 failed, 2 dependency warnings | Fake providers; `raw-results/interactive-voice-pytest.txt` |
 | Fake scenario suite | 60/60 pass; tool-call accuracy 0.70 | 20 scenarios × 3 repeats; mock CRM |
 | qwen3:1.7b Q4_K_M scenario suite | 54/60 pass (90%); tool-call accuracy 1.00 | 20 scenarios × 3 repeats; 2 OPEN scenarios |
 | Real-provider `/ws` latency | 30 turns; user-audio sent → first TTS media p50 14.383 s, p95 18.705 s | WebRTC VAD, Faster-Whisper `base.en` CPU `int8`, Ollama qwen3:1.7b, Piper `en_US-lessac-medium`; 27/30 status lookups succeeded |
@@ -60,7 +60,7 @@ See [RESULTS.md](RESULTS.md) for exact commands, raw artifacts, commit SHAs, and
 
 ## Not done
 
-qwen3:4b comparison incomplete; qwen3:0.6b/8b comparison; true LLM first-token latency; full-stack ablations; real-recording WER; pilot; Docker Compose build; RBI source verification; live telephony.
+qwen3:4b comparison incomplete; qwen3:0.6b/8b comparison; true LLM first-token latency; full-stack ablations; real-recording WER; pilot; Docker Compose build; RBI source verification; live telephony; manual browser-microphone smoke test by the user.
 
 ## Limitations
 

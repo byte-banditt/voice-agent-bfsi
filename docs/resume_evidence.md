@@ -2,7 +2,7 @@
 
 Use only after reviewing the cited raw evidence and its limits.
 
-- Built a Python voice-agent prototype with configurable ASR/LLM/TTS providers, WebSocket audio, WebRTC VAD, versioned YAML flows, structured tool calls, and transcript redaction; the local suite recorded **34 passed** with Fake providers (`RESULTS.md`, `raw-results/step1-pytest.txt`).
+- Built a Python voice-agent prototype with configurable ASR/LLM/TTS providers, an interactive browser microphone client, WebRTC VAD, versioned YAML flows, structured tool calls, and transcript redaction; the local suite recorded **36 passed** with Fake providers (`RESULTS.md`, `raw-results/interactive-voice-pytest.txt`). The browser route is tested; a physical browser-microphone session is not yet measured.
 - Evaluated **20 SYNTHETIC** call scenarios × 3 repeats: qwen3:1.7b Q4_K_M passed **54/60 (90%)** with **1.00** tool-call accuracy; Fake providers passed **60/60**. Two model scenarios remain OPEN (`RESULTS.md`, `raw-results/scenarios-ollama-1_7b-3x.json`).
 - Measured **30 SYNTHETIC** audio turns through real local VAD, Faster-Whisper `base.en` CPU `int8`, Ollama qwen3:1.7b, Piper, and a MOCK CRM; user-audio sent → first TTS media p50/p95 were **14.383/18.705 s**, with loan status lookup in **27/30** turns (`RESULTS.md`, `raw-results/latency-real-ws-30.json`).
 - Ran a **SYNTHETIC** real-provider demo that passed recording consent, identity verification, loan-status lookup, and callback scheduling through the local MOCK CRM; redacted output is in `docs/demo-output.txt`. No real customer data or telephony was involved.

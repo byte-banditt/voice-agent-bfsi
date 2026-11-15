@@ -2,8 +2,8 @@
 
 | Requirement | Evidence | Status |
 |---|---|---|
-| LLM + voice harness: ASR, LLM, TTS, prompts, tool calls | `app/providers.py`, `app/main.py`, `app/conversation.py`, `tools/measure_ws_latency.py`, `tools/demo_call.py` | 30 **SYNTHETIC** turns ran through real local WebRTC VAD, Faster-Whisper, Ollama qwen3:1.7b, and Piper; 27/30 status lookups succeeded against **MOCK** CRM. One complete demo also scheduled a callback. No live telephony. |
-| Strong Python + REST APIs | `app/main.py`, `app/crm.py`, `app/webhook.py`, `tests/` | 34 local tests passed with Fake providers; local CRM REST calls also executed in scenario and demo runs. |
+| LLM + voice harness: ASR, LLM, TTS, prompts, tool calls | `app/providers.py`, `app/main.py`, `app/conversation.py`, `app/static/voice.html`, `tools/measure_ws_latency.py`, `tools/demo_call.py` | 30 **SYNTHETIC** turns ran through real local WebRTC VAD, Faster-Whisper, Ollama qwen3:1.7b, and Piper; 27/30 status lookups succeeded against **MOCK** CRM. `/voice` adds a browser microphone client; its route is tested, but a physical browser-mic session is **NOT EXECUTED**. One complete demo scheduled a callback. No live telephony. |
+| Strong Python + REST APIs | `app/main.py`, `app/crm.py`, `app/webhook.py`, `tests/` | 36 local tests passed with Fake providers; local CRM REST calls also executed in scenario and demo runs. |
 | Cross-stack debugging | `docs/FAILURE_MODES.md`, raw scenario and latency JSON | Measured ASR argument-format and model tool-selection failures; synthetic input was corrected. Two scenario failures and 3/30 omitted status lookups remain open. No production incident claimed. |
 | Client integrations: CRM, telephony, internal APIs | `app/crm.py`, `app/tools.py`, `app/main.py` | Local **MOCK** CRM exercised through HTTP. WebSocket is simulator-only; live telephony/client integration is not evidenced. |
 | Requirements scoping and flow/prompt design | `flows/`, `prompts/`, `docs/CLIENT_ONBOARDING.md`, `docs/PROMPT_CHANGELOG.md` | YAML flows and versioned prompts executed with fixed synthetic scenarios; this is not client work. |

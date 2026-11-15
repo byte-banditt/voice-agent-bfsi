@@ -120,4 +120,7 @@ The percentile script uses median for p50 and nearest-rank for p95. Its raw per-
 
 The first Step 0 pushes failed CI (runs `43719643851` and `43720052510`); time-dependent tests and the missing-optional-Presidio fallback were fixed. The later Step 1–3 pushes above passed. Final documentation HEAD CI is verified in the final report.
 
-| Step 4 docs push CI | success, run `43729725964` | `d555ad36242bd13aa0754f8106c9724e72ecb4c7` | `gh run view 43729725964 --repo byte-banditt/voice-agent-bfsi --json headSha,conclusion,workflowName,createdAt,url` → `raw-results/step4-ci.json` | GitHub Actions; docs-only changes; final SHA is verified again after this record is pushed. |
+| Item | Result | Commit / HEAD SHA | Command → raw output | Notes |
+|---|---|---|---|---|
+| Step 4 docs push CI | success, run `43729725964` | `d555ad36242bd13aa0754f8106c9724e72ecb4c7` | `gh run view 43729725964 --repo byte-banditt/voice-agent-bfsi --json headSha,conclusion,workflowName,createdAt,url` → `raw-results/step4-ci.json` | GitHub Actions; final HEAD CI is verified in the final report |
+| Interactive browser voice client | `/voice` implemented; browser microphone session **NOT EXECUTED** by this agent | `dd2f2501fc3a126ae9bc9a96a179817f576492cf` | `python -m pytest -ra > raw-results/interactive-voice-pytest.txt 2>&1` → `raw-results/interactive-voice-pytest.txt`; CI run `43733934167` → `raw-results/voice-client-fix-ci.json` | 36 passed, 0 failed, 2 Typer/Click deprecation warnings; WSL2/Python 3.13.12; browser microphone needs user permission |
