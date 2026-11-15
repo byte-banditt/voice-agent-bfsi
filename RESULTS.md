@@ -29,7 +29,7 @@ All benchmark and test outputs are local and synthetic/mock unless noted. Hardwa
 | PyAV pin and reproducible-evaluation fix: 19 passed, 0 failed, 0 skipped | `python -m pytest -ra` | `raw-results/asr-fix-pytest.txt` | `c639b104711f8bcf8ac79e35fa6f87c206896def` | WSL2; deterministic Fake providers |
 | Flow/tool-loop, WebRTC VAD, Presidio redaction, webhook retry, and trace-summary changes: 24 passed, 0 failed, 0 skipped; 2 Presidio transitive Click deprecation warnings | `python -m pytest -ra` | `raw-results/task4-pytest.txt` | `5ea7ed4` | WSL2; Fake providers and deterministic tool-call test double; no connected CRM or local model run |
 | Consent/calling-hours/guardrail enforcement, validated tool schemas, and call-completion webhook wiring: 34 passed, 0 failed, 0 skipped; 2 Presidio transitive Click deprecation warnings | `python -m pytest -ra` | `raw-results/final-local-pytest.txt` | `1743b55` | WSL2; Fake providers and deterministic tool-call test doubles; no connected CRM/model call |
-| 20 scripted scenarios catalogued; 0 executed; pass rate **NOT EXECUTED** | `python tools/evaluate_scenarios.py > raw-results/scenario-suite.json` | `raw-results/scenario-suite.json`; count summary `raw-results/scenario-summary.txt` | `bd06248` | Caller scripts are **SYNTHETIC**. Scenario runner remains unimplemented; CRM/model-connected scenario execution remains unverified |
+| At historical commit `bd06248`: 20 scripted scenarios catalogued, 0 executed | `python tools/evaluate_scenarios.py > raw-results/scenario-suite.json` | `raw-results/scenario-suite.json`; count summary `raw-results/scenario-summary.txt` | `bd06248` | Historical baseline only; the runner and later measured results are documented below |
 | Real-recording WER **NOT EXECUTED**; no author recordings/reference transcripts supplied | `python tools/evaluate_wer.py --manifest <csv> --hypotheses <csv>` | `BLOCKERS.md` | `5fe1d16bcfa0cf9399aca1c6027dce9f7cf81d87` | Real WER remains unmeasured |
 | **NOT EXECUTED**; Docker CLI unavailable | `docker compose up --build` | `raw-results/hardware.txt` (`docker --version` failed) | `5afea4e83750f1cec704912b0adc0a0dc6e779b0` | WSL2 |
 | Docker Compose build could not start; exit code 1 because `docker` is absent from this WSL2 distro | `docker compose up --build` | `raw-results/docker-compose-probe.txt` | `563aa86` | Shell output recommends enabling Docker Desktop WSL integration; compose was not executed |
@@ -39,17 +39,17 @@ The grounding guard regression was reproduced before and after the fix with `pyt
 
 PyPI latest-version command: `python tools/check_package_versions.py > raw-results/official-package-versions.txt`. Installed versions command: `python tools/check_installed_versions.py > raw-results/installed-package-versions.txt`. Ollama model metadata commands: `python tools/inspect_ollama.py --model qwen3:0.6b > raw-results/ollama-model.json` and `python tools/inspect_ollama.py --model qwen3:1.7b > raw-results/ollama-model-1_7b.json`; active placement command: `ollama ps | tee raw-results/ollama-processors.txt`. Exact pins are in `pyproject.toml`; code/evidence commit `c639b104711f8bcf8ac79e35fa6f87c206896def`; WSL2 hardware as above.
 
-ASR model-size comparison, VAD threshold comparison, grounding-guard ablation, 30+ turn real-provider latency, real-recording WER, and end-to-end scenario execution are **NOT EXECUTED**; see `BLOCKERS.md`. Synthetic WER is limited to the corpus and hardware configuration recorded above.
+At the earlier baseline, full-stack ASR model-size comparison, VAD threshold comparison, grounding-guard ablation, 30+ turn provider latency, and connected scenario execution were **NOT EXECUTED**. Current scenario and latency measurements are documented below; real-recording WER and requested full-stack ablations remain **NOT EXECUTED**.
 
 ## Latency summary
 
 | Stage / measure | Result | Evidence |
 |---|---|---|
-| User stops speaking → first TTS audio byte | **NOT EXECUTED**; no full provider + CRM measurement | `BLOCKERS.md` |
-| VAD end → ASR done; LLM first token; first sentence; TTS first byte, p50/p95 | **NOT EXECUTED** as a 30+ turn pipeline measurement | `BLOCKERS.md` |
+| User stops speaking → first TTS audio byte (historical baseline) | **NOT EXECUTED** at that earlier baseline | `BLOCKERS.md` |
+| VAD end → ASR done; LLM first token; first sentence; TTS first byte (historical baseline) | **NOT EXECUTED** at that earlier baseline | `BLOCKERS.md` |
 | Standalone Qwen3 text generation, thinking ON/OFF, wall-time median | 0.868016685 s / 0.129427925 s for the measured prompt and model | Exact command and raw samples in the table above and `raw-results/ollama-thinking-ablation.json` |
 
-Exact hardware and tool probe: `raw-results/hardware.txt`. The output captures a transient `nvidia-smi` utilization/memory reading; only model name and total VRAM, system RAM, CPU count, Python, and tool availability are relevant hardware facts. No latency, WER, scenario rate, or full-call success claim is made.
+Exact hardware and tool probe for those historical measurements: `raw-results/hardware.txt`. It alone makes no latency, WER, scenario-rate, or full-call success claim.
 
 
 ## Scenario evaluation (Step 1; SYNTHETIC callers, MOCK CRM)
@@ -105,3 +105,17 @@ Tool-call accuracy is computed from scenario traces as correct tool, schema-vali
 | User's final audio sent → first TTS media received | 14.383 | 18.705 | 30; simulator client wall clock, includes VAD hangover, ASR, LLM/tool loop, TTS, and transport |
 
 The percentile script uses median for p50 and nearest-rank for p95. Its raw per-turn observations, full call traces, and sample audio are committed above. A prior 30-turn input phrased DOB naturally and caused CRM validation errors; corrected SYNTHETIC speech explicitly enunciated the ISO date. Before/after evidence: `raw-results/latency-real-ws-30-before-input-fix.json` and `raw-results/latency-real-ws-30.json`. This input correction is not a code-quality or real-user success claim.
+
+
+## Demo and current CI evidence (Steps 0 and 3)
+
+`PIPER_VOICE_PATH=/path/to/en_US-lessac-medium.onnx make demo` ran with real local Faster-Whisper `base.en`, Ollama qwen3:1.7b Q4_K_M, Piper, and **MOCK** CRM. Result: **PASS** for synthetic recording consent, identity verification, loan-status lookup, and callback scheduling; output and redacted incoming transcript: `docs/demo-output.txt`. This local call logged a `grounding_violation` event; see `docs/FAILURE_MODES.md`. Source, run output, and artifact commit: `8968820f3f6d5bdf873b04312fc6b008e82cbe98`. No real customer data or audio was used.
+
+| Remote CI evidence | Result | Exact HEAD SHA | Raw output |
+|---|---|---|---|
+| Step 1 push | success, run `43724893777` | `ac568cdbefc52c0a992ce46973b549f129add8cc` | `raw-results/step1-ci.json` |
+| Step 2 push | success, run `43728808269` | `15715d73bc775d65907651edf3d9f18805e8ba98` | `raw-results/step2-ci.json` |
+| Step 3 push | success, run `43728953652` | `8968820f3f6d5bdf873b04312fc6b008e82cbe98` | `raw-results/step3-ci.json` |
+| Docker Compose CLI probe | version `v5.5.1`; build and service checks **NOT EXECUTED** by sprint scope | Local WSL2 | `docker compose version` → `raw-results/docker-compose-version.txt` |
+
+The first Step 0 pushes failed CI (runs `43719643851` and `43720052510`); time-dependent tests and the missing-optional-Presidio fallback were fixed. The later Step 1–3 pushes above passed. Final documentation HEAD CI is verified in the final report.

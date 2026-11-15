@@ -1,19 +1,18 @@
 # Resume evidence drafts
 
-Use only after reviewing the raw evidence and explaining its limits.
+Use only after reviewing the cited raw evidence and its limits.
 
-- Built a Python voice-agent prototype with swappable ASR/LLM/TTS providers, a WebSocket audio adapter, WebRTC VAD endpointing and speech-triggered barge-in, YAML flow/prompt loading, consent-gated transcript storage, and a state-restricted structured tool-call loop through the CRM executor; verified by **34 passing local tests** with Fake providers and deterministic tool-call test doubles ([RESULTS.md](../RESULTS.md), `raw-results/final-local-pytest.txt`).
-- Measured local `qwen3:0.6b` text-call wall-time medians of **0.868016685 s with thinking** and **0.129427925 s without thinking** on the recorded WSL2 hardware; this was a standalone prompt, not end-to-end voice latency ([RESULTS.md](../RESULTS.md), `raw-results/ollama-thinking-ablation.json`).
-- Implemented per-call identity and numeric grounding guards for a mock CRM; regression proof: **1 failing targeted assertion before** and **1 passing after** the account-reference matcher fix ([RESULTS.md](../RESULTS.md), `raw-results/grounding-before.txt`, `raw-results/grounding-after.txt`).
-- Created **20 SYNTHETIC** BFSI caller-scenario definitions with explicit pass rules; execution and pass rate remain **NOT EXECUTED** pending CRM/model-connected call runs ([RESULTS.md](../RESULTS.md), `raw-results/scenario-suite.json`).
-- Added Presidio pattern redaction for Indian mobile numbers and account-like IDs before transcript persistence, signed webhook retries with idempotency, receiver deduplication, and trace summaries; these are prototype features, not production integration evidence ([RESULTS.md](../RESULTS.md), commit `5ea7ed4`).
-- Evaluated local `base.en` CPU `int8` ASR on **10 clean** and **10 noisy SYNTHETIC** Piper utterances; measured WER was **0.000000** for both synthetic subsets and is not real-user evidence ([RESULTS.md](../RESULTS.md), `raw-results/synthetic-wer.txt`).
-- End-to-end speech latency: **[X]**; replace only after a 30+ turn real-provider run is recorded in `RESULTS.md`.
-- ASR WER on consented real recordings: **[X]**; real-recording WER is **NOT EXECUTED** until the author supplies and annotates a corpus.
+- Built a Python voice-agent prototype with configurable ASR/LLM/TTS providers, WebSocket audio, WebRTC VAD, versioned YAML flows, structured tool calls, and transcript redaction; the local suite recorded **34 passed** with Fake providers (`RESULTS.md`, `raw-results/step1-pytest.txt`).
+- Evaluated **20 SYNTHETIC** call scenarios × 3 repeats: qwen3:1.7b Q4_K_M passed **54/60 (90%)** with **1.00** tool-call accuracy; Fake providers passed **60/60**. Two model scenarios remain OPEN (`RESULTS.md`, `raw-results/scenarios-ollama-1_7b-3x.json`).
+- Measured **30 SYNTHETIC** audio turns through real local VAD, Faster-Whisper `base.en` CPU `int8`, Ollama qwen3:1.7b, Piper, and a MOCK CRM; user-audio sent → first TTS media p50/p95 were **14.383/18.705 s**, with loan status lookup in **27/30** turns (`RESULTS.md`, `raw-results/latency-real-ws-30.json`).
+- Ran a **SYNTHETIC** real-provider demo that passed recording consent, identity verification, loan-status lookup, and callback scheduling through the local MOCK CRM; redacted output is in `docs/demo-output.txt`. No real customer data or telephony was involved.
+- Measured synthetic Piper speech WER of **0.000000** on 10 clean and 10 noisy utterances using Faster-Whisper `base.en` CPU `int8`; this does not establish real-recording WER (`RESULTS.md`, `raw-results/synthetic-wer.txt`).
+
+Unmeasured: real-recording WER **[X]**; full-stack ablation results **[X]**; qwen3:4b completed comparison **[X]**.
 
 ## Claims not to make yet
 
-- Live Twilio compatibility or a live telephony deployment.
-- Real-user or client pilot results.
-- Real-recording WER, synthetic-speech WER, or a scenario pass rate.
-- End-to-end latency, production CRM integration, regulatory certification, or verified RBI calling-hours compliance.
+- Live telephony or Twilio compatibility.
+- Real-user/client pilot results or production CRM integration.
+- Real-recording WER, regulatory certification, or verified RBI calling-hours compliance.
+- Universal quality or model-size superiority; qwen3:4b comparison is incomplete and two qwen3:1.7b scenarios remain OPEN.

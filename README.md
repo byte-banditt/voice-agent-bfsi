@@ -22,28 +22,31 @@ The `/ws` endpoint accepts simulator JSON events with `start`, `media`, and `sto
 
 ## Measured results
 
-See [RESULTS.md](RESULTS.md) for command, raw output, commit, and hardware provenance. The local Qwen3 thinking ablation is a standalone text-model measurement; it is not end-to-end voice latency. Synthetic Piper/Faster-Whisper WER is reported separately; real-recording WER, end-to-end latency, and scripted call-flow pass rate are **NOT EXECUTED**.
+See [RESULTS.md](RESULTS.md) for exact commands, raw artifacts, commit SHAs, and hardware. All call scenarios and voice inputs below are **SYNTHETIC**; CRM data are **MOCK**.
 
 | Measurement | Observed result | Scope |
 |---|---|---|
-| Local test suite | 34 passed, 0 failed, 0 skipped | Fake providers and deterministic tool-call test doubles; latest output in `raw-results/final-local-pytest.txt` |
-| Qwen3 thinking ON/OFF median wall time | 0.868016685 s / 0.129427925 s | Standalone text prompt |
-| Synthetic Piper → Faster-Whisper WER | Clean 0.000000; noisy 0.000000 | Generated US English only |
-| Qwen3 native tool-call probe | qwen3:0.6b: 0 calls; qwen3:1.7b: 1 call | One synthetic prompt per model |
+| Local tests | 34 passed, 0 failed | Fake providers; `raw-results/step1-pytest.txt` |
+| Fake scenario suite | 60/60 pass; tool-call accuracy 0.70 | 20 scenarios × 3 repeats; mock CRM |
+| qwen3:1.7b Q4_K_M scenario suite | 54/60 pass (90%); tool-call accuracy 1.00 | 20 scenarios × 3 repeats; 2 OPEN scenarios |
+| Real-provider `/ws` latency | 30 turns; user-audio sent → first TTS media p50 14.383 s, p95 18.705 s | WebRTC VAD, Faster-Whisper `base.en` CPU `int8`, Ollama qwen3:1.7b, Piper `en_US-lessac-medium`; 27/30 status lookups succeeded |
+| Synthetic Piper → Faster-Whisper WER | Clean 0.000000; noisy 0.000000 | Generated US English only; not real-recording quality |
+| Demo call | PASS: consent, identity, loan status, callback scheduled | `make demo`; real local providers and MOCK CRM |
 
-Each value links to its exact command, raw output, commit, and hardware record in [RESULTS.md](RESULTS.md).
+## Not done
+
+qwen3:4b comparison incomplete; qwen3:0.6b/8b comparison; true LLM first-token latency; full-stack ablations; real-recording WER; pilot; Docker Compose build; RBI source verification; live telephony.
 
 ## Limitations
 
 - The simulator exercises the documented `connected`/`start`/`media`/`stop` and `clear` message envelopes only. It is **format-compatible per docs, not tested against live Twilio**.
-- The WebSocket flow now uses YAML flow state, versioned prompts, WebRTC VAD endpointing, and `BFSIToolExecutor` on structured Ollama tool calls. CI tests use fake providers and a deterministic tool-call test double; CRM-connected scenarios and real-provider end-to-end calls remain **NOT EXECUTED**.
+- The WebSocket flow uses YAML flow state, versioned prompts, WebRTC VAD endpointing, and `BFSIToolExecutor` on structured Ollama tool calls. Thirty SYNTHETIC audio turns ran through real local ASR/LLM/TTS with a MOCK CRM; 27/30 status lookups succeeded. The separate demo completed consent, identity, status lookup, and callback scheduling.
 - CRM data are invented fixtures (**MOCK**). Payment URLs and escalation are inert mock responses.
 - Real provider wiring exists for faster-whisper, Ollama, and Piper. Ollama text generation and a small synthetic Piper-to-Faster-Whisper corpus were measured; real-recording quality was not.
 - Transcript redaction runs before trace storage, using Presidio custom recognizers for Indian mobile numbers and account-like IDs plus local email, phone, and date patterns. This is not a guarantee against all PII. Raw audio is not stored.
 - The dashboard summarizes stored call traces, stage percentiles, tool success, guardrail events, and prompt versions; production access control, retention, and deployment hardening are absent.
 - The call-start gate enforces 08:00–19:00 `Asia/Kolkata` by default, configurable with `CALLING_HOURS_TIMEZONE`, `CALLING_HOURS_START`, and `CALLING_HOURS_END`. This window is an **ASSUMPTION**; RBI source guidance was not verified.
-- Docker Compose was not executed because Docker is unavailable in the current WSL2 distribution.
+- Docker Compose version is available, but `docker compose up --build` and health checks were **NOT EXECUTED** in this sprint.
+- RBI calling-hours guidance is **ASSUMPTION / NOT VERIFIED**; the demo's 00:00–23:59 hours were temporary local test settings.
 
-## What is not done
-
-See [BLOCKERS.md](BLOCKERS.md) and [docs/JD_COVERAGE.md](docs/JD_COVERAGE.md). Do not claim live telephony, a measured end-to-end CRM/provider call, real-user outcomes, real-recording WER, or end-to-end latency from this prototype.
+See [BLOCKERS.md](BLOCKERS.md) and [docs/JD_COVERAGE.md](docs/JD_COVERAGE.md). Do not claim live telephony, live CRM, real-user outcomes, real-recording WER, regulatory certification, or universal call quality from this prototype.

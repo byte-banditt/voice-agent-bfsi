@@ -2,11 +2,11 @@
 
 | Requirement | Evidence | Status |
 |---|---|---|
-| LLM + voice harness: ASR, LLM, TTS, prompts, tool calls | `app/providers.py`, `app/main.py`, `app/conversation.py`, `prompts/`, `app/tools.py` | Simulator wires WebRTC VAD, ASR, flow/prompt state, structured Ollama tool calls, CRM executor, and TTS; end-to-end local-provider operation remains **NOT EXECUTED** |
-| Strong Python + REST APIs | `app/main.py`, `app/crm.py`, `app/webhook.py`, `tests/` | Local FastAPI APIs and deterministic tests |
-| Cross-stack debugging | `docs/FAILURE_MODES.md` | One observed unit-level grounding regression; no production incident claimed |
-| Client integrations: CRM, telephony, internal APIs | `app/crm.py`, `app/tools.py`, `app/main.py` | Mock CRM and simulator-only WebSocket; live client integration is a gap |
-| Requirements scoping and flow/prompt design | `flows/`, `prompts/`, `docs/CLIENT_ONBOARDING.md` | Templates and initial flows; not client work |
-| Monitoring/evaluating call quality | `app/metrics.py`, `app/observability.py`, `tools/benchmark_ollama.py`, `RESULTS.md` | Trace dashboard reports stage percentiles, tool success, guardrail events, and prompt versions; scenario and 30+ turn evaluation remain **NOT EXECUTED** |
-| BFSI care with regulated workflows/customer data | `app/guardrails.py`, `app/tools.py`, `app/crm.py` | Tool-layer identity gate, consent-before-transcript storage, numeric/date grounding, polite exit, and configurable assumed calling-hours gate; conduct filter is phrase-based and RBI hours are **ASSUMPTION / NOT VERIFIED** |
-| Feed learnings back | `docs/PROMPT_CHANGELOG.md`, `docs/PILOT_PROTOCOL.md` | Templates only; pilot **NOT EXECUTED** |
+| LLM + voice harness: ASR, LLM, TTS, prompts, tool calls | `app/providers.py`, `app/main.py`, `app/conversation.py`, `tools/measure_ws_latency.py`, `tools/demo_call.py` | 30 **SYNTHETIC** turns ran through real local WebRTC VAD, Faster-Whisper, Ollama qwen3:1.7b, and Piper; 27/30 status lookups succeeded against **MOCK** CRM. One complete demo also scheduled a callback. No live telephony. |
+| Strong Python + REST APIs | `app/main.py`, `app/crm.py`, `app/webhook.py`, `tests/` | 34 local tests passed with Fake providers; local CRM REST calls also executed in scenario and demo runs. |
+| Cross-stack debugging | `docs/FAILURE_MODES.md`, raw scenario and latency JSON | Measured ASR argument-format and model tool-selection failures; synthetic input was corrected. Two scenario failures and 3/30 omitted status lookups remain open. No production incident claimed. |
+| Client integrations: CRM, telephony, internal APIs | `app/crm.py`, `app/tools.py`, `app/main.py` | Local **MOCK** CRM exercised through HTTP. WebSocket is simulator-only; live telephony/client integration is not evidenced. |
+| Requirements scoping and flow/prompt design | `flows/`, `prompts/`, `docs/CLIENT_ONBOARDING.md`, `docs/PROMPT_CHANGELOG.md` | YAML flows and versioned prompts executed with fixed synthetic scenarios; this is not client work. |
+| Monitoring/evaluating call quality | `app/metrics.py`, `app/observability.py`, `tools/evaluate_scenarios.py`, `tools/measure_ws_latency.py`, `RESULTS.md` | Fake: 60/60 scenario pass. qwen3:1.7b: 54/60 (90%), tool-call accuracy 1.00. Thirty voice turns have p50/p95 stage latency; true LLM first-token time is unavailable because tool calls are non-streaming. |
+| BFSI care with regulated workflows/customer data | `app/guardrails.py`, `app/tools.py`, `app/crm.py` | Synthetic demo passed consent, identity, status, callback; numeric grounding guard fired once in the demo. Conduct policy is phrase-based. Default calling hours are **ASSUMPTION**; RBI primary guidance is not verified. |
+| Feed learnings back | `docs/PROMPT_CHANGELOG.md`, `docs/FAILURE_MODES.md` | Prompt version `emi-4` has measured scenario evidence; remaining model failures are documented OPEN. Pilot is **NOT EXECUTED**. |
