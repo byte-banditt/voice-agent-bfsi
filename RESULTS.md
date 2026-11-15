@@ -119,3 +119,5 @@ The percentile script uses median for p50 and nearest-rank for p95. Its raw per-
 | Docker Compose CLI probe | version `v5.5.1`; build and service checks **NOT EXECUTED** by sprint scope | Local WSL2 | `docker compose version` → `raw-results/docker-compose-version.txt` |
 
 The first Step 0 pushes failed CI (runs `43719643851` and `43720052510`); time-dependent tests and the missing-optional-Presidio fallback were fixed. The later Step 1–3 pushes above passed. Final documentation HEAD CI is verified in the final report.
+
+| Step 4 docs push CI | success, run `43729725964` | `d555ad36242bd13aa0754f8106c9724e72ecb4c7` | `gh run view 43729725964 --repo byte-banditt/voice-agent-bfsi --json headSha,conclusion,workflowName,createdAt,url` → `raw-results/step4-ci.json` | GitHub Actions; docs-only changes; final SHA is verified again after this record is pushed. |
