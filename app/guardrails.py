@@ -2,13 +2,9 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, time
-from zoneinfo import ZoneInfo
-import os
 
 SAFE_FALLBACK = "I cannot confirm that information right now. I can connect you with a human agent."
 CONDUCT_FALLBACK = "I want to keep this conversation respectful. I can connect you with a human agent."
-OUT_OF_HOURS_REPLY = "I am sorry, this is outside our permitted calling hours. We can contact you during the configured hours."
 RECORDING_CONSENT_LINE = "This call may be recorded to improve service. Do you consent to continue? Please say yes or no."
 CONSENT_DECLINED_REPLY = "I understand. I will not continue or save this conversation. Goodbye."
 REPEAT_PROMPT = "I did not catch that. Could you please repeat?"
@@ -16,22 +12,6 @@ REPEAT_PROMPT = "I did not catch that. Could you please repeat?"
 
 def grants_recording_consent(text: str) -> bool:
     return bool(re.fullmatch(r"\s*(?:yes|yes,? i consent|i consent|i agree|okay|ok)\s*[.!]?\s*", text, re.IGNORECASE))
-
-
-def within_calling_hours(now: datetime | None = None) -> bool:
-    """Check configurable local hours; defaults are an explicitly unverified policy assumption."""
-    timezone = ZoneInfo(os.getenv("CALLING_HOURS_TIMEZONE", "Asia/Kolkata"))
-    current = (now or datetime.now(timezone)).astimezone(timezone).time().replace(tzinfo=None)
-    try:
-        start = time.fromisoformat(os.getenv("CALLING_HOURS_START", "08:00"))
-        end = time.fromisoformat(os.getenv("CALLING_HOURS_END", "19:00"))
-    except ValueError as exc:
-        raise ValueError("calling hours must use HH:MM values") from exc
-    if start == end:
-        return True
-    if start < end:
-        return start <= current < end
-    return current >= start or current < end
 
 
 def _presidio_spans(text: str) -> list[tuple[int, int, str]]:

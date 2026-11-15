@@ -22,9 +22,8 @@ from app.state import CallState, CallStateMachine
 from app.conversation import ConversationEngine
 from app.tools import BFSIToolExecutor
 from app.vad import EndpointingBuffer, WebRTCVAD
-from app.guardrails import (CONSENT_DECLINED_REPLY, OUT_OF_HOURS_REPLY,
-                            RECORDING_CONSENT_LINE, REPEAT_PROMPT, grants_recording_consent,
-                            within_calling_hours)
+from app.guardrails import (CONSENT_DECLINED_REPLY, RECORDING_CONSENT_LINE,
+                            REPEAT_PROMPT, grants_recording_consent)
 from app.webhook import send_webhook
 
 app = FastAPI(title="BFSI Voice Agent")
@@ -137,16 +136,6 @@ async def media_stream(websocket: WebSocket) -> None:
                 if call_started:
                     continue
                 stream_sid = str(message.get("streamSid") or (message.get("start") or {}).get("streamSid") or "SIMULATOR")
-                if not within_calling_hours():
-                    trace["guardrail_events"].append("outside_calling_hours")
-                    audio = await tts.synthesize(OUT_OF_HOURS_REPLY)
-                    telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
-                    await websocket.send_json({"event": "media", "streamSid": stream_sid,
-                        "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
-                    await _save_completed_trace(trace)
-                    state.transition(CallState.ENDED)
-                    await websocket.close()
-                    return
                 call_started = True
                 audio = await tts.synthesize(RECORDING_CONSENT_LINE)
                 telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))

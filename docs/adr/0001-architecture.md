@@ -20,7 +20,7 @@ The architecture diagram and audio boundary contract are below. Internal audio i
 - faster-whisper API: <https://github.com/SYSTRAN/faster-whisper> (project README checked 2026-11-15); the optional provider uses `WhisperModel.transcribe` with a 16 kHz float32 array.
 - Twilio Media Streams WebSocket messages: <https://www.twilio.com/docs/voice/media-streams/websocket-messages> (HTTP 200, checked 2026-11-15). The documented stream messages include `connected`, `start`, `media`, and `stop`; audio payload is base64 encoded. This project has no live Twilio test.
 - Piper maintenance: <https://api.github.com/repos/rhasspy/piper> reports `archived: true`; <https://api.github.com/repos/OHF-Voice/piper1-gpl> reports `archived: false`. The fork's Python API is documented at <https://github.com/OHF-Voice/piper1-gpl/blob/main/docs/API_PYTHON.md>; `PiperVoice.load` and `synthesize_wav` are used by the optional provider.
-- RBI calling-hours basis: NOT VERIFIED. The prototype uses 08:00–19:00 local time as a configurable conservative assumption, not legal guidance.
+- RBI calling-hours basis: NOT VERIFIED. The local simulator does not enforce calling hours.
 
 Exact Python package pins were checked against PyPI JSON on 2026-11-15 and are in `pyproject.toml`. Optional model downloads and native-runtime compatibility remain **NOT EXECUTED**.
 

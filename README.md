@@ -37,7 +37,7 @@ make agent
 
 Open <http://localhost:8000/voice>, allow microphone access, press **Start call**, listen to the recording-consent line, then speak. Speak again for each turn; speak while the agent is talking to interrupt it. Use headphones to reduce acoustic echo. The browser streams microphone audio to the local `/ws` endpoint; transcripts are redacted before they are stored, and raw audio is not stored.
 
-The default calling window is 08:00–19:00 `Asia/Kolkata` and remains an **ASSUMPTION**. For local simulator testing only, you can set `CALLING_HOURS_START=00:00` and `CALLING_HOURS_END=23:59` in `.env`. Use only synthetic/mock customer details. This is not live telephony.
+The local simulator does not enforce calling hours. Use only synthetic/mock customer details. This is not live telephony.
 
 The LLM tool-call loop is non-streaming; measured synthetic input-to-first-audio p50/p95 was 14.383/18.705 seconds on the recorded hardware. `make demo` remains the fixed scripted demonstration.
 
@@ -70,8 +70,7 @@ qwen3:4b comparison incomplete; qwen3:0.6b/8b comparison; true LLM first-token l
 - Real provider wiring exists for faster-whisper, Ollama, and Piper. Ollama text generation and a small synthetic Piper-to-Faster-Whisper corpus were measured; real-recording quality was not.
 - Transcript redaction runs before trace storage, using Presidio custom recognizers for Indian mobile numbers and account-like IDs plus local email, phone, and date patterns. This is not a guarantee against all PII. Raw audio is not stored.
 - The dashboard summarizes stored call traces, stage percentiles, tool success, guardrail events, and prompt versions; production access control, retention, and deployment hardening are absent.
-- The call-start gate enforces 08:00–19:00 `Asia/Kolkata` by default, configurable with `CALLING_HOURS_TIMEZONE`, `CALLING_HOURS_START`, and `CALLING_HOURS_END`. This window is an **ASSUMPTION**; RBI source guidance was not verified.
 - Docker Compose version is available, but `docker compose up --build` and health checks were **NOT EXECUTED** in this sprint.
-- RBI calling-hours guidance is **ASSUMPTION / NOT VERIFIED**; the demo's 00:00–23:59 hours were temporary local test settings.
+- RBI calling-hours guidance is **ASSUMPTION / NOT VERIFIED**; the local simulator currently has no calling-hours gate.
 
 See [BLOCKERS.md](BLOCKERS.md) and [docs/JD_COVERAGE.md](docs/JD_COVERAGE.md). Do not claim live telephony, live CRM, real-user outcomes, real-recording WER, regulatory certification, or universal call quality from this prototype.

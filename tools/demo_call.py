@@ -125,8 +125,7 @@ def run_demo(args: argparse.Namespace) -> str:
                     "ASR_COMPUTE_TYPE": "int8", "PIPER_VOICE_PATH": str(args.voice),
                     "CRM_URL": crm_url, "CRM_API_KEY": key, "CRM_CUSTOMER_ID": "cust-demo-1",
                     "CRM_DATABASE_PATH": str(temp_path / "crm.db"),
-                    "DATABASE_PATH": str(temp_path / "calls.db"),
-                    "CALLING_HOURS_START": "00:00", "CALLING_HOURS_END": "23:59"})
+                    "DATABASE_PATH": str(temp_path / "calls.db")})
         crm = subprocess.Popen([sys.executable, "-m", "uvicorn", "app.crm:crm_app", "--host",
                                 "127.0.0.1", "--port", str(crm_port)], cwd=ROOT, env=env,
                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

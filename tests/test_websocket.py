@@ -21,7 +21,6 @@ class FakeVAD:
 
 
 def test_simulator_media_stream_round_trip(monkeypatch) -> None:
-    monkeypatch.setattr(main, "within_calling_hours", lambda: True)
     monkeypatch.setattr(main, "WebRTCVAD", FakeVAD)
     monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR("yes"), FakeLLM(), FakeTTS()))
     client = TestClient(app)
@@ -38,7 +37,6 @@ def test_simulator_media_stream_round_trip(monkeypatch) -> None:
 
 
 def test_empty_media_returns_silence(monkeypatch) -> None:
-    monkeypatch.setattr(main, "within_calling_hours", lambda: True)
     client = TestClient(app)
     with client.websocket_connect("/ws") as socket:
         socket.send_json({"event": "start"})
@@ -67,26 +65,7 @@ def test_completion_persists_trace_after_webhook_delivery(monkeypatch) -> None:
     assert saved == ["synthetic-call"]
 
 
-def test_outside_calling_hours_gets_polite_exit(monkeypatch) -> None:
-    class Store:
-        trace = None
-
-        def save_trace(self, trace):
-            self.trace = dict(trace)
-
-    store = Store()
-    monkeypatch.setattr(main, "store", store)
-    monkeypatch.setattr(main, "within_calling_hours", lambda: False)
-    monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR(), FakeLLM(), FakeTTS()))
-
-    with TestClient(app).websocket_connect("/ws") as socket:
-        socket.send_json({"event": "start", "streamSid": "SIMULATOR"})
-        assert socket.receive_json()["event"] == "media"
-    assert store.trace["guardrail_events"] == ["outside_calling_hours"]
-
-
 def test_declined_consent_exits_without_persisting_transcript(monkeypatch) -> None:
-    monkeypatch.setattr(main, "within_calling_hours", lambda: True)
     class Store:
         trace = None
 
@@ -108,7 +87,6 @@ def test_declined_consent_exits_without_persisting_transcript(monkeypatch) -> No
 
 
 def test_barge_in_cancels_inflight_llm(monkeypatch) -> None:
-    monkeypatch.setattr(main, "within_calling_hours", lambda: True)
     class SlowFirstReply:
         calls = 0
 
@@ -135,7 +113,6 @@ def test_barge_in_cancels_inflight_llm(monkeypatch) -> None:
 
 
 def test_silence_does_not_cancel_inflight_llm(monkeypatch) -> None:
-    monkeypatch.setattr(main, "within_calling_hours", lambda: True)
     class FirstSpeechOnlyVAD:
         def __init__(self):
             self.calls = 0
