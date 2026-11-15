@@ -11,6 +11,7 @@ CONDUCT_FALLBACK = "I want to keep this conversation respectful. I can connect y
 OUT_OF_HOURS_REPLY = "I am sorry, this is outside our permitted calling hours. We can contact you during the configured hours."
 RECORDING_CONSENT_LINE = "This call may be recorded to improve service. Do you consent to continue? Please say yes or no."
 CONSENT_DECLINED_REPLY = "I understand. I will not continue or save this conversation. Goodbye."
+REPEAT_PROMPT = "I did not catch that. Could you please repeat?"
 
 
 def grants_recording_consent(text: str) -> bool:
@@ -57,6 +58,8 @@ def _presidio_spans(text: str) -> list[tuple[int, int, str]]:
 def redact_pii(text: str) -> str:
     for start, end, replacement in sorted(_presidio_spans(text), reverse=True):
         text = text[:start] + replacement + text[end:]
+    text = re.sub(r"(?i)\b(?:account|a/c|loan|customer)[\s:#-]*[A-Z0-9][A-Z0-9-]{5,}\b",
+                  "[REDACTED_ACCOUNT_ID]", text)
     text = re.sub(r"\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b", "[REDACTED_EMAIL]", text)
     text = re.sub(r"(?<!\w)(?:\+?\d[\d ()-]{7,}\d)(?!\w)", "[REDACTED_PHONE]", text)
     text = re.sub(r"\b(?:\d{4}-\d{2}-\d{2}|\d{2}/\d{2}/\d{4})\b", "[REDACTED_DATE]", text)

@@ -22,7 +22,7 @@ from app.conversation import ConversationEngine
 from app.tools import BFSIToolExecutor
 from app.vad import EndpointingBuffer, WebRTCVAD
 from app.guardrails import (CONSENT_DECLINED_REPLY, OUT_OF_HOURS_REPLY,
-                            RECORDING_CONSENT_LINE, grants_recording_consent,
+                            RECORDING_CONSENT_LINE, REPEAT_PROMPT, grants_recording_consent,
                             within_calling_hours)
 from app.webhook import send_webhook
 
@@ -181,6 +181,10 @@ async def media_stream(websocket: WebSocket) -> None:
             if not utterances:
                 if not encoded:
                     await websocket.send_json({"event": "silence"})
+                    audio = await tts.synthesize(REPEAT_PROMPT)
+                    telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
+                    await websocket.send_json({"event": "media", "streamSid": stream_sid,
+                        "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
                 continue
             pcm = utterances[-1]
             started = time.perf_counter()
@@ -201,6 +205,10 @@ async def media_stream(websocket: WebSocket) -> None:
             trace["stage_seconds"]["asr"] = elapsed
             if not transcript.strip():
                 await websocket.send_json({"event": "silence"})
+                audio = await tts.synthesize(REPEAT_PROMPT)
+                telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
+                await websocket.send_json({"event": "media", "streamSid": stream_sid,
+                    "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
                 continue
             if consent_status == "pending":
                 if grants_recording_consent(transcript):

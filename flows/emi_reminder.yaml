@@ -3,13 +3,13 @@ name: emi_reminder
 states:
   greeting:
     allowed_tools: [escalate_to_human]
-    prompt_version: emi-1
+    prompt_version: emi-4
   identity_check:
     allowed_tools: [verify_identity, escalate_to_human]
-    prompt_version: emi-1
+    prompt_version: emi-4
   verified:
-    allowed_tools: [get_loan_status, schedule_callback, create_payment_link, escalate_to_human]
-    prompt_version: emi-1
+    allowed_tools: [get_loan_status, schedule_callback, create_payment_link, log_call_outcome, escalate_to_human]
+    prompt_version: emi-4
   ended:
     allowed_tools: [log_call_outcome, escalate_to_human]
-    prompt_version: emi-1
+    prompt_version: emi-4

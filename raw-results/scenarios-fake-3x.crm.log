@@ -1,0 +1,48 @@
+INFO:     Started server process [35506]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:45305 (Press CTRL+C to quit)
+INFO:     127.0.0.1:57914 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57926 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57942 - "GET /loans/loan-demo-1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57946 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57958 - "GET /loans/loan-demo-1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57964 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57968 - "GET /loans/loan-demo-1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57980 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57986 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57990 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58002 - "POST /escalate_to_human?customer_id=cust-demo-1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58008 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58024 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58036 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58038 - "POST /escalate_to_human?customer_id=cust-demo-1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58052 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58066 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58072 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58074 - "POST /escalate_to_human?customer_id=cust-demo-1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58080 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58090 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58106 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58110 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58118 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58124 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58130 - "POST /escalate_to_human?customer_id=cust-demo-1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58132 - "POST /escalate_to_human?customer_id=cust-demo-1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58142 - "POST /escalate_to_human?customer_id=cust-demo-1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58144 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58148 - "POST /schedule_callback HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58162 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58164 - "POST /schedule_callback HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58166 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58174 - "POST /schedule_callback HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58180 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58192 - "POST /log_call_outcome HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58194 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58198 - "POST /log_call_outcome HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58208 - "POST /verify_identity HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58214 - "POST /log_call_outcome HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [35506]

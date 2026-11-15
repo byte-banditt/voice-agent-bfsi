@@ -57,12 +57,20 @@ class ConversationEngine:
         if re.search(r"\b(?:goodbye|bye|stop (?:calling|now|the call)|end (?:the )?call|do not call|don't call)\b", text, re.IGNORECASE):
             self.end_call = True
             return "Understood. I will end the call now."
+        if re.search(r"\b(?:useless|idiot|stupid|fuck(?:ing)?|hate you)\b", text, re.IGNORECASE):
+            trace["guardrail_events"].append("conduct_escalation")
+            return "I am sorry this is frustrating. I can connect you with a human agent or end the call."
         if re.search(r"\b(?:human|agent|representative|real person)\b", text, re.IGNORECASE):
-            allowed = {item["function"]["name"] for item in self.allowed_tools()}
+            tools = self.allowed_tools()
+            allowed = {item["function"]["name"] for item in tools}
             if "escalate_to_human" not in allowed:
                 return "I cannot complete that request right now."
+            state_before = self.state
             output = await self.executor.execute("escalate_to_human", {})
-            trace["tool_calls"].append({"name": "escalate_to_human", "arguments": {}, "result": output, "state": self.state})
+            trace["tool_calls"].append({"name": "escalate_to_human", "arguments": {}, "result": output,
+                                        "state": self.state, "state_before": state_before,
+                                        "state_after": self.state, "allowed_tools": sorted(allowed),
+                                        "arguments_valid": True})
             self.tool_results.append(output)
             return "I will connect you with a human agent."
         chat = getattr(llm, "chat_with_tools", None)
@@ -97,6 +105,9 @@ class ConversationEngine:
                 function = call.get("function", {})
                 name = str(function.get("name", ""))
                 args: dict[str, Any] = {}
+                state_before = self.state
+                allowed_names = {item["function"]["name"] for item in tools}
+                arguments_valid = True
                 try:
                     raw_args = function.get("arguments", {})
                     if isinstance(raw_args, str):
@@ -104,7 +115,7 @@ class ConversationEngine:
                     if not isinstance(raw_args, dict):
                         raise ValueError("tool arguments must be an object")
                     args = raw_args
-                    if name not in {item["function"]["name"] for item in tools}:
+                    if name not in allowed_names:
                         output = {"error": "tool not allowed in current state"}
                     else:
                         _validate_tool_arguments(name, args)
@@ -113,7 +124,11 @@ class ConversationEngine:
                             self.state = "verified"
                     self.tool_results.append(output)
                 except (ValueError, TypeError, KeyError, json.JSONDecodeError):
+                    arguments_valid = False
                     output = {"error": "invalid tool arguments"}
-                trace["tool_calls"].append({"name": name, "arguments": args, "result": output, "state": self.state})
+                trace["tool_calls"].append({"name": name, "arguments": args, "result": output,
+                                            "state": self.state, "state_before": state_before,
+                                            "state_after": self.state, "allowed_tools": sorted(allowed_names),
+                                            "arguments_valid": arguments_valid})
                 messages.append({"role": "tool", "content": json.dumps(output), "tool_name": name})
         return "I cannot complete that request right now. I can connect you with a human agent."
