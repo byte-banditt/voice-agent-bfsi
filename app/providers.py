@@ -89,8 +89,8 @@ class OllamaLLM:
 
 
 class FasterWhisperASR:
-    def __init__(self, model_name: str = "base.en", device: str = "cuda", compute_type: str = "float16") -> None:
-        self.model_name, self.device, self.compute_type = model_name, device, compute_type
+    def __init__(self, model_name: str = "base.en", device: str = "cpu", compute_type: str = "int8", beam_size: int = 5) -> None:
+        self.model_name, self.device, self.compute_type, self.beam_size = model_name, device, compute_type, beam_size
         self._model = None
 
     def _get_model(self):
@@ -108,7 +108,7 @@ class FasterWhisperASR:
         audio = np.frombuffer(pcm16, dtype="<i2").astype(np.float32) / 32768.0
 
         def run() -> str:
-            segments, _ = self._get_model().transcribe(audio, beam_size=1)
+            segments, _ = self._get_model().transcribe(audio, beam_size=self.beam_size)
             return " ".join(segment.text.strip() for segment in segments).strip()
 
         return await asyncio.to_thread(run)

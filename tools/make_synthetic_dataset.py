@@ -1,13 +1,18 @@
 from __future__ import annotations
 
 import argparse
+import io
 import csv
 import random
 import struct
 import wave
 from pathlib import Path
 
-from app.providers import PiperTTS
+import wave
+
+from piper import PiperVoice, SynthesisConfig
+
+from app.audio import pcm16_resample
 
 PHRASES = (
     "Hello, this is a reminder from Example Finance.",
@@ -33,11 +38,18 @@ async def synthesize(voice: str, output: Path, noise_scale: int, seed: int) -> l
     import asyncio
 
     output.mkdir(parents=True, exist_ok=True)
-    tts = PiperTTS(voice)
+    tts = PiperVoice.load(voice)
+    config = SynthesisConfig(noise_scale=0.0, noise_w_scale=0.0)
     rng = random.Random(seed)
     rows = []
     for index, phrase in enumerate(PHRASES, start=1):
-        pcm = await tts.synthesize(phrase)
+        output_wav = io.BytesIO()
+        with wave.open(output_wav, "wb") as wav_file:
+            tts.synthesize_wav(phrase, wav_file, syn_config=config)
+        with wave.open(io.BytesIO(output_wav.getvalue()), "rb") as wav_file:
+            if wav_file.getnchannels() != 1 or wav_file.getsampwidth() != 2:
+                raise ValueError("Piper voice must produce mono PCM16")
+            pcm = pcm16_resample(wav_file.readframes(wav_file.getnframes()), wav_file.getframerate(), 16000)
         for variant, samples in (("clean", pcm), ("noisy", make_noisy(pcm, noise_scale, rng))):
             path = output / f"utt-{index:02d}-{variant}.wav"
             with wave.open(str(path), "wb") as wav_file:
@@ -66,7 +78,7 @@ def main() -> None:
     import asyncio
 
     rows = asyncio.run(synthesize(str(args.voice), args.output, args.noise_scale, args.seed))
-    print(f"classification=SYNTHETIC utterances={len(rows)} clean={sum(x['variant']=='clean' for x in rows)} noisy={sum(x['variant']=='noisy' for x in rows)} noise_scale={args.noise_scale} seed={args.seed} output={args.output}")
+    print(f"classification=SYNTHETIC utterances={len(rows)} clean={sum(x['variant']=='clean' for x in rows)} noisy={sum(x['variant']=='noisy' for x in rows)} gaussian_noise_scale={args.noise_scale} seed={args.seed} piper_noise_scale=0.0 piper_noise_w_scale=0.0 output={args.output}")
 
 
 if __name__ == "__main__":

@@ -9,8 +9,8 @@ from pathlib import Path
 from app.providers import FasterWhisperASR
 
 
-async def transcribe(manifest: Path, output: Path, model: str, device: str, compute_type: str) -> None:
-    provider = FasterWhisperASR(model, device, compute_type)
+async def transcribe(manifest: Path, output: Path, model: str, device: str, compute_type: str, beam_size: int) -> None:
+    provider = FasterWhisperASR(model, device, compute_type, beam_size)
     with manifest.open(newline="", encoding="utf-8") as source:
         rows = list(csv.DictReader(source))
     hypotheses = []
@@ -34,9 +34,10 @@ def main() -> None:
     parser.add_argument("--model", default="base.en")
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--compute-type", default="int8")
+    parser.add_argument("--beam-size", type=int, default=5)
     args = parser.parse_args()
-    asyncio.run(transcribe(args.manifest, args.output, args.model, args.device, args.compute_type))
-    print(f"hypotheses_written={args.output}")
+    asyncio.run(transcribe(args.manifest, args.output, args.model, args.device, args.compute_type, args.beam_size))
+    print(f"hypotheses_written={args.output} model={args.model} device={args.device} compute_type={args.compute_type} beam_size={args.beam_size}")
 
 
 if __name__ == "__main__":
