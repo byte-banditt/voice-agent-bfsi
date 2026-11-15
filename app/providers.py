@@ -74,12 +74,12 @@ class OllamaLLM:
                     if data.get("done"):
                         break
 
-    async def chat_with_tools(self, transcript: str, tools: list[dict[str, object]]) -> dict[str, object]:
+    async def chat_with_tools(self, messages: list[dict[str, object]], tools: list[dict[str, object]]) -> dict[str, object]:
         """Return Ollama's structured content/tool calls for the caller-owned executor."""
         import httpx
 
         payload = {"model": self.model, "think": self.think, "stream": False,
-                   "messages": [{"role": "user", "content": transcript}], "tools": tools}
+                   "messages": messages, "tools": tools}
         async with httpx.AsyncClient(timeout=60) as client:
             response = await client.post(f"{self.base_url}/api/chat", json=payload)
             response.raise_for_status()

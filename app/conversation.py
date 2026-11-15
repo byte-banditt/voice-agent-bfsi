@@ -1,0 +1,82 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+from app.guardrails import enforce_grounding
+from app.tools import BFSIToolExecutor
+
+_ROOT = Path(__file__).resolve().parent.parent
+_TOOL_SCHEMAS: dict[str, dict[str, object]] = {
+    "verify_identity": {"type": "function", "function": {"name": "verify_identity", "description": "Verify the caller using date of birth and phone last four digits", "parameters": {"type": "object", "properties": {"dob": {"type": "string"}, "phone_last4": {"type": "string"}}, "required": ["dob", "phone_last4"]}}},
+    "get_customer": {"type": "function", "function": {"name": "get_customer", "description": "Get verified customer information", "parameters": {"type": "object", "properties": {"customer_id": {"type": "string"}}, "required": ["customer_id"]}}},
+    "get_loan_status": {"type": "function", "function": {"name": "get_loan_status", "description": "Get verified loan status", "parameters": {"type": "object", "properties": {"loan_id": {"type": "string"}}, "required": ["loan_id"]}}},
+    "schedule_callback": {"type": "function", "function": {"name": "schedule_callback", "description": "Schedule a callback", "parameters": {"type": "object", "properties": {"requested_at": {"type": "string"}}, "required": ["requested_at"]}}},
+    "create_payment_link": {"type": "function", "function": {"name": "create_payment_link", "description": "Create a mock payment link", "parameters": {"type": "object", "properties": {}, "additionalProperties": False}}},
+    "escalate_to_human": {"type": "function", "function": {"name": "escalate_to_human", "description": "Escalate the call to a human", "parameters": {"type": "object", "properties": {}}}},
+    "log_call_outcome": {"type": "function", "function": {"name": "log_call_outcome", "description": "Record a call outcome", "parameters": {"type": "object", "properties": {"outcome": {"type": "string"}}, "required": ["outcome"]}}},
+}
+
+
+class ConversationEngine:
+    """One flow and tool executor per call; tool permissions come from the active flow state."""
+
+    def __init__(self, flow_name: str, executor: BFSIToolExecutor) -> None:
+        self.flow = yaml.safe_load((_ROOT / "flows" / f"{flow_name}.yaml").read_text())
+        self.name = flow_name
+        self.executor = executor
+        self.state = "identity_check"
+        self.prompt_version = self.flow["states"][self.state]["prompt_version"]
+        prompt_name = f"{flow_name}-v1.txt"
+        self.system_prompt = (_ROOT / "prompts" / prompt_name).read_text()
+        self.tool_results: list[dict[str, object]] = []
+
+    def allowed_tools(self) -> list[dict[str, object]]:
+        names = self.flow["states"][self.state]["allowed_tools"]
+        return [_TOOL_SCHEMAS[name] for name in names if name in _TOOL_SCHEMAS]
+
+    async def respond(self, llm: Any, text: str, trace: dict[str, Any]) -> str:
+        chat = getattr(llm, "chat_with_tools", None)
+        if chat is None:
+            return "".join([part async for part in llm.stream_reply(text)]).strip()
+        messages: list[dict[str, object]] = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": text},
+        ]
+        for _ in range(5):
+            tools = self.allowed_tools()
+            result = await chat(messages, tools)
+            message = {"role": "assistant", "content": result.get("content", ""), "tool_calls": result.get("tool_calls", [])}
+            calls = result.get("tool_calls", [])
+            if not calls:
+                reply, violation = enforce_grounding(str(message["content"]), self.tool_results)
+                if violation:
+                    trace["guardrail_events"].append("grounding_violation")
+                return reply
+            messages.append(message)
+            for call in calls:
+                function = call.get("function", {})
+                name = str(function.get("name", ""))
+                args: dict[str, Any] = {}
+                try:
+                    raw_args = function.get("arguments", {})
+                    if isinstance(raw_args, str):
+                        raw_args = json.loads(raw_args)
+                    if not isinstance(raw_args, dict):
+                        raise ValueError("tool arguments must be an object")
+                    args = raw_args
+                    if name not in {item["function"]["name"] for item in tools}:
+                        output = {"error": "tool not allowed in current state"}
+                    else:
+                        output = await self.executor.execute(name, args)
+                        if name == "verify_identity" and output.get("verified"):
+                            self.state = "verified"
+                    self.tool_results.append(output)
+                except (ValueError, TypeError, KeyError, json.JSONDecodeError):
+                    output = {"error": "invalid tool arguments"}
+                trace["tool_calls"].append({"name": name, "arguments": args, "result": output, "state": self.state})
+                messages.append({"role": "tool", "content": json.dumps(output), "tool_name": name})
+        return "I cannot complete that request right now. I can connect you with a human agent."

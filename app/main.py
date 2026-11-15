@@ -18,9 +18,16 @@ from app.observability import CallStore
 from app.metrics import STAGE_SECONDS
 from app.providers import configured_providers
 from app.state import CallState, CallStateMachine
+from app.conversation import ConversationEngine
+from app.tools import BFSIToolExecutor
 
 app = FastAPI(title="BFSI Voice Agent (MOCK providers)")
 store = CallStore(os.getenv("DATABASE_PATH", "voice_agent.db"))
+
+
+async def _iterate(parts):
+    for part in parts:
+        yield part
 
 
 @app.get("/health")
@@ -74,11 +81,16 @@ async def media_stream(websocket: WebSocket) -> None:
     playback: asyncio.Task[None] | None = None
     stream_sid = "SIMULATOR"
     real_mode = os.getenv("VOICE_AGENT_REAL_PROVIDERS", "false").lower() == "true"
+    flow_name = os.getenv("VOICE_AGENT_FLOW", "emi_reminder")
+    engine = ConversationEngine(flow_name, BFSIToolExecutor(
+        os.getenv("CRM_URL", "http://127.0.0.1:8001"), os.getenv("CRM_API_KEY", ""),
+        os.getenv("CRM_CUSTOMER_ID", "cust-demo-1"),
+    ))
     trace = {"call_id": str(uuid.uuid4()), "provider_mode": "REAL" if real_mode else "MOCK",
              "model_versions": {"asr": getattr(asr, "model_name", "FAKE"),
                                 "llm": getattr(llm, "model", "FAKE"),
                                 "tts": os.path.basename(getattr(tts, "voice_path", "FAKE"))},
-             "prompt_version": "emi-1", "transcript": "", "stage_seconds": {},
+             "prompt_version": engine.prompt_version, "flow": flow_name, "transcript": "", "stage_seconds": {},
              "tool_calls": [], "guardrail_events": [], "errors": []}
     state.transition(CallState.LISTENING)
     try:
@@ -146,7 +158,12 @@ async def media_stream(websocket: WebSocket) -> None:
                 llm_started = time.perf_counter()
                 first_sentence = True
                 pending = ""
-                async for part in llm.stream_reply(user_text):
+                if hasattr(llm, "chat_with_tools"):
+                    response_text = await engine.respond(llm, user_text, trace)
+                    response_parts = (response_text,)
+                else:
+                    response_parts = llm.stream_reply(user_text)
+                async for part in response_parts if hasattr(response_parts, "__aiter__") else _iterate(response_parts):
                     trace["stage_seconds"].setdefault("llm_first_token", time.perf_counter() - llm_started)
                     pending += part
                     sentences = re.split(r"(?<=[.!?])\s+", pending)
