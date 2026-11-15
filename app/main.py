@@ -20,6 +20,7 @@ from app.providers import configured_providers
 from app.state import CallState, CallStateMachine
 from app.conversation import ConversationEngine
 from app.tools import BFSIToolExecutor
+from app.vad import EndpointingBuffer, WebRTCVAD
 
 app = FastAPI(title="BFSI Voice Agent (MOCK providers)")
 store = CallStore(os.getenv("DATABASE_PATH", "voice_agent.db"))
@@ -77,6 +78,7 @@ async def submit_feedback(payload: Feedback) -> dict[str, str]:
 async def media_stream(websocket: WebSocket) -> None:
     await websocket.accept()
     state = CallStateMachine()
+    endpoint = EndpointingBuffer(WebRTCVAD())
     asr, llm, tts = configured_providers()
     playback: asyncio.Task[None] | None = None
     stream_sid = "SIMULATOR"
@@ -132,6 +134,12 @@ async def media_stream(websocket: WebSocket) -> None:
                 await websocket.send_json({"event": "error", "error": "invalid media payload"})
                 continue
             pcm = pcm16_resample(mulaw_to_pcm16(encoded), 8000, 16000)
+            utterances = endpoint.feed(pcm)
+            if not utterances:
+                if not encoded:
+                    await websocket.send_json({"event": "silence"})
+                continue
+            pcm = utterances[-1]
             started = time.perf_counter()
             try:
                 transcript = await asyncio.wait_for(asr.transcribe(pcm, 16000), timeout=10)
