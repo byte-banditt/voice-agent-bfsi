@@ -81,3 +81,27 @@ Command: `python tools/evaluate_scenarios.py --mode fake --repeats 3 --output ra
 
 Fake overall: 60/60 (100%), tool-call accuracy 0.70. qwen3:1.7b overall: 54/60 (90%), tool-call accuracy 1.00, LLM-call median 0.438480215 s, p95 2.590261806 s. The two OPEN scenarios failed 0/3 each; traces are embedded in `raw-results/scenarios-ollama-1_7b-3x.json` under `malformed_tool_arguments` and `grounding_violation`. qwen3:4b was interrupted after about 10 minutes before the runner emitted a result JSON; its accuracy/pass rate are **NOT EXECUTED**. Partial VRAM sampling is in `raw-results/qwen4-vram-samples.csv` and is not used as a model comparison.
 
+
+
+## Model comparison and real-provider latency (Step 2)
+
+| Mode/model | Scenario pass rate | Tool-call accuracy | LLM latency | VRAM / disposition |
+|---|---:|---:|---:|---|
+| Fake providers + MOCK CRM | 60/60 (100%) | 0.70 | Not applicable; deterministic Fake | CI-safe baseline; raw trace in `raw-results/scenarios-fake-3x.json` |
+| qwen3:1.7b Q4_K_M | 54/60 (90%); 18/20 scenarios pass all 3 repeats | 1.00 | median 0.438 s; p95 2.590 s per tool-loop request | 100% GPU per `ollama ps`; 8 GiB RTX 4060, hardware record below |
+| qwen3:4b | **NOT EXECUTED** to completion | **NOT EXECUTED** | **NOT EXECUTED** | Run interrupted before result JSON; partial sampler only: `raw-results/qwen4-vram-samples.csv` |
+| qwen3:0.6b, qwen3:8b | **NOT EXECUTED** in this comparison | **NOT EXECUTED** | **NOT EXECUTED** | Explicitly out of scope for this sprint |
+
+Tool-call accuracy is computed from scenario traces as correct tool, schema-valid arguments, and permitted current state. Default remains qwen3:1.7b because it is the only real model with a completed 20-scenario × 3-repeat result in this sprint: 90% pass and 1.00 tool-call accuracy. This supports a measured prototype default; qwen3:4b was not completed, so no claim that 1.7b is best among model sizes is supported. Scenario command/raw files: `tools/evaluate_scenarios.py`, `raw-results/scenarios-fake-3x.json`, `raw-results/scenarios-ollama-1_7b-3x.json`; implementation/evidence commit `aaf971bc758287b5bd4323799625ea821c3c1a1a`.
+
+**SYNTHETIC audio; MOCK CRM; real local providers.** Command: `python tools/measure_ws_latency.py --consent-wav raw-results/synthetic-consent.wav --request-wav raw-results/synthetic-status.wav --output raw-results/latency-real-ws-30.json --turns 30 --asr-model base.en --asr-device cpu --asr-compute-type int8 --llm-model qwen3:1.7b --llm-quantization Q4_K_M --tts-voice en_US-lessac-medium`. Run code, audio, and 30 raw traces: commit `2e6a1f2239f9b2d533dd24365b5f87023c8d2adf`. Hardware/provider details: `raw-results/step2-hardware.txt` (RTX 4060, 8 GiB VRAM; qwen3:1.7b Q4_K_M, Ollama reports 100% GPU; Faster-Whisper `base.en`, CPU `int8`; WebRTC VAD; Piper `en_US-lessac-medium`; thinking OFF). All 30 calls granted consent; identity verified 30/30; loan status CRM lookup succeeded 27/30 (3 calls did not issue the status tool). The calls used no real customer data or recordings.
+
+| Stage | p50 (s) | p95 (s) | Samples / definition |
+|---|---:|---:|---|
+| VAD endpoint → ASR done | 1.643 | 3.780 | 30; ASR stage elapsed after utterance endpoint |
+| LLM first token | **NOT MEASURED** | **NOT MEASURED** | Ollama structured tool loop is non-streaming; raw trace's legacy `llm_first_token` key is response-ready elapsed time, not token latency |
+| First sentence available | 2.419 | 3.266 | 30; after the complete non-streaming tool loop returns |
+| TTS audio available | 2.067 | 8.030 | 30; Piper synthesis duration until complete audio bytes are available to the WebSocket sender |
+| User's final audio sent → first TTS media received | 14.383 | 18.705 | 30; simulator client wall clock, includes VAD hangover, ASR, LLM/tool loop, TTS, and transport |
+
+The percentile script uses median for p50 and nearest-rank for p95. Its raw per-turn observations, full call traces, and sample audio are committed above. A prior 30-turn input phrased DOB naturally and caused CRM validation errors; corrected SYNTHETIC speech explicitly enunciated the ISO date. Before/after evidence: `raw-results/latency-real-ws-30-before-input-fix.json` and `raw-results/latency-real-ws-30.json`. This input correction is not a code-quality or real-user success claim.
