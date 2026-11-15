@@ -8,3 +8,5 @@ __pycache__/
 raw-results/*
 !raw-results/.gitkeep
 data/recordings/
+models/
+synthetic-data/
