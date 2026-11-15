@@ -1,0 +1,91 @@
+{
+  "classification": "SYNTHETIC voice input; REAL local ASR/LLM/TTS; MOCK CRM",
+  "result": "PASS",
+  "provider_versions": {
+    "asr": "base.en",
+    "llm": "qwen3:1.7b",
+    "tts": "en_US-lessac-medium.onnx"
+  },
+  "prompt_version": "emi-4",
+  "consent_status": "granted",
+  "redacted_transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID]. Please schedule a callback for [REDACTED_PHONE] at 10am.",
+  "tool_calls": [
+    {
+      "name": "verify_identity",
+      "arguments": {
+        "dob": "1990-01-02",
+        "phone_last4": "0134"
+      },
+      "result": {
+        "verified": true,
+        "attempts_remaining": 3
+      },
+      "state": "verified",
+      "state_before": "identity_check",
+      "state_after": "verified",
+      "allowed_tools": [
+        "escalate_to_human",
+        "verify_identity"
+      ],
+      "arguments_valid": true
+    },
+    {
+      "name": "get_loan_status",
+      "arguments": {
+        "loan_id": "loan-demo-1"
+      },
+      "result": {
+        "id": "loan-demo-1",
+        "customer_id": "cust-demo-1",
+        "status": "due",
+        "amount": "1200",
+        "due_date": "2030-01-15"
+      },
+      "state": "verified",
+      "state_before": "verified",
+      "state_after": "verified",
+      "allowed_tools": [
+        "create_payment_link",
+        "escalate_to_human",
+        "get_loan_status",
+        "log_call_outcome",
+        "schedule_callback"
+      ],
+      "arguments_valid": true
+    },
+    {
+      "name": "schedule_callback",
+      "arguments": {
+        "requested_at": "2030-01-16T10:00:00"
+      },
+      "result": {
+        "scheduled": true
+      },
+      "state": "verified",
+      "state_before": "verified",
+      "state_after": "verified",
+      "allowed_tools": [
+        "create_payment_link",
+        "escalate_to_human",
+        "get_loan_status",
+        "log_call_outcome",
+        "schedule_callback"
+      ],
+      "arguments_valid": true
+    }
+  ],
+  "stage_seconds": {
+    "vad_end_to_asr_done": 1.146526479999011,
+    "llm_first_token": "NOT MEASURED: Ollama tool calls are non-streaming",
+    "first_sentence_available_after_complete_tool_loop": 1.3502989380031067,
+    "tts_synthesis_to_audio_available": 0.11085529299816699
+  },
+  "guardrail_events": [
+    "recording_consent_requested",
+    "recording_consent_granted",
+    "grounding_violation"
+  ],
+  "errors": [],
+  "simulator_tts_media_events": 5,
+  "calling_hours": "temporary demo configuration 00:00-23:59; default hours remain ASSUMPTION"
+}
