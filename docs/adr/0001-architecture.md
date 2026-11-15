@@ -4,7 +4,7 @@ Status: accepted for the local portfolio prototype.
 
 ## Constraints and observations
 
-Hardware observed in this WSL2 environment: NVIDIA GeForce RTX 4060 with 8 GiB VRAM (`nvidia-smi`); 4.8 GiB RAM (`free -h`); 16 logical CPUs (`nproc`); Python 3.13.12. Docker CLI is absent. Ollama 0.32.15 is installed. The original `rhasspy/piper` repository is archived; the maintained `OHF-Voice/piper1-gpl` fork is selected instead (GitHub API checked 2026-11-15). Real ASR/TTS evaluation is deferred until dependencies and voice artifacts are available and measured.
+Hardware observed in this WSL2 environment: NVIDIA GeForce RTX 4060 with 8 GiB VRAM (`nvidia-smi`); 4.8 GiB RAM (`free -h`); 16 logical CPUs (`nproc`); Python 3.13.12. Docker CLI is absent. Ollama 0.32.15 is installed. Qwen3 `0.6b` did not emit a tool call in the probe; `1.7b` emitted the expected structured call and fits the observed GPU. The original `rhasspy/piper` repository is archived; the maintained `OHF-Voice/piper1-gpl` fork is selected instead (GitHub API checked 2026-11-15). Real recording evaluation remains unmeasured.
 
 ## Decision
 

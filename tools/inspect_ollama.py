@@ -8,7 +8,7 @@ import urllib.request
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-url", default="http://localhost:11434")
-    parser.add_argument("--model", default="qwen3:0.6b")
+    parser.add_argument("--model", default="qwen3:1.7b")
     args = parser.parse_args()
     with urllib.request.urlopen(f"{args.base_url.rstrip('/')}/api/tags") as response:
         payload = json.load(response)

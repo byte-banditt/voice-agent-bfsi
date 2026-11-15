@@ -51,7 +51,7 @@ class FakeTTS:
 
 
 class OllamaLLM:
-    def __init__(self, model: str = "qwen3:0.6b", base_url: str = "http://localhost:11434", think: bool = False) -> None:
+    def __init__(self, model: str = "qwen3:1.7b", base_url: str = "http://localhost:11434", think: bool = False) -> None:
         self.model = model
         self.base_url = base_url.rstrip("/")
         self.think = think
@@ -149,7 +149,7 @@ def configured_providers() -> tuple[ASRProvider, LLMProvider, TTSProvider]:
     if os.getenv("VOICE_AGENT_REAL_PROVIDERS", "false").lower() != "true":
         return FakeASR(), FakeLLM(), FakeTTS()
     return (
-        FasterWhisperASR(os.getenv("ASR_MODEL", "base.en"), os.getenv("ASR_DEVICE", "cuda"), os.getenv("ASR_COMPUTE_TYPE", "float16")),
-        OllamaLLM(os.getenv("OLLAMA_MODEL", "qwen3:0.6b"), os.getenv("OLLAMA_URL", "http://localhost:11434"), think=False),
+        FasterWhisperASR(os.getenv("ASR_MODEL", "base.en"), os.getenv("ASR_DEVICE", "cpu"), os.getenv("ASR_COMPUTE_TYPE", "int8")),
+        OllamaLLM(os.getenv("OLLAMA_MODEL", "qwen3:1.7b"), os.getenv("OLLAMA_URL", "http://localhost:11434"), think=False),
         PiperTTS(os.getenv("PIPER_VOICE_PATH", "")),
     )

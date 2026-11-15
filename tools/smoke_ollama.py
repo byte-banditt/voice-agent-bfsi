@@ -13,7 +13,7 @@ async def run(model: str, base_url: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="qwen3:0.6b")
+    parser.add_argument("--model", default="qwen3:1.7b")
     parser.add_argument("--base-url", default="http://localhost:11434")
     args = parser.parse_args()
     print(asyncio.run(run(args.model, args.base_url)))
