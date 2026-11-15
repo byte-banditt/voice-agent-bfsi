@@ -88,8 +88,8 @@ Fake overall: 60/60 (100%), tool-call accuracy 0.70. qwen3:1.7b overall: 54/60 (
 | Mode/model | Scenario pass rate | Tool-call accuracy | LLM latency | VRAM / disposition |
 |---|---:|---:|---:|---|
 | Fake providers + MOCK CRM | 60/60 (100%) | 0.70 | Not applicable; deterministic Fake | CI-safe baseline; raw trace in `raw-results/scenarios-fake-3x.json` |
-| qwen3:1.7b Q4_K_M | 54/60 (90%); 18/20 scenarios pass all 3 repeats | 1.00 | median 0.438 s; p95 2.590 s per tool-loop request | 100% GPU per `ollama ps`; 8 GiB RTX 4060, hardware record below |
-| qwen3:4b | **NOT EXECUTED** to completion | **NOT EXECUTED** | **NOT EXECUTED** | Run interrupted before result JSON; partial sampler only: `raw-results/qwen4-vram-samples.csv` |
+| qwen3:1.7b Q4_K_M | 54/60 (90%); 18/20 scenarios pass all 3 repeats | 1.00 | median 0.438 s; p95 2.590 s per tool-loop request | 100% GPU per `ollama ps`; one total-GPU snapshot was 2,163 MiB. Per-model peak VRAM **NOT MEASURED**; 8 GiB RTX 4060, hardware record below |
+| qwen3:4b | **NOT EXECUTED** to completion | **NOT EXECUTED** | **NOT EXECUTED** | Partial sampler max: 3,626 MiB total GPU use during the interrupted run; not isolated model allocation or a completed-model peak (`raw-results/qwen4-vram-samples.csv`) |
 | qwen3:0.6b, qwen3:8b | **NOT EXECUTED** in this comparison | **NOT EXECUTED** | **NOT EXECUTED** | Explicitly out of scope for this sprint |
 
 Tool-call accuracy is computed from scenario traces as correct tool, schema-valid arguments, and permitted current state. Default remains qwen3:1.7b because it is the only real model with a completed 20-scenario × 3-repeat result in this sprint: 90% pass and 1.00 tool-call accuracy. This supports a measured prototype default; qwen3:4b was not completed, so no claim that 1.7b is best among model sizes is supported. Scenario command/raw files: `tools/evaluate_scenarios.py`, `raw-results/scenarios-fake-3x.json`, `raw-results/scenarios-ollama-1_7b-3x.json`; implementation/evidence commit `aaf971bc758287b5bd4323799625ea821c3c1a1a`.
