@@ -9,7 +9,7 @@ def main() -> None:
     if len(scenarios) < 20:
         raise SystemExit("scenario catalogue is below the requested minimum")
     results = [{**scenario, "status": "NOT EXECUTED",
-                "reason": "end-to-end conversation/tool/telephony flow is not wired"}
+                "reason": "scenario runner with deterministic provider/CRM fixtures is not implemented"}
                for scenario in scenarios]
     print(json.dumps({"classification": "SYNTHETIC scenario catalogue", "results": results,
                       "pass_rate": "NOT EXECUTED"}, indent=2))
