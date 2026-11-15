@@ -46,6 +46,25 @@ def test_empty_media_returns_silence() -> None:
         socket.send_json({"event": "stop"})
 
 
+def test_completion_persists_trace_after_webhook_delivery(monkeypatch) -> None:
+    sent = []
+    saved = []
+
+    async def send(trace):
+        sent.append(trace["call_id"])
+
+    class Store:
+        def save_trace(self, trace):
+            saved.append(trace["call_id"])
+
+    monkeypatch.setattr(main, "_send_completion_event", send)
+    monkeypatch.setattr(main, "store", Store())
+    import asyncio
+    asyncio.run(main._save_completed_trace({"call_id": "synthetic-call", "errors": []}))
+    assert sent == ["synthetic-call"]
+    assert saved == ["synthetic-call"]
+
+
 def test_outside_calling_hours_gets_polite_exit(monkeypatch) -> None:
     class Store:
         trace = None

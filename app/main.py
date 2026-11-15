@@ -44,6 +44,14 @@ async def _send_completion_event(trace: dict[str, object]) -> None:
     await send_webhook(url, event, secret, str(trace["call_id"]))
 
 
+async def _save_completed_trace(trace: dict[str, object]) -> None:
+    try:
+        await _send_completion_event(trace)
+    except Exception as exc:
+        trace["errors"].append(f"webhook: {type(exc).__name__}")
+    store.save_trace(trace)
+
+
 @app.get("/health")
 async def health() -> dict[str, str]:
     return {"status": "ok", "providers": "MOCK"}
@@ -126,7 +134,7 @@ async def media_stream(websocket: WebSocket) -> None:
                     telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
                     await websocket.send_json({"event": "media", "streamSid": stream_sid,
                         "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
-                    store.save_trace(trace)
+                    await _save_completed_trace(trace)
                     state.transition(CallState.ENDED)
                     await websocket.close()
                     return
@@ -142,11 +150,7 @@ async def media_stream(websocket: WebSocket) -> None:
                     playback.cancel()
                     if playback.done() and not playback.cancelled() and playback.exception():
                         trace["errors"].append(type(playback.exception()).__name__)
-                try:
-                    await _send_completion_event(trace)
-                except Exception as exc:
-                    trace["errors"].append(f"webhook: {type(exc).__name__}")
-                store.save_trace(trace)
+                await _save_completed_trace(trace)
                 state.transition(CallState.ENDED)
                 await websocket.close()
                 return
@@ -211,7 +215,7 @@ async def media_stream(websocket: WebSocket) -> None:
                     telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
                     await websocket.send_json({"event": "media", "streamSid": stream_sid,
                         "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
-                    store.save_trace(trace)
+                    await _save_completed_trace(trace)
                     state.transition(CallState.ENDED)
                     await websocket.close()
                     return
@@ -257,7 +261,7 @@ async def media_stream(websocket: WebSocket) -> None:
                     await websocket.send_json({"event": "media", "streamSid": stream_sid, "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
                 if engine.end_call:
                     trace["guardrail_events"].append("polite_exit")
-                    store.save_trace(trace)
+                    await _save_completed_trace(trace)
                     if state.state in {CallState.THINKING, CallState.SPEAKING}:
                         state.transition(CallState.ENDED)
                     await websocket.close()
@@ -276,4 +280,4 @@ async def media_stream(websocket: WebSocket) -> None:
     except WebSocketDisconnect:
         if playback:
             playback.cancel()
-        store.save_trace(trace)
+        await _save_completed_trace(trace)
