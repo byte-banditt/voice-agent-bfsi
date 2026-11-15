@@ -65,3 +65,11 @@ def test_numeric_fake_reply_is_grounded_before_speech():
     reply = asyncio.run(engine.respond(NumericLLM(), "tell me my amount", trace))
     assert reply == "I cannot confirm that information right now. I can connect you with a human agent."
     assert trace["guardrail_events"] == ["grounding_violation"]
+
+
+def test_stop_request_uses_polite_exit_and_ends_call():
+    engine = ConversationEngine("emi_reminder", BFSIToolExecutor("http://127.0.0.1:1", "key", "cust-demo-1"))
+    trace = {"tool_calls": [], "guardrail_events": []}
+    reply = asyncio.run(engine.respond(ToolLLM(), "Please end the call", trace))
+    assert reply == "Understood. I will end the call now."
+    assert engine.end_call

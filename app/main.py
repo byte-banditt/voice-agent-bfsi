@@ -241,7 +241,12 @@ async def media_stream(websocket: WebSocket) -> None:
                     trace["stage_seconds"]["tts_first_audio"] = tts_elapsed
                     telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
                     await websocket.send_json({"event": "media", "streamSid": stream_sid, "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
-
+                if engine.end_call:
+                    trace["guardrail_events"].append("polite_exit")
+                    store.save_trace(trace)
+                    if state.state in {CallState.THINKING, CallState.SPEAKING}:
+                        state.transition(CallState.ENDED)
+                    await websocket.close()
             async def respond_safely(user_text: str) -> None:
                 try:
                     await respond(user_text)

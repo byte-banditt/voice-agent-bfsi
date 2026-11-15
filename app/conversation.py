@@ -34,12 +34,16 @@ class ConversationEngine:
         prompt_name = f"{flow_name}-v1.txt"
         self.system_prompt = (_ROOT / "prompts" / prompt_name).read_text()
         self.tool_results: list[dict[str, object]] = []
+        self.end_call = False
 
     def allowed_tools(self) -> list[dict[str, object]]:
         names = self.flow["states"][self.state]["allowed_tools"]
         return [_TOOL_SCHEMAS[name] for name in names if name in _TOOL_SCHEMAS]
 
     async def respond(self, llm: Any, text: str, trace: dict[str, Any]) -> str:
+        if re.search(r"\b(?:goodbye|bye|stop (?:calling|now|the call)|end (?:the )?call|do not call|don't call)\b", text, re.IGNORECASE):
+            self.end_call = True
+            return "Understood. I will end the call now."
         if re.search(r"\b(?:human|agent|representative|real person)\b", text, re.IGNORECASE):
             allowed = {item["function"]["name"] for item in self.allowed_tools()}
             if "escalate_to_human" not in allowed:
