@@ -38,6 +38,9 @@ let captureNode = null;
 let captureSource = null;
 let playbackSources = new Set();
 let nextPlaybackTime = 0;
+let micSuppressed = true;
+let initialPromptPending = true;
+let initialPromptSource = null;
 
 fetch("/health").then(response => response.json()).then(info => {
   providerLine.textContent = `Provider mode: ${info.providers}; model: ${info.model || "configured locally"}.`;
@@ -100,11 +103,16 @@ function playMuLaw(payload) {
   playbackSources.add(source);
   source.onended = () => {
     playbackSources.delete(source);
+    if (source === initialPromptSource) {
+      initialPromptSource = null;
+      micSuppressed = false;
+    }
     if (playbackSources.size === 0 && socket && socket.readyState === WebSocket.OPEN) {
       setStatus("Listening. Speak when ready.");
     }
   };
   source.start(startAt);
+  return source;
 }
 
 function clearPlayback() {
@@ -122,6 +130,7 @@ function stopLocalAudio() {
   clearPlayback();
   if (audioContext && audioContext.state !== "closed") audioContext.close();
   captureNode = captureSource = microphone = audioContext = null;
+  micSuppressed = true;
 }
 
 function sendAudio(payload) {
@@ -150,12 +159,16 @@ async function startCall() {
     captureNode.connect(mute);
     mute.connect(audioContext.destination);
     captureNode.onaudioprocess = event => {
-      if (audioContext) sendAudio(encodeAt8k(event.inputBuffer.getChannelData(0), audioContext.sampleRate));
+      if (audioContext && !micSuppressed) {
+        sendAudio(encodeAt8k(event.inputBuffer.getChannelData(0), audioContext.sampleRate));
+      }
     };
 
     const scheme = location.protocol === "https:" ? "wss:" : "ws:";
     socket = new WebSocket(`${scheme}//${location.host}/ws`);
     socket.onopen = () => {
+      micSuppressed = true;
+      initialPromptPending = true;
       socket.send(JSON.stringify({ event: "connected", protocol: "Browser", version: "1.0.0" }));
       socket.send(JSON.stringify({
         event: "start",
@@ -166,17 +179,27 @@ async function startCall() {
       setStatus("Connected. Listen for the consent question, then speak.");
     };
     socket.onmessage = message => {
-      const data = JSON.parse(message.data);
-      if (data.event === "media") {
-        playMuLaw(data.media.payload);
-        setStatus("Agent speaking. Speak to interrupt.");
-      } else if (data.event === "clear") {
-        clearPlayback();
-        setStatus("Barge-in detected. Listening…");
-      } else if (data.event === "silence") {
-        setStatus("Listening…");
-      } else if (data.event === "error") {
-        setStatus(`Agent error: ${data.error}`);
+      try {
+        const data = JSON.parse(message.data);
+        if (data.event === "media") {
+          const source = playMuLaw(data.media.payload);
+          if (initialPromptPending) {
+            initialPromptPending = false;
+            initialPromptSource = source;
+            setStatus("Consent prompt playing. Microphone opens when it finishes.");
+            return;
+          }
+          setStatus("Agent speaking. Speak to interrupt.");
+        } else if (data.event === "clear") {
+          clearPlayback();
+          setStatus("Barge-in detected. Listening…");
+        } else if (data.event === "silence") {
+          setStatus("Listening…");
+        } else if (data.event === "error") {
+          setStatus(`Agent error: ${data.error}`);
+        }
+      } catch (error) {
+        setStatus(`Audio/event error: ${error.message}`);
       }
     };
     socket.onerror = () => setStatus("WebSocket connection error.");

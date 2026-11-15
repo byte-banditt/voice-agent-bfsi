@@ -9,6 +9,8 @@ def test_voice_client_page_is_served() -> None:
     assert response.status_code == 200
     assert "getUserMedia" in response.text
     assert "BROWSER" in response.text
+    assert "Microphone opens when it finishes" in response.text
+    assert "initialPromptPending" in response.text
 
 
 def test_health_reports_real_provider_mode(monkeypatch) -> None:

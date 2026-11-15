@@ -1,0 +1,17 @@
+{
+  "classification": "local browser startup diagnostics; transcripts omitted",
+  "query": "GET /calls?limit=5",
+  "sample_count": 5,
+  "consent_status_counts": {
+    "pending": 1,
+    "declined": 4
+  },
+  "errors": {},
+  "tool_call_counts": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

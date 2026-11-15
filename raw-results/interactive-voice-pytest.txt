@@ -9,4 +9,4 @@ tests/test_guardrails.py::test_redaction_removes_common_transcript_pii
     from click.utils import get_text_stream as get_text_stream
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-36 passed, 2 warnings in 5.40s
+36 passed, 2 warnings in 7.39s
