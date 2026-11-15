@@ -8,5 +8,5 @@
 | Client integrations: CRM, telephony, internal APIs | `app/crm.py`, `app/tools.py`, `app/main.py` | Mock CRM and simulator-only WebSocket; live client integration is a gap |
 | Requirements scoping and flow/prompt design | `flows/`, `prompts/`, `docs/CLIENT_ONBOARDING.md` | Templates and initial flows; not client work |
 | Monitoring/evaluating call quality | `app/metrics.py`, `app/observability.py`, `tools/benchmark_ollama.py`, `RESULTS.md` | Trace dashboard reports stage percentiles, tool success, guardrail events, and prompt versions; scenario and 30+ turn evaluation remain **NOT EXECUTED** |
-| BFSI care with regulated workflows/customer data | `app/guardrails.py`, `app/tools.py`, `app/crm.py` | Tool-layer identity gate and numeric/date grounding exist; recording consent/conduct enforcement are incomplete and RBI hours are **ASSUMPTION / NOT VERIFIED** |
+| BFSI care with regulated workflows/customer data | `app/guardrails.py`, `app/tools.py`, `app/crm.py` | Tool-layer identity gate, consent-before-transcript storage, numeric/date grounding, polite exit, and configurable assumed calling-hours gate; conduct filter is phrase-based and RBI hours are **ASSUMPTION / NOT VERIFIED** |
 | Feed learnings back | `docs/PROMPT_CHANGELOG.md`, `docs/PILOT_PROTOCOL.md` | Templates only; pilot **NOT EXECUTED** |

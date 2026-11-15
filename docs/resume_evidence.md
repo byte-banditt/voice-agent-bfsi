@@ -2,7 +2,7 @@
 
 Use only after reviewing the raw evidence and explaining its limits.
 
-- Built a Python voice-agent prototype with swappable ASR/LLM/TTS providers, a WebSocket audio adapter, WebRTC VAD endpointing, YAML flow/prompt loading, and a state-restricted structured tool-call loop through the CRM executor; verified by **24 passing local tests** with Fake providers and a deterministic tool-call test double ([RESULTS.md](../RESULTS.md), `raw-results/task4-pytest.txt`).
+- Built a Python voice-agent prototype with swappable ASR/LLM/TTS providers, a WebSocket audio adapter, WebRTC VAD endpointing and speech-triggered barge-in, YAML flow/prompt loading, consent-gated transcript storage, and a state-restricted structured tool-call loop through the CRM executor; verified by **33 passing local tests** with Fake providers and deterministic tool-call test doubles ([RESULTS.md](../RESULTS.md), `raw-results/final-local-pytest.txt`).
 - Measured local `qwen3:0.6b` text-call wall-time medians of **0.868016685 s with thinking** and **0.129427925 s without thinking** on the recorded WSL2 hardware; this was a standalone prompt, not end-to-end voice latency ([RESULTS.md](../RESULTS.md), `raw-results/ollama-thinking-ablation.json`).
 - Implemented per-call identity and numeric grounding guards for a mock CRM; regression proof: **1 failing targeted assertion before** and **1 passing after** the account-reference matcher fix ([RESULTS.md](../RESULTS.md), `raw-results/grounding-before.txt`, `raw-results/grounding-after.txt`).
 - Created **20 SYNTHETIC** BFSI caller-scenario definitions with explicit pass rules; execution and pass rate remain **NOT EXECUTED** pending CRM/model-connected call runs ([RESULTS.md](../RESULTS.md), `raw-results/scenario-suite.json`).

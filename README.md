@@ -26,7 +26,7 @@ See [RESULTS.md](RESULTS.md) for command, raw output, commit, and hardware prove
 
 | Measurement | Observed result | Scope |
 |---|---|---|
-| Local test suite | 24 passed, 0 failed, 0 skipped | Fake providers and deterministic tool-call test double; latest output in `raw-results/task4-pytest.txt` |
+| Local test suite | 33 passed, 0 failed, 0 skipped | Fake providers and deterministic tool-call test doubles; latest output in `raw-results/final-local-pytest.txt` |
 | Qwen3 thinking ON/OFF median wall time | 0.868016685 s / 0.129427925 s | Standalone text prompt |
 | Synthetic Piper → Faster-Whisper WER | Clean 0.000000; noisy 0.000000 | Generated US English only |
 | Qwen3 native tool-call probe | qwen3:0.6b: 0 calls; qwen3:1.7b: 1 call | One synthetic prompt per model |
@@ -41,7 +41,7 @@ Each value links to its exact command, raw output, commit, and hardware record i
 - Real provider wiring exists for faster-whisper, Ollama, and Piper. Ollama text generation and a small synthetic Piper-to-Faster-Whisper corpus were measured; real-recording quality was not.
 - Transcript redaction runs before trace storage, using Presidio custom recognizers for Indian mobile numbers and account-like IDs plus local email, phone, and date patterns. This is not a guarantee against all PII. Raw audio is not stored.
 - The dashboard summarizes stored call traces, stage percentiles, tool success, guardrail events, and prompt versions; production access control, retention, and deployment hardening are absent.
-- RBI calling-hours guidance was not verified. 08:00–19:00 local time is an assumption and is not enforced by the call flow.
+- The call-start gate enforces 08:00–19:00 `Asia/Kolkata` by default, configurable with `CALLING_HOURS_TIMEZONE`, `CALLING_HOURS_START`, and `CALLING_HOURS_END`. This window is an **ASSUMPTION**; RBI source guidance was not verified.
 - Docker Compose was not executed because Docker is unavailable in the current WSL2 distribution.
 
 ## What is not done
