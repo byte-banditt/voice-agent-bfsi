@@ -23,12 +23,13 @@ All benchmark and test outputs are local and synthetic/mock unless noted. Hardwa
 | Phase 6: 19 passed, 0 failed, 0 skipped | `python -m pytest -ra` | `raw-results/phase6-pytest.txt` | `5afea4e83750f1cec704912b0adc0a0dc6e779b0` | WSL2; deterministic Fake providers |
 | Phase 7: 19 passed, 0 failed, 0 skipped | `python -m pytest -ra` | `raw-results/phase7-pytest.txt` | `6acb0ff5477ded880be6a1f1148fec07d0042894` | WSL2; deterministic Fake providers |
 | Remote GitHub Actions on merged `main`: 19 passed, 0 failed, 0 skipped, 1 pytest warning; conclusion success | `gh run view 43697354918 --repo byte-banditt/voice-agent-bfsi --log` | `raw-results/remote-ci.txt` | `04a4bfbc0f0e7981c2bd72aa7c449e27fd7be7eb` | GitHub-hosted Linux runner: Intel Xeon 6975P-C, 4 CPUs, 15 GiB RAM, Python 3.13.18; fake providers. Warning: Starlette `TestClient`/httpx deprecation; workflow also reports Node.js action deprecations. |
+| Latest verified remote `main` CI: success | `gh run view 43697649099 --repo byte-banditt/voice-agent-bfsi --json headSha,conclusion,workflowName,createdAt,url` | `raw-results/latest-main-ci.json` | Remote head `758adb092d87da63824241ef056d7868c643c58e` | Verified 2026-11-15; this run predates the local commits in this worktree and does not validate them. |
 | Qwen3 model selection fix: 19 passed, 0 failed, 0 skipped | `python -m pytest -ra` | `raw-results/model-fix-pytest.txt` | `0bd517c84f524358196815650a345571362e455c` | WSL2; deterministic Fake providers |
 | PyAV pin and reproducible-evaluation fix: 19 passed, 0 failed, 0 skipped | `python -m pytest -ra` | `raw-results/asr-fix-pytest.txt` | `c639b104711f8bcf8ac79e35fa6f87c206896def` | WSL2; deterministic Fake providers |
-| 20 scripted scenarios catalogued; 0 executed; pass rate **NOT EXECUTED** | `python tools/evaluate_scenarios.py > raw-results/scenario-suite.json` | `raw-results/scenario-suite.json`; count summary `raw-results/scenario-summary.txt` | `a2e839d6dd45a2fa6793f855cae4b3104e32364d` | All caller scripts are **SYNTHETIC**; end-to-end flow is not wired |
+| Flow/tool-loop, WebRTC VAD, Presidio redaction, webhook retry, and trace-summary changes: 24 passed, 0 failed, 0 skipped; 2 Presidio transitive Click deprecation warnings | `python -m pytest -ra` | `raw-results/task4-pytest.txt` | `5ea7ed4` | WSL2; Fake providers and deterministic tool-call test double; no connected CRM or local model run |
+| 20 scripted scenarios catalogued; 0 executed; pass rate **NOT EXECUTED** | `python tools/evaluate_scenarios.py > raw-results/scenario-suite.json` | `raw-results/scenario-suite.json`; count summary `raw-results/scenario-summary.txt` | `bd06248` | Caller scripts are **SYNTHETIC**. Scenario runner remains unimplemented; CRM/model-connected scenario execution remains unverified |
 | Real-recording WER **NOT EXECUTED**; no author recordings/reference transcripts supplied | `python tools/evaluate_wer.py --manifest <csv> --hypotheses <csv>` | `BLOCKERS.md` | `5fe1d16bcfa0cf9399aca1c6027dce9f7cf81d87` | Real WER remains unmeasured |
 | **NOT EXECUTED**; Docker CLI unavailable | `docker compose up --build` | `raw-results/hardware.txt` (`docker --version` failed) | `5afea4e83750f1cec704912b0adc0a0dc6e779b0` | WSL2 |
-| Remote GitHub Actions CI | **NOT EXECUTED** until public repository push | `BLOCKERS.md` | `5afea4e83750f1cec704912b0adc0a0dc6e779b0` | External hosted runner |
 | No broken installed-package requirements | `python -m pip check` | `raw-results/pip-check.txt` | `c639b104711f8bcf8ac79e35fa6f87c206896def` | Local environment with all declared extras installed |
 
 The grounding guard regression was reproduced before and after the fix with `python -m pytest tests/test_guardrails.py::test_grounding_accepts_tool_backed_claim -ra`. Before: 1 failed (`raw-results/grounding-before.txt`); after: 1 passed (`raw-results/grounding-after.txt`). This is a unit assertion, not a call-quality metric.
@@ -41,8 +42,8 @@ ASR model-size comparison, VAD threshold comparison, grounding-guard ablation, 3
 
 | Stage / measure | Result | Evidence |
 |---|---|---|
-| User stops speaking → first TTS audio byte | **NOT EXECUTED**; the full conversation/CRM flow is not wired | `BLOCKERS.md` |
-| VAD end → ASR done; LLM first token; first sentence; TTS first byte, p50/p95 | **NOT EXECUTED** as a 30+ turn pipeline measurement; VAD is not implemented | `BLOCKERS.md` |
+| User stops speaking → first TTS audio byte | **NOT EXECUTED**; no full provider + CRM measurement | `BLOCKERS.md` |
+| VAD end → ASR done; LLM first token; first sentence; TTS first byte, p50/p95 | **NOT EXECUTED** as a 30+ turn pipeline measurement | `BLOCKERS.md` |
 | Standalone Qwen3 text generation, thinking ON/OFF, wall-time median | 0.868016685 s / 0.129427925 s for the measured prompt and model | Exact command and raw samples in the table above and `raw-results/ollama-thinking-ablation.json` |
 
 Exact hardware and tool probe: `raw-results/hardware.txt`. The output captures a transient `nvidia-smi` utilization/memory reading; only model name and total VRAM, system RAM, CPU count, Python, and tool availability are relevant hardware facts. No latency, WER, scenario rate, or full-call success claim is made.
