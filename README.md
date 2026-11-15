@@ -26,7 +26,7 @@ See [RESULTS.md](RESULTS.md) for command, raw output, commit, and hardware prove
 
 | Measurement | Observed result | Scope |
 |---|---|---|
-| Local test suite | 33 passed, 0 failed, 0 skipped | Fake providers and deterministic tool-call test doubles; latest output in `raw-results/final-local-pytest.txt` |
+| Local test suite | 34 passed, 0 failed, 0 skipped | Fake providers and deterministic tool-call test doubles; latest output in `raw-results/final-local-pytest.txt` |
 | Qwen3 thinking ON/OFF median wall time | 0.868016685 s / 0.129427925 s | Standalone text prompt |
 | Synthetic Piper → Faster-Whisper WER | Clean 0.000000; noisy 0.000000 | Generated US English only |
 | Qwen3 native tool-call probe | qwen3:0.6b: 0 calls; qwen3:1.7b: 1 call | One synthetic prompt per model |
