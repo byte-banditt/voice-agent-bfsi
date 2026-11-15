@@ -121,13 +121,6 @@ async def media_stream(websocket: WebSocket) -> None:
                     trace["errors"].append(type(playback.exception()).__name__)
                     await websocket.send_json({"event": "error", "error": "response generation failed"})
                 state.transition(CallState.LISTENING)
-            if playback and not playback.done():
-                playback.cancel()
-                await asyncio.gather(playback, return_exceptions=True)
-                if state.state in {CallState.SPEAKING, CallState.THINKING}:
-                    state.transition(CallState.LISTENING)
-                await websocket.send_json({"event": "clear", "streamSid": stream_sid})
-
             try:
                 encoded = base64.b64decode(message["media"]["payload"], validate=True)
             except (KeyError, ValueError, TypeError):
@@ -135,6 +128,12 @@ async def media_stream(websocket: WebSocket) -> None:
                 continue
             pcm = pcm16_resample(mulaw_to_pcm16(encoded), 8000, 16000)
             utterances = endpoint.feed(pcm)
+            if endpoint.speech_detected and playback and not playback.done():
+                playback.cancel()
+                await asyncio.gather(playback, return_exceptions=True)
+                if state.state in {CallState.SPEAKING, CallState.THINKING}:
+                    state.transition(CallState.LISTENING)
+                await websocket.send_json({"event": "clear", "streamSid": stream_sid})
             if not utterances:
                 if not encoded:
                     await websocket.send_json({"event": "silence"})

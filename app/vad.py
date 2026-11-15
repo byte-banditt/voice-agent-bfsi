@@ -35,8 +35,10 @@ class EndpointingBuffer:
         self._speech = bytearray()
         self._voiced = 0
         self._silent = 0
+        self.speech_detected = False
 
     def feed(self, pcm16: bytes) -> list[bytes]:
+        self.speech_detected = False
         self._partial.extend(pcm16)
         utterances: list[bytes] = []
         frame_size = self.vad.frame_bytes
@@ -47,6 +49,7 @@ class EndpointingBuffer:
                 self._voiced += 1
                 self._silent = 0
                 if self._voiced >= self.speech_frames:
+                    self.speech_detected = True
                     self._speech.extend(frame)
             elif self._voiced >= self.speech_frames:
                 self._silent += 1

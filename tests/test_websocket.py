@@ -62,3 +62,35 @@ def test_barge_in_cancels_inflight_llm(monkeypatch) -> None:
         assert socket.receive_json()["event"] == "clear"
         assert socket.receive_json()["event"] == "media"
         socket.send_json({"event": "stop"})
+
+
+def test_silence_does_not_cancel_inflight_llm(monkeypatch) -> None:
+    class FirstSpeechOnlyVAD:
+        def __init__(self):
+            self.calls = 0
+            self.frame_bytes = 640
+
+        def is_speech(self, frame):
+            self.calls += 1
+            return self.calls <= 2
+
+    class SlowReply:
+        calls = 0
+
+        async def stream_reply(self, transcript: str) -> AsyncIterator[str]:
+            self.calls += 1
+            await asyncio.sleep(10)
+            yield "I can help."
+
+    provider = SlowReply()
+    monkeypatch.setattr(main, "WebRTCVAD", FirstSpeechOnlyVAD)
+    monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR(), provider, FakeTTS()))
+    speech = {"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}}
+    silence = {"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}}
+    with TestClient(app).websocket_connect("/ws") as socket:
+        socket.send_json(speech)
+        time.sleep(0.05)
+        socket.send_json(silence)
+        time.sleep(0.05)
+        assert provider.calls == 1
+        socket.send_json({"event": "stop"})
