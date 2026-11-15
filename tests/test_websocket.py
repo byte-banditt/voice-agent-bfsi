@@ -86,6 +86,36 @@ def test_declined_consent_exits_without_persisting_transcript(monkeypatch) -> No
     assert store.trace["consent_status"] == "declined"
 
 
+def test_uncertain_consent_repeats_prompt_then_accepts_yes(monkeypatch) -> None:
+    class SequenceASR:
+        hypotheses = iter(("I think so", "yeah"))
+
+        async def transcribe(self, pcm16: bytes, sample_rate: int) -> str:
+            return next(self.hypotheses)
+
+    class Store:
+        trace = None
+
+        def save_trace(self, trace):
+            self.trace = dict(trace)
+
+    store = Store()
+    monkeypatch.setattr(main, "store", store)
+    monkeypatch.setattr(main, "WebRTCVAD", FakeVAD)
+    monkeypatch.setattr(main, "configured_providers", lambda: (SequenceASR(), FakeLLM(), FakeTTS()))
+    speech = {"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}}
+
+    with TestClient(app).websocket_connect("/ws") as socket:
+        socket.send_json({"event": "start"})
+        assert socket.receive_json()["event"] == "media"  # Initial consent prompt.
+        socket.send_json(speech)
+        assert socket.receive_json()["event"] == "media"  # Unclear response repeats consent.
+        socket.send_json(speech)
+        socket.send_json({"event": "stop"})
+
+    assert store.trace["consent_status"] == "granted"
+
+
 def test_barge_in_cancels_inflight_llm(monkeypatch) -> None:
     class SlowFirstReply:
         calls = 0

@@ -23,7 +23,8 @@ from app.conversation import ConversationEngine
 from app.tools import BFSIToolExecutor
 from app.vad import EndpointingBuffer, WebRTCVAD
 from app.guardrails import (CONSENT_DECLINED_REPLY, RECORDING_CONSENT_LINE,
-                            REPEAT_PROMPT, grants_recording_consent)
+                            REPEAT_PROMPT, declines_recording_consent,
+                            grants_recording_consent)
 from app.webhook import send_webhook
 
 app = FastAPI(title="BFSI Voice Agent")
@@ -213,7 +214,7 @@ async def media_stream(websocket: WebSocket) -> None:
                     consent_status = "granted"
                     trace["consent_status"] = "granted"
                     trace["guardrail_events"].append("recording_consent_granted")
-                else:
+                elif declines_recording_consent(transcript):
                     consent_status = "declined"
                     trace["consent_status"] = "declined"
                     trace["guardrail_events"].append("recording_consent_declined")
@@ -225,6 +226,11 @@ async def media_stream(websocket: WebSocket) -> None:
                     state.transition(CallState.ENDED)
                     await websocket.close()
                     return
+                else:
+                    audio = await tts.synthesize(RECORDING_CONSENT_LINE)
+                    telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
+                    await websocket.send_json({"event": "media", "streamSid": stream_sid,
+                        "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
                 continue
             trace["transcript"] = (str(trace["transcript"]) + " " + transcript).strip()
             state.transition(CallState.THINKING)

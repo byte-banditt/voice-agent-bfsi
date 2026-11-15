@@ -11,7 +11,19 @@ REPEAT_PROMPT = "I did not catch that. Could you please repeat?"
 
 
 def grants_recording_consent(text: str) -> bool:
-    return bool(re.fullmatch(r"\s*(?:yes|yes,? i consent|i consent|i agree|okay|ok)\s*[.!]?\s*", text, re.IGNORECASE))
+    return bool(re.fullmatch(
+        r"\s*(?:yes(?:,? i do)?|yeah|yep|yup|sure|okay|ok|"
+        r"i consent(?: to continue)?|i agree(?: to continue)?)\s*[.!]?\s*",
+        text, re.IGNORECASE,
+    ))
+
+
+def declines_recording_consent(text: str) -> bool:
+    return bool(re.fullmatch(
+        r"\s*(?:no(?:,? i do not)?|no,? thanks|i do not consent|"
+        r"i don't consent|i do not agree|i don't agree|i refuse|stop)\s*[.!]?\s*",
+        text, re.IGNORECASE,
+    ))
 
 
 def _presidio_spans(text: str) -> list[tuple[int, int, str]]:

@@ -1,5 +1,15 @@
 from app.guardrails import (CONDUCT_FALLBACK, IdentityGate, SAFE_FALLBACK,
-                            enforce_conduct, enforce_grounding, redact_pii)
+                            declines_recording_consent, enforce_conduct,
+                            enforce_grounding, grants_recording_consent, redact_pii)
+
+
+def test_consent_recognizes_spoken_yes_variants_without_accepting_ambiguous_text() -> None:
+    for transcript in ("yes", "Yes.", "yeah", "yep", "yes, I do", "I consent to continue"):
+        assert grants_recording_consent(transcript)
+    assert not grants_recording_consent("yes, but I do not consent")
+    assert declines_recording_consent("no")
+    assert declines_recording_consent("I don't consent")
+    assert not declines_recording_consent("I think so")
 
 
 def test_identity_gate_limits_attempts_and_protects_data() -> None:
