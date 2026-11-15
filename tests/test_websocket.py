@@ -7,7 +7,7 @@ from fastapi.testclient import TestClient
 
 from app import main
 from app.main import app
-from app.providers import FakeASR, FakeTTS
+from app.providers import FakeASR, FakeLLM, FakeTTS
 
 
 class FakeVAD:
@@ -22,9 +22,12 @@ class FakeVAD:
 
 def test_simulator_media_stream_round_trip(monkeypatch) -> None:
     monkeypatch.setattr(main, "WebRTCVAD", FakeVAD)
+    monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR("yes"), FakeLLM(), FakeTTS()))
     client = TestClient(app)
     with client.websocket_connect("/ws") as socket:
         socket.send_json({"event": "start", "start": {"mediaFormat": {"encoding": "audio/x-mulaw", "sampleRate": 8000, "channels": 1}}})
+        assert socket.receive_json()["event"] == "media"
+        socket.send_json({"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}})
         socket.send_json({"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}})
         response = socket.receive_json()
         assert response["event"] == "media"
@@ -36,9 +39,50 @@ def test_simulator_media_stream_round_trip(monkeypatch) -> None:
 def test_empty_media_returns_silence() -> None:
     client = TestClient(app)
     with client.websocket_connect("/ws") as socket:
+        socket.send_json({"event": "start"})
+        assert socket.receive_json()["event"] == "media"
         socket.send_json({"event": "media", "media": {"payload": ""}})
         assert socket.receive_json() == {"event": "silence"}
         socket.send_json({"event": "stop"})
+
+
+def test_outside_calling_hours_gets_polite_exit(monkeypatch) -> None:
+    class Store:
+        trace = None
+
+        def save_trace(self, trace):
+            self.trace = dict(trace)
+
+    store = Store()
+    monkeypatch.setattr(main, "store", store)
+    monkeypatch.setattr(main, "within_calling_hours", lambda: False)
+    monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR(), FakeLLM(), FakeTTS()))
+
+    with TestClient(app).websocket_connect("/ws") as socket:
+        socket.send_json({"event": "start", "streamSid": "SIMULATOR"})
+        assert socket.receive_json()["event"] == "media"
+    assert store.trace["guardrail_events"] == ["outside_calling_hours"]
+
+
+def test_declined_consent_exits_without_persisting_transcript(monkeypatch) -> None:
+    class Store:
+        trace = None
+
+        def save_trace(self, trace):
+            self.trace = dict(trace)
+
+    store = Store()
+    monkeypatch.setattr(main, "store", store)
+    monkeypatch.setattr(main, "WebRTCVAD", FakeVAD)
+    monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR("no"), FakeLLM(), FakeTTS()))
+    speech = {"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}}
+    with TestClient(app).websocket_connect("/ws") as socket:
+        socket.send_json({"event": "start"})
+        assert socket.receive_json()["event"] == "media"  # Recording-consent prompt.
+        socket.send_json(speech)
+        assert socket.receive_json()["event"] == "media"  # Polite exit.
+    assert store.trace["transcript"] == ""
+    assert store.trace["consent_status"] == "declined"
 
 
 def test_barge_in_cancels_inflight_llm(monkeypatch) -> None:
@@ -53,10 +97,13 @@ def test_barge_in_cancels_inflight_llm(monkeypatch) -> None:
 
     provider = SlowFirstReply()
     monkeypatch.setattr(main, "WebRTCVAD", FakeVAD)
-    monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR(), provider, FakeTTS()))
+    monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR("yes"), provider, FakeTTS()))
     media = {"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}}
     with TestClient(app).websocket_connect("/ws") as socket:
+        socket.send_json({"event": "start"})
+        assert socket.receive_json()["event"] == "media"
         socket.send_json(media)
+        socket.send_json(media)  # Consent turn, then first assistant turn.
         time.sleep(0.05)
         socket.send_json(media)
         assert socket.receive_json()["event"] == "clear"
@@ -72,7 +119,7 @@ def test_silence_does_not_cancel_inflight_llm(monkeypatch) -> None:
 
         def is_speech(self, frame):
             self.calls += 1
-            return self.calls <= 2
+            return self.calls <= 2 or 18 <= self.calls <= 19
 
     class SlowReply:
         calls = 0
@@ -84,11 +131,15 @@ def test_silence_does_not_cancel_inflight_llm(monkeypatch) -> None:
 
     provider = SlowReply()
     monkeypatch.setattr(main, "WebRTCVAD", FirstSpeechOnlyVAD)
-    monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR(), provider, FakeTTS()))
+    monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR("yes"), provider, FakeTTS()))
     speech = {"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}}
     silence = {"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}}
     with TestClient(app).websocket_connect("/ws") as socket:
+        socket.send_json({"event": "start"})
+        assert socket.receive_json()["event"] == "media"
         socket.send_json(speech)
+        time.sleep(0.05)
+        socket.send_json(silence)
         time.sleep(0.05)
         socket.send_json(silence)
         time.sleep(0.05)

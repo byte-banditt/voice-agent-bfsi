@@ -21,6 +21,9 @@ from app.state import CallState, CallStateMachine
 from app.conversation import ConversationEngine
 from app.tools import BFSIToolExecutor
 from app.vad import EndpointingBuffer, WebRTCVAD
+from app.guardrails import (CONSENT_DECLINED_REPLY, OUT_OF_HOURS_REPLY,
+                            RECORDING_CONSENT_LINE, grants_recording_consent,
+                            within_calling_hours)
 
 app = FastAPI(title="BFSI Voice Agent (MOCK providers)")
 store = CallStore(os.getenv("DATABASE_PATH", "voice_agent.db"))
@@ -82,6 +85,7 @@ async def media_stream(websocket: WebSocket) -> None:
     asr, llm, tts = configured_providers()
     playback: asyncio.Task[None] | None = None
     stream_sid = "SIMULATOR"
+    call_started = False
     real_mode = os.getenv("VOICE_AGENT_REAL_PROVIDERS", "false").lower() == "true"
     flow_name = os.getenv("VOICE_AGENT_FLOW", "emi_reminder")
     engine = ConversationEngine(flow_name, BFSIToolExecutor(
@@ -93,7 +97,8 @@ async def media_stream(websocket: WebSocket) -> None:
                                 "llm": getattr(llm, "model", "FAKE"),
                                 "tts": os.path.basename(getattr(tts, "voice_path", "FAKE"))},
              "prompt_version": engine.prompt_version, "flow": flow_name, "transcript": "", "stage_seconds": {},
-             "tool_calls": [], "guardrail_events": [], "errors": []}
+             "tool_calls": [], "guardrail_events": [], "errors": [], "consent_status": "pending"}
+    consent_status = "pending"
     state.transition(CallState.LISTENING)
     try:
         while True:
@@ -102,7 +107,25 @@ async def media_stream(websocket: WebSocket) -> None:
             if event == "connected":
                 continue
             if event == "start":
+                if call_started:
+                    continue
                 stream_sid = str(message.get("streamSid") or (message.get("start") or {}).get("streamSid") or "SIMULATOR")
+                if not within_calling_hours():
+                    trace["guardrail_events"].append("outside_calling_hours")
+                    audio = await tts.synthesize(OUT_OF_HOURS_REPLY)
+                    telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
+                    await websocket.send_json({"event": "media", "streamSid": stream_sid,
+                        "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
+                    store.save_trace(trace)
+                    state.transition(CallState.ENDED)
+                    await websocket.close()
+                    return
+                call_started = True
+                audio = await tts.synthesize(RECORDING_CONSENT_LINE)
+                telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
+                await websocket.send_json({"event": "media", "streamSid": stream_sid,
+                    "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
+                trace["guardrail_events"].append("recording_consent_requested")
                 continue
             if event == "stop":
                 if playback:
@@ -115,6 +138,9 @@ async def media_stream(websocket: WebSocket) -> None:
                 return
             if event != "media":
                 await websocket.send_json({"event": "error", "error": "unsupported event"})
+                continue
+            if not call_started:
+                await websocket.send_json({"event": "error", "error": "start event required"})
                 continue
             if playback and playback.done() and state.state in {CallState.SPEAKING, CallState.THINKING}:
                 if not playback.cancelled() and playback.exception():
@@ -155,22 +181,36 @@ async def media_stream(websocket: WebSocket) -> None:
             elapsed = time.perf_counter() - started
             STAGE_SECONDS.labels("asr").observe(elapsed)
             trace["stage_seconds"]["asr"] = elapsed
-            trace["transcript"] = (str(trace["transcript"]) + " " + transcript).strip()
             if not transcript.strip():
                 await websocket.send_json({"event": "silence"})
                 continue
+            if consent_status == "pending":
+                if grants_recording_consent(transcript):
+                    consent_status = "granted"
+                    trace["consent_status"] = "granted"
+                    trace["guardrail_events"].append("recording_consent_granted")
+                else:
+                    consent_status = "declined"
+                    trace["consent_status"] = "declined"
+                    trace["guardrail_events"].append("recording_consent_declined")
+                    audio = await tts.synthesize(CONSENT_DECLINED_REPLY)
+                    telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
+                    await websocket.send_json({"event": "media", "streamSid": stream_sid,
+                        "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
+                    store.save_trace(trace)
+                    state.transition(CallState.ENDED)
+                    await websocket.close()
+                    return
+                continue
+            trace["transcript"] = (str(trace["transcript"]) + " " + transcript).strip()
             state.transition(CallState.THINKING)
 
             async def respond(user_text: str) -> None:
                 llm_started = time.perf_counter()
                 first_sentence = True
                 pending = ""
-                if hasattr(llm, "chat_with_tools"):
-                    response_text = await engine.respond(llm, user_text, trace)
-                    response_parts = (response_text,)
-                else:
-                    response_parts = llm.stream_reply(user_text)
-                async for part in response_parts if hasattr(response_parts, "__aiter__") else _iterate(response_parts):
+                response_text = await engine.respond(llm, user_text, trace)
+                async for part in _iterate((response_text,)):
                     trace["stage_seconds"].setdefault("llm_first_token", time.perf_counter() - llm_started)
                     pending += part
                     sentences = re.split(r"(?<=[.!?])\s+", pending)

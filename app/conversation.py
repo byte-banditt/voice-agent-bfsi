@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from app.guardrails import enforce_grounding
+from app.guardrails import enforce_conduct, enforce_grounding
 from app.tools import BFSIToolExecutor
 
 _ROOT = Path(__file__).resolve().parent.parent
@@ -39,9 +40,24 @@ class ConversationEngine:
         return [_TOOL_SCHEMAS[name] for name in names if name in _TOOL_SCHEMAS]
 
     async def respond(self, llm: Any, text: str, trace: dict[str, Any]) -> str:
+        if re.search(r"\b(?:human|agent|representative|real person)\b", text, re.IGNORECASE):
+            allowed = {item["function"]["name"] for item in self.allowed_tools()}
+            if "escalate_to_human" not in allowed:
+                return "I cannot complete that request right now."
+            output = await self.executor.execute("escalate_to_human", {})
+            trace["tool_calls"].append({"name": "escalate_to_human", "arguments": {}, "result": output, "state": self.state})
+            self.tool_results.append(output)
+            return "I will connect you with a human agent."
         chat = getattr(llm, "chat_with_tools", None)
         if chat is None:
-            return "".join([part async for part in llm.stream_reply(text)]).strip()
+            reply = "".join([part async for part in llm.stream_reply(text)]).strip()
+            reply, violated = enforce_grounding(reply, self.tool_results)
+            if violated:
+                trace["guardrail_events"].append("grounding_violation")
+            reply, violated = enforce_conduct(reply)
+            if violated:
+                trace["guardrail_events"].append("conduct_violation")
+            return reply
         messages: list[dict[str, object]] = [
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": text},
@@ -55,6 +71,9 @@ class ConversationEngine:
                 reply, violation = enforce_grounding(str(message["content"]), self.tool_results)
                 if violation:
                     trace["guardrail_events"].append("grounding_violation")
+                reply, violation = enforce_conduct(reply)
+                if violation:
+                    trace["guardrail_events"].append("conduct_violation")
                 return reply
             messages.append(message)
             for call in calls:
