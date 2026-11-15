@@ -7,7 +7,6 @@ import os
 import sqlite3
 import time
 import asyncio
-import uuid
 from typing import Any
 
 import httpx
@@ -27,7 +26,7 @@ async def send_webhook(
     url: str,
     payload: dict[str, Any],
     secret: str,
-    idempotency_key: str | None = None,
+    idempotency_key: str,
     attempts: int = 3,
     backoff_seconds: float = 0.25,
 ) -> httpx.Response:
@@ -35,7 +34,9 @@ async def send_webhook(
     if not secret or attempts < 1 or backoff_seconds < 0:
         raise ValueError("secret, positive attempts, and nonnegative backoff are required")
     body = json.dumps(payload, separators=(",", ":"), sort_keys=True).encode()
-    key = idempotency_key or str(uuid.uuid4())
+    if not idempotency_key.strip():
+        raise ValueError("idempotency key must not be empty")
+    key = idempotency_key
     async with httpx.AsyncClient(timeout=5.0) as client:
         for attempt in range(attempts):
             timestamp = str(int(time.time()))

@@ -24,6 +24,7 @@ from app.vad import EndpointingBuffer, WebRTCVAD
 from app.guardrails import (CONSENT_DECLINED_REPLY, OUT_OF_HOURS_REPLY,
                             RECORDING_CONSENT_LINE, grants_recording_consent,
                             within_calling_hours)
+from app.webhook import send_webhook
 
 app = FastAPI(title="BFSI Voice Agent (MOCK providers)")
 store = CallStore(os.getenv("DATABASE_PATH", "voice_agent.db"))
@@ -32,6 +33,15 @@ store = CallStore(os.getenv("DATABASE_PATH", "voice_agent.db"))
 async def _iterate(parts):
     for part in parts:
         yield part
+
+
+async def _send_completion_event(trace: dict[str, object]) -> None:
+    url = os.getenv("WEBHOOK_URL", "")
+    secret = os.getenv("WEBHOOK_SECRET", "")
+    if not url or not secret:
+        return
+    event = {key: trace[key] for key in ("call_id", "provider_mode", "prompt_version", "guardrail_events")}
+    await send_webhook(url, event, secret, str(trace["call_id"]))
 
 
 @app.get("/health")
@@ -132,6 +142,10 @@ async def media_stream(websocket: WebSocket) -> None:
                     playback.cancel()
                     if playback.done() and not playback.cancelled() and playback.exception():
                         trace["errors"].append(type(playback.exception()).__name__)
+                try:
+                    await _send_completion_event(trace)
+                except Exception as exc:
+                    trace["errors"].append(f"webhook: {type(exc).__name__}")
                 store.save_trace(trace)
                 state.transition(CallState.ENDED)
                 await websocket.close()
