@@ -1,0 +1,12 @@
+version: "1"
+name: kyc_check
+states:
+  greeting:
+    allowed_tools: []
+    prompt_version: kyc-1
+  identity_check:
+    allowed_tools: [verify_identity]
+    prompt_version: kyc-1
+  verified:
+    allowed_tools: [get_customer, escalate_to_human]
+    prompt_version: kyc-1

@@ -1,0 +1,14 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________________ test_grounding_accepts_tool_backed_claim ___________________
+
+    def test_grounding_accepts_tool_backed_claim() -> None:
+        reply, violated = enforce_grounding("Your account number is loan-demo-1", [{"id": "loan-demo-1"}])
+>       assert not violated
+E       assert not True
+
+tests/test_guardrails.py:29: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_guardrails.py::test_grounding_accepts_tool_backed_claim - a...
+1 failed in 0.03s
+command_exit_code=1

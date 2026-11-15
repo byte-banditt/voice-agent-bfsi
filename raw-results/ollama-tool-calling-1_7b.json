@@ -1,0 +1,15 @@
+{
+  "content": "",
+  "tool_calls": [
+    {
+      "id": "call_u5ajqujo",
+      "function": {
+        "index": 0,
+        "name": "get_loan_status",
+        "arguments": {
+          "loan_id": "loan-demo-1"
+        }
+      }
+    }
+  ]
+}
