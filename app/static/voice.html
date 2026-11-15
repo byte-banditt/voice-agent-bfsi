@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local Voice Agent</title>
+  <style>
+    :root { color-scheme: light dark; font: 16px system-ui, sans-serif; }
+    body { max-width: 42rem; margin: 8vh auto; padding: 0 1.25rem; }
+    main { border: 1px solid #8886; border-radius: 1rem; padding: 1.5rem; }
+    h1 { margin-top: 0; }
+    p { line-height: 1.5; }
+    button { font: inherit; padding: .7rem 1rem; margin-right: .5rem; }
+    #status { min-height: 1.5rem; font-weight: 600; }
+    .note { font-size: .9rem; opacity: .8; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Local voice agent</h1>
+    <p id="provider">Checking provider mode…</p>
+    <p>Press Start, listen to the recording-consent question, then speak naturally. You can interrupt the agent by speaking while it responds.</p>
+    <p class="note">Local simulator only. CRM records are mock fixtures. Do not use real customer information. Transcripts are redacted before storage; audio is not stored.</p>
+    <button id="start">Start call</button>
+    <button id="stop" disabled>End call</button>
+    <p id="status" role="status" aria-live="polite">Ready.</p>
+  </main>
+<script>
+"use strict";
+const startButton = document.getElementById("start");
+const stopButton = document.getElementById("stop");
+const statusLine = document.getElementById("status");
+const providerLine = document.getElementById("provider");
+let socket = null;
+let microphone = null;
+let audioContext = null;
+let captureNode = null;
+let captureSource = null;
+let playbackSources = new Set();
+let nextPlaybackTime = 0;
+
+fetch("/health").then(response => response.json()).then(info => {
+  providerLine.textContent = `Provider mode: ${info.providers}; model: ${info.model || "configured locally"}.`;
+}).catch(() => {
+  providerLine.textContent = "Provider mode could not be read.";
+});
+
+function setStatus(message) {
+  statusLine.textContent = message;
+}
+
+function pcmToMuLaw(sample) {
+  const BIAS = 0x84;
+  const CLIP = 32635;
+  let sign = 0;
+  if (sample < 0) {
+    sign = 0x80;
+    sample = -sample;
+  }
+  sample = Math.min(sample, CLIP) + BIAS;
+  let exponent = 7;
+  for (let mask = 0x4000; exponent > 0 && (sample & mask) === 0; mask >>= 1) exponent--;
+  const mantissa = (sample >> (exponent + 3)) & 0x0f;
+  return (~(sign | (exponent << 4) | mantissa)) & 0xff;
+}
+
+function muLawToPcm(code) {
+  const value = (~code) & 0xff;
+  const magnitude = (((value & 0x0f) << 3) + 0x84) << ((value & 0x70) >> 4);
+  return (value & 0x80) ? 0x84 - magnitude : magnitude - 0x84;
+}
+
+function encodeAt8k(input, inputRate) {
+  const count = Math.floor(input.length * 8000 / inputRate);
+  const bytes = new Uint8Array(count);
+  for (let i = 0; i < count; i++) {
+    const position = i * inputRate / 8000;
+    const left = Math.floor(position);
+    const fraction = position - left;
+    const a = input[Math.min(left, input.length - 1)];
+    const b = input[Math.min(left + 1, input.length - 1)];
+    const pcm = Math.max(-32768, Math.min(32767, Math.round((a + (b - a) * fraction) * 32767)));
+    bytes[i] = pcmToMuLaw(pcm);
+  }
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary);
+}
+
+function playMuLaw(payload) {
+  const bytes = Uint8Array.from(atob(payload), char => char.charCodeAt(0));
+  const buffer = audioContext.createBuffer(1, bytes.length, 8000);
+  const samples = buffer.getChannelData(0);
+  for (let i = 0; i < bytes.length; i++) samples[i] = muLawToPcm(bytes[i]) / 32768;
+  const source = audioContext.createBufferSource();
+  source.buffer = buffer;
+  source.connect(audioContext.destination);
+  const startAt = Math.max(audioContext.currentTime + 0.025, nextPlaybackTime);
+  nextPlaybackTime = startAt + buffer.duration;
+  playbackSources.add(source);
+  source.onended = () => playbackSources.delete(source);
+  source.start(startAt);
+}
+
+function clearPlayback() {
+  for (const source of playbackSources) {
+    try { source.stop(); } catch (_) { /* already stopped */ }
+  }
+  playbackSources.clear();
+  nextPlaybackTime = audioContext ? audioContext.currentTime : 0;
+}
+
+function stopLocalAudio() {
+  if (captureNode) captureNode.disconnect();
+  if (captureSource) captureSource.disconnect();
+  if (microphone) microphone.getTracks().forEach(track => track.stop());
+  clearPlayback();
+  if (audioContext && audioContext.state !== "closed") audioContext.close();
+  captureNode = captureSource = microphone = audioContext = null;
+}
+
+function sendAudio(payload) {
+  if (!socket || socket.readyState !== WebSocket.OPEN) return;
+  socket.send(JSON.stringify({
+    event: "media",
+    streamSid: "BROWSER",
+    media: { payload }
+  }));
+}
+
+async function startCall() {
+  startButton.disabled = true;
+  setStatus("Requesting microphone access…");
+  try {
+    microphone = await navigator.mediaDevices.getUserMedia({
+      audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true }
+    });
+    audioContext = new AudioContext();
+    await audioContext.resume();
+    captureSource = audioContext.createMediaStreamSource(microphone);
+    captureNode = audioContext.createScriptProcessor(2048, 1, 1);
+    const mute = audioContext.createGain();
+    mute.gain.value = 0;
+    captureSource.connect(captureNode);
+    captureNode.connect(mute);
+    mute.connect(audioContext.destination);
+    captureNode.onaudioprocess = event => {
+      if (audioContext) sendAudio(encodeAt8k(event.inputBuffer.getChannelData(0), audioContext.sampleRate));
+    };
+
+    const scheme = location.protocol === "https:" ? "wss:" : "ws:";
+    socket = new WebSocket(`${scheme}//${location.host}/ws`);
+    socket.onopen = () => {
+      socket.send(JSON.stringify({ event: "connected", protocol: "Browser", version: "1.0.0" }));
+      socket.send(JSON.stringify({
+        event: "start",
+        streamSid: "BROWSER",
+        start: { streamSid: "BROWSER", mediaFormat: { encoding: "audio/x-mulaw", sampleRate: 8000, channels: 1 } }
+      }));
+      stopButton.disabled = false;
+      setStatus("Connected. Listen for the consent question, then speak.");
+    };
+    socket.onmessage = message => {
+      const data = JSON.parse(message.data);
+      if (data.event === "media") {
+        playMuLaw(data.media.payload);
+        setStatus("Agent speaking. Speak to interrupt.");
+      } else if (data.event === "clear") {
+        clearPlayback();
+        setStatus("Barge-in detected. Listening…");
+      } else if (data.event === "silence") {
+        setStatus("Listening…");
+      } else if (data.event === "error") {
+        setStatus(`Agent error: ${data.error}`);
+      }
+    };
+    socket.onerror = () => setStatus("WebSocket connection error.");
+    socket.onclose = () => {
+      stopLocalAudio();
+      socket = null;
+      stopButton.disabled = true;
+      startButton.disabled = false;
+      setStatus("Call ended.");
+    };
+  } catch (error) {
+    stopLocalAudio();
+    startButton.disabled = false;
+    setStatus(`Could not start call: ${error.message}`);
+  }
+}
+
+function endCall() {
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ event: "stop", streamSid: "BROWSER" }));
+  }
+  stopLocalAudio();
+  if (socket && socket.readyState < WebSocket.CLOSING) socket.close();
+  socket = null;
+  startButton.disabled = false;
+  stopButton.disabled = true;
+  setStatus("Call ended.");
+}
+
+startButton.addEventListener("click", startCall);
+stopButton.addEventListener("click", endCall);
+</script>
+</body>
+</html>

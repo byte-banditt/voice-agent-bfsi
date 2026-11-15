@@ -16,6 +16,31 @@ uvicorn app.main:app --reload --env-file .env
 
 Open `/docs` for the FastAPI schema, `/dashboard` for the minimal dashboard, `/health` for health, and `/metrics` for Prometheus metrics. The mock CRM is a separate app; start it with `make crm`. Never expose the demo services to an untrusted network.
 
+## Interactive browser voice
+
+Install the real local providers and make sure Ollama has the model and Piper voice available:
+
+```sh
+python -m pip install -e '.[real]'
+ollama pull qwen3:1.7b
+```
+
+In `.env`, set `VOICE_AGENT_REAL_PROVIDERS=true`, `OLLAMA_MODEL=qwen3:1.7b`, `PIPER_VOICE_PATH=/absolute/path/to/en_US-lessac-medium.onnx`, and a local `CRM_API_KEY`. Keep the same CRM key for the CRM and agent; `.env` is read by both `make crm` and `make agent`. Start each service in a separate terminal:
+
+```sh
+make crm
+```
+
+```sh
+make agent
+```
+
+Open <http://localhost:8000/voice>, allow microphone access, press **Start call**, listen to the recording-consent line, then speak. Speak again for each turn; speak while the agent is talking to interrupt it. Use headphones to reduce acoustic echo. The browser streams microphone audio to the local `/ws` endpoint; transcripts are redacted before they are stored, and raw audio is not stored.
+
+The default calling window is 08:00–19:00 `Asia/Kolkata` and remains an **ASSUMPTION**. For local simulator testing only, you can set `CALLING_HOURS_START=00:00` and `CALLING_HOURS_END=23:59` in `.env`. Use only synthetic/mock customer details. This is not live telephony.
+
+The LLM tool-call loop is non-streaming; measured synthetic input-to-first-audio p50/p95 was 14.383/18.705 seconds on the recorded hardware. `make demo` remains the fixed scripted demonstration.
+
 Install `.[simulator]` to run `python tools/simulate_wav.py path/to/test.wav`; simulator WAVs must be synthetic or consented and remain outside Git.
 
 The `/ws` endpoint accepts simulator JSON events with `start`, `media`, and `stop`. Inbound `media.payload` is base64 G.711 mu-law at 8 kHz; internal provider audio is mono PCM16 at 16 kHz. Outbound media uses the same telephony encoding. Provider-generated output is labeled **MOCK** unless real providers are enabled.

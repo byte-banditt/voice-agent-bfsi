@@ -7,6 +7,7 @@ import os
 import re
 import uuid
 import time
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse, Response
@@ -26,8 +27,9 @@ from app.guardrails import (CONSENT_DECLINED_REPLY, OUT_OF_HOURS_REPLY,
                             within_calling_hours)
 from app.webhook import send_webhook
 
-app = FastAPI(title="BFSI Voice Agent (MOCK providers)")
+app = FastAPI(title="BFSI Voice Agent")
 store = CallStore(os.getenv("DATABASE_PATH", "voice_agent.db"))
+VOICE_CLIENT = Path(__file__).with_name("static") / "voice.html"
 
 
 async def _iterate(parts):
@@ -54,7 +56,14 @@ async def _save_completed_trace(trace: dict[str, object]) -> None:
 
 @app.get("/health")
 async def health() -> dict[str, str]:
-    return {"status": "ok", "providers": "MOCK"}
+    real_mode = os.getenv("VOICE_AGENT_REAL_PROVIDERS", "false").lower() == "true"
+    return {"status": "ok", "providers": "REAL" if real_mode else "MOCK",
+            "model": os.getenv("OLLAMA_MODEL", "qwen3:1.7b") if real_mode else "FAKE"}
+
+
+@app.get("/voice", response_class=HTMLResponse)
+async def voice_client() -> HTMLResponse:
+    return HTMLResponse(VOICE_CLIENT.read_text(encoding="utf-8"))
 
 
 @app.get("/metrics")
