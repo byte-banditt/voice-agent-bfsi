@@ -7,10 +7,13 @@ def test_voice_client_page_is_served() -> None:
     response = TestClient(app).get("/voice")
 
     assert response.status_code == 200
+    assert response.headers["cache-control"] == "no-store"
     assert "getUserMedia" in response.text
     assert "BROWSER" in response.text
     assert "Microphone opens when it finishes" in response.text
     assert "initialPromptPending" in response.text
+    assert 'id="recognized"' in response.text
+    assert "recognizedLine.textContent" in response.text
 
 
 def test_health_reports_real_provider_mode(monkeypatch) -> None:

@@ -24,12 +24,14 @@
     <button id="start">Start call</button>
     <button id="stop" disabled>End call</button>
     <p id="status" role="status" aria-live="polite">Ready.</p>
+    <p id="recognized" aria-live="polite">Speech recognition: waiting for speech.</p>
   </main>
 <script>
 "use strict";
 const startButton = document.getElementById("start");
 const stopButton = document.getElementById("stop");
 const statusLine = document.getElementById("status");
+const recognizedLine = document.getElementById("recognized");
 const providerLine = document.getElementById("provider");
 let socket = null;
 let microphone = null;
@@ -195,6 +197,8 @@ async function startCall() {
           setStatus("Barge-in detected. Listening…");
         } else if (data.event === "silence") {
           setStatus("Listening…");
+        } else if (data.event === "transcript") {
+          recognizedLine.textContent = `Speech recognition: ${data.text || "(no words recognized)"}`;
         } else if (data.event === "error") {
           setStatus(`Agent error: ${data.error}`);
         }

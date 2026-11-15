@@ -63,7 +63,7 @@ async def health() -> dict[str, str]:
 
 @app.get("/voice", response_class=HTMLResponse)
 async def voice_client() -> HTMLResponse:
-    return HTMLResponse(VOICE_CLIENT.read_text(encoding="utf-8"))
+    return HTMLResponse(VOICE_CLIENT.read_text(encoding="utf-8"), headers={"Cache-Control": "no-store"})
 
 
 @app.get("/metrics")
@@ -203,12 +203,15 @@ async def media_stream(websocket: WebSocket) -> None:
             STAGE_SECONDS.labels("asr").observe(elapsed)
             trace["stage_seconds"]["asr"] = elapsed
             if not transcript.strip():
+                await websocket.send_json({"event": "transcript", "text": ""})
                 await websocket.send_json({"event": "silence"})
                 audio = await tts.synthesize(REPEAT_PROMPT)
                 telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
                 await websocket.send_json({"event": "media", "streamSid": stream_sid,
                     "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
                 continue
+            # Send recognition only to the live browser; it is not added to the trace here.
+            await websocket.send_json({"event": "transcript", "text": transcript})
             if consent_status == "pending":
                 if grants_recording_consent(transcript):
                     consent_status = "granted"

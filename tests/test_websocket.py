@@ -20,6 +20,13 @@ class FakeVAD:
         return (self.calls - 1) % 17 < 2
 
 
+def receive_event(socket, event):
+    while True:
+        message = socket.receive_json()
+        if message["event"] == event:
+            return message
+
+
 def test_simulator_media_stream_round_trip(monkeypatch) -> None:
     monkeypatch.setattr(main, "WebRTCVAD", FakeVAD)
     monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR("yes"), FakeLLM(), FakeTTS()))
@@ -29,7 +36,7 @@ def test_simulator_media_stream_round_trip(monkeypatch) -> None:
         assert socket.receive_json()["event"] == "media"
         socket.send_json({"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}})
         socket.send_json({"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}})
-        response = socket.receive_json()
+        response = receive_event(socket, "media")
         assert response["event"] == "media"
         assert response["streamSid"] == "SIMULATOR"
         assert len(base64.b64decode(response["media"]["payload"])) > 0
@@ -81,6 +88,7 @@ def test_declined_consent_exits_without_persisting_transcript(monkeypatch) -> No
         socket.send_json({"event": "start"})
         assert socket.receive_json()["event"] == "media"  # Recording-consent prompt.
         socket.send_json(speech)
+        assert receive_event(socket, "transcript")["text"] == "no"
         assert socket.receive_json()["event"] == "media"  # Polite exit.
     assert store.trace["transcript"] == ""
     assert store.trace["consent_status"] == "declined"
@@ -109,8 +117,10 @@ def test_uncertain_consent_repeats_prompt_then_accepts_yes(monkeypatch) -> None:
         socket.send_json({"event": "start"})
         assert socket.receive_json()["event"] == "media"  # Initial consent prompt.
         socket.send_json(speech)
+        assert receive_event(socket, "transcript")["text"] == "I think so"
         assert socket.receive_json()["event"] == "media"  # Unclear response repeats consent.
         socket.send_json(speech)
+        assert receive_event(socket, "transcript")["text"] == "yeah"
         socket.send_json({"event": "stop"})
 
     assert store.trace["consent_status"] == "granted"
@@ -137,8 +147,8 @@ def test_barge_in_cancels_inflight_llm(monkeypatch) -> None:
         socket.send_json(media)  # Consent turn, then first assistant turn.
         time.sleep(0.05)
         socket.send_json(media)
-        assert socket.receive_json()["event"] == "clear"
-        assert socket.receive_json()["event"] == "media"
+        assert receive_event(socket, "clear")["event"] == "clear"
+        assert receive_event(socket, "media")["event"] == "media"
         socket.send_json({"event": "stop"})
 
 
