@@ -121,6 +121,8 @@ def test_uncertain_consent_repeats_prompt_then_accepts_yes(monkeypatch) -> None:
         assert socket.receive_json()["event"] == "media"  # Unclear response repeats consent.
         socket.send_json(speech)
         assert receive_event(socket, "transcript")["text"] == "yeah"
+        next_step = socket.receive_json()
+        assert next_step["event"] == "media"  # Consent acceptance starts identity verification.
         socket.send_json({"event": "stop"})
 
     assert store.trace["consent_status"] == "granted"

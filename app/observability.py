@@ -28,6 +28,21 @@ class CallStore:
         safe["call_id"] = call_id
         if "transcript" in safe:
             safe["transcript"] = redact_pii(str(safe["transcript"]))
+        for tool_call in safe.get("tool_calls", []):
+            if not isinstance(tool_call, dict):
+                continue
+            arguments = tool_call.get("arguments")
+            if isinstance(arguments, dict):
+                tool_call["arguments"] = {"redacted": True, "field_names": sorted(arguments)}
+            result = tool_call.get("result")
+            if isinstance(result, dict):
+                if tool_call.get("name") in {"get_customer", "get_loan_status", "create_payment_link"}:
+                    tool_call["result"] = {"redacted": True, "success": "error" not in result}
+                else:
+                    tool_call["result"] = {
+                        key: ("[REDACTED]" if key.casefold() in {"dob", "phone_last4", "phone", "customer_id", "requested_at", "name"} else value)
+                        for key, value in result.items()
+                    }
         with self.connect() as db:
             db.execute("INSERT OR REPLACE INTO calls VALUES (?,?,?)", (call_id, time.time(), json.dumps(safe)))
         return call_id
@@ -52,6 +67,8 @@ class CallStore:
         prompt_tool_success: dict[str, list[int]] = {}
         prompt_stages: dict[str, dict[str, list[float]]] = {}
         guardrail_events: dict[str, int] = {}
+        tool_latencies: dict[str, list[float]] = {}
+        tool_errors: dict[str, int] = {}
         tool_total = 0
         tool_success = 0
         for call in calls:
@@ -69,6 +86,11 @@ class CallStore:
                 counts = prompt_tool_success.setdefault(version, [0, 0])
                 counts[0] += int(succeeded)
                 counts[1] += 1
+                if isinstance(item.get("duration_seconds"), (int, float)):
+                    tool_latencies.setdefault(str(item.get("name", "unknown")), []).append(float(item["duration_seconds"]))
+                if item.get("error_category"):
+                    category = str(item["error_category"])
+                    tool_errors[category] = tool_errors.get(category, 0) + 1
             for event in call.get("guardrail_events", []):
                 guardrail_events[str(event)] = guardrail_events.get(str(event), 0) + 1
         percentiles = {
@@ -79,6 +101,11 @@ class CallStore:
                 "failure_tags": failures, "calls_by_prompt_version": prompts,
                 "tool_success_rate": tool_success / tool_total if tool_total else None,
                 "tool_calls": {"success": tool_success, "total": tool_total},
+                "tool_errors": tool_errors,
+                "tool_latency_percentiles_seconds": {
+                    name: {"p50": statistics.median(values), "p95": sorted(values)[min(len(values) - 1, math.ceil(len(values) * 0.95) - 1)]}
+                    for name, values in tool_latencies.items() if values
+                },
                 "guardrail_events": guardrail_events,
                 "prompt_versions": {
                     version: {

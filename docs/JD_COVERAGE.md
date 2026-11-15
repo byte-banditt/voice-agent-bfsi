@@ -1,12 +1,17 @@
-# Job-description evidence map
+# FDSE JD coverage map
 
-| Requirement | Evidence | Status |
+This is a project evidence map, not evidence of client work. The repository is a local prototype with fictional CRM fixtures.
+
+| FDSE responsibility | Evidence | Classification / gap |
 |---|---|---|
-| LLM + voice harness: ASR, LLM, TTS, prompts, tool calls | `app/providers.py`, `app/main.py`, `app/conversation.py`, `app/static/voice.html`, `tools/measure_ws_latency.py`, `tools/demo_call.py` | 30 **SYNTHETIC** turns ran through real local WebRTC VAD, Faster-Whisper, Ollama qwen3:1.7b, and Piper; 27/30 status lookups succeeded against **MOCK** CRM. `/voice` adds a browser microphone client; its route is tested, but a physical browser-mic session is **NOT EXECUTED**. One complete demo scheduled a callback. No live telephony. |
-| Strong Python + REST APIs | `app/main.py`, `app/crm.py`, `app/webhook.py`, `tests/` | 36 local tests passed with Fake providers; local CRM REST calls also executed in scenario and demo runs. |
-| Cross-stack debugging | `docs/FAILURE_MODES.md`, raw scenario and latency JSON | Measured ASR argument-format and model tool-selection failures; synthetic input was corrected. Two scenario failures and 3/30 omitted status lookups remain open. No production incident claimed. |
-| Client integrations: CRM, telephony, internal APIs | `app/crm.py`, `app/tools.py`, `app/main.py` | Local **MOCK** CRM exercised through HTTP. WebSocket is simulator-only; live telephony/client integration is not evidenced. |
-| Requirements scoping and flow/prompt design | `flows/`, `prompts/`, `docs/CLIENT_ONBOARDING.md`, `docs/PROMPT_CHANGELOG.md` | YAML flows and versioned prompts executed with fixed synthetic scenarios; this is not client work. |
-| Monitoring/evaluating call quality | `app/metrics.py`, `app/observability.py`, `tools/evaluate_scenarios.py`, `tools/measure_ws_latency.py`, `RESULTS.md` | Fake: 60/60 scenario pass. qwen3:1.7b: 54/60 (90%), tool-call accuracy 1.00. Thirty voice turns have p50/p95 stage latency; true LLM first-token time is unavailable because tool calls are non-streaming. |
-| BFSI care with regulated workflows/customer data | `app/guardrails.py`, `app/tools.py`, `app/crm.py` | Synthetic demo passed consent, identity, status, callback; numeric grounding guard fired once in the demo. Conduct policy is phrase-based. Local calling-hours enforcement is removed; RBI guidance remains unverified. |
-| Feed learnings back | `docs/PROMPT_CHANGELOG.md`, `docs/FAILURE_MODES.md` | Prompt version `emi-4` has measured scenario evidence; remaining model failures are documented OPEN. Pilot is **NOT EXECUTED**. |
+| Voice AI orchestration, ASR/LLM/TTS, tool calls | `app/providers.py`, `app/conversation.py`, `app/main.py`, `app/static/voice.html`; Sarvam agent `Example-Fin-1e33e491-23c6` v2 | [CODE-VERIFIED] Local provider adapters and simulated WebSocket. [PLATFORM-VERIFIED] Test-only Hindi/English Sarvam agent version committed; no telephony deployment. |
+| Secure BFSI workflow and API integration | `app/tools.py`, `app/crm.py`, `tests/test_conversation.py`, `tests/test_crm.py` | [CODE-VERIFIED] Synthetic identity, CRM gate, DOB normalization, state-gated operations; MOCK CRM only. |
+| Tool grounding and model failure handling | `app/conversation.py`, `app/guardrails.py`, `raw-results/scenarios-fake-post-fix.json`, `raw-results/scenarios-ollama-1_7b-post-fix.json` | [SYNTHETIC-EVALUATION] Repeat counts and failures in artifacts; no claim of universal model behavior. |
+| Client discovery and integration design | `docs/CLIENT_REQUIREMENTS.md`, `docs/INTEGRATION_CONTRACT.md`, `docs/AGENT_DESIGN.md` | [CODE-VERIFIED] Templates only; no client discovery or approval. |
+| Observability and incident debugging | `app/observability.py`, `app/metrics.py`, `docs/OPERATIONS_RUNBOOK.md` | [CODE-VERIFIED] Redacted local traces/metrics/runbook; no production monitoring or Sarvam call traces. |
+| Evaluation and quality | `docs/TEST_PLAN.md`, `docs/RESULTS.md`, `RESULTS.md` | [SYNTHETIC-EVALUATION] Fake and local Ollama runs only; manual audio and real callers absent. |
+| Sarvam Voice Agents platform | `docs/SARVAM_PLATFORM_EVIDENCE.md` | [PLATFORM-VERIFIED] MCP authenticated, agent/version and native suite executed. [NOT-IMPLEMENTED] CRM endpoint/credentials, telephony connection/number, deployment, call analytics and real calls unavailable. |
+| Browser/device operations | `tests/test_voice_client.py`, `tests/test_websocket.py` | [CODE-VERIFIED] Route/protocol tests only. [MANUAL-TEST] Physical microphone and speaker behavior not tested. |
+| Client production delivery | `docs/GO_LIVE_CHECKLIST.md` | [NOT-IMPLEMENTED] No live CRM, phone number, customer deployment, client acceptance, or compliance review. |
+
+Never describe MOCK CRM as production CRM, simulator media as live telephony, or synthetic scenario/audio output as customer results.

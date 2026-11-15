@@ -2,6 +2,27 @@
 
 All benchmark and test outputs are local and synthetic/mock unless noted. Hardware: NVIDIA GeForce RTX 4060, 8 GiB VRAM; 4.8 GiB RAM; 16 logical CPUs; Python 3.13.12. Full probe output: `raw-results/hardware.txt`; command: `{ nvidia-smi; free -h; nproc; python --version; ollama --version; docker --version; } > raw-results/hardware.txt 2>&1`.
 
+## Current worktree verification (2026-11-15)
+
+The repository began on `main` at `21fa9fd75627ed47e45a9898c90cc1fb3e546e9d` with six modified files already present: `app/conversation.py` and its test descriptions, `app/main.py` post-consent prompt, `app/static/voice.html` microphone/playback sequencing, `app/tools.py` DOB normalization, and the associated tool/WebSocket tests. Those changes were preserved. Baseline `python -m pytest -ra`: **39 passed**, 2 dependency deprecation warnings. Current `python -m pytest -ra`: **60 passed**, same 2 warnings.
+
+Current synthetic re-runs (20 scenarios × 3 repeats, prompt `emi-4`, MOCK CRM):
+
+| Mode | Result | Tool-call accuracy | LLM call latency | Artifact |
+|---|---:|---:|---:|---|
+| Fake providers | 60/60 pass | 0.700 | Not applicable | `raw-results/scenarios-fake-post-fix.json` |
+| Ollama `qwen3:1.7b` GGUF Q4_K_M | 60/60 pass | 0.875 | median 0.297 s; p95 1.963 s | `raw-results/scenarios-ollama-1_7b-post-fix.json` |
+
+Agent immutable version is **N/A** for the local Ollama benchmark; that benchmark is separate from Sarvam. Tool-call accuracy excludes server-required status lookups. Evaluations use synthetic scenarios and mock records; they are not real-caller results. Sarvam platform evidence is now available: authenticated MCP, test-only agent version 2, and native synthetic suite results are recorded in `docs/SARVAM_PLATFORM_EVIDENCE.md`. No CRM, telephony number, deployment, or real call is available. Physical browser microphone testing remains not executed.
+
+## Sarvam platform verification (2026-11-15)
+
+- MCP read operations authenticated successfully in the connected workspace. The earlier unauthenticated direct endpoint probe had returned HTTP `401 invalid_token`; that probe is not the current MCP auth state.
+- Platform agent `Example-Fin-1e33e491-23c6`, immutable version **2**, configured as a Hindi/English test-only safe fallback. No CRM or caller data is connected.
+- Native suite `01M7GEBN68HJ4HMEFC915CD2SY`, version 2: run `01M7GEP5A73RCSVF5APM4K4DVF` passed **9/9**; repeated run `01M7GERSSSB8AMAGJDS0TGJXEP`, frequency 2, passed **18/18**.
+- The suite is synthetic text evaluation. Platform tool executions observed: `end_interaction` and `change_output_language`. No external CRM tool, HTTP timeout/retry, telephony deployment, analytics trace from a call, or real phone call was tested.
+- Workspace inventory: zero custom integrations, secrets, telephony connections, verified numbers, or deployments. CRM/telephony work is blocked pending authorized test endpoint/credentials and provider connection/number.
+
 | Result | Exact command | Raw output | Commit | Hardware / interpretation |
 |---|---|---|---|---|
 | **NOT EXECUTED**; Phase 0 had no test suite | `python -m pytest -ra` | No test suite existed at that commit | `238a3da9d2f85411f9ff0fbfb8c4e9b4da161af1` | Hardware above |

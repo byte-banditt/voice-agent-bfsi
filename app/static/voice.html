@@ -19,7 +19,7 @@
   <main>
     <h1>Local voice agent</h1>
     <p id="provider">Checking provider mode…</p>
-    <p>Press Start, listen to the recording-consent question, then speak naturally. You can interrupt the agent by speaking while it responds.</p>
+    <p>Press Start, listen to the recording-consent question, then speak naturally. Wait for the agent to finish speaking before replying.</p>
     <p class="note">Local simulator only. CRM records are mock fixtures. Do not use real customer information. Transcripts are redacted before storage; audio is not stored.</p>
     <button id="start">Start call</button>
     <button id="stop" disabled>End call</button>
@@ -43,6 +43,7 @@ let nextPlaybackTime = 0;
 let micSuppressed = true;
 let initialPromptPending = true;
 let initialPromptSource = null;
+let callGeneration = 0;
 
 fetch("/health").then(response => response.json()).then(info => {
   providerLine.textContent = `Provider mode: ${info.providers}; model: ${info.model || "configured locally"}.`;
@@ -92,7 +93,7 @@ function encodeAt8k(input, inputRate) {
   return btoa(binary);
 }
 
-function playMuLaw(payload) {
+function playMuLaw(payload, generation) {
   const bytes = Uint8Array.from(atob(payload), char => char.charCodeAt(0));
   const buffer = audioContext.createBuffer(1, bytes.length, 8000);
   const samples = buffer.getChannelData(0);
@@ -104,13 +105,15 @@ function playMuLaw(payload) {
   nextPlaybackTime = startAt + buffer.duration;
   playbackSources.add(source);
   source.onended = () => {
+    if (generation !== callGeneration) return;
     playbackSources.delete(source);
     if (source === initialPromptSource) {
       initialPromptSource = null;
       micSuppressed = false;
     }
-    if (playbackSources.size === 0 && socket && socket.readyState === WebSocket.OPEN) {
-      setStatus("Listening. Speak when ready.");
+    if (playbackSources.size === 0) {
+      micSuppressed = false;
+      if (socket && socket.readyState === WebSocket.OPEN) setStatus("Listening. Speak when ready.");
     }
   };
   source.start(startAt);
@@ -146,6 +149,9 @@ function sendAudio(payload) {
 
 async function startCall() {
   startButton.disabled = true;
+  const generation = ++callGeneration;
+  initialPromptPending = true;
+  initialPromptSource = null;
   setStatus("Requesting microphone access…");
   try {
     microphone = await navigator.mediaDevices.getUserMedia({
@@ -167,12 +173,14 @@ async function startCall() {
     };
 
     const scheme = location.protocol === "https:" ? "wss:" : "ws:";
-    socket = new WebSocket(`${scheme}//${location.host}/ws`);
-    socket.onopen = () => {
+    const callSocket = new WebSocket(`${scheme}//${location.host}/ws`);
+    socket = callSocket;
+    callSocket.onopen = () => {
+      if (socket !== callSocket || generation !== callGeneration) return;
       micSuppressed = true;
       initialPromptPending = true;
-      socket.send(JSON.stringify({ event: "connected", protocol: "Browser", version: "1.0.0" }));
-      socket.send(JSON.stringify({
+      callSocket.send(JSON.stringify({ event: "connected", protocol: "Browser", version: "1.0.0" }));
+      callSocket.send(JSON.stringify({
         event: "start",
         streamSid: "BROWSER",
         start: { streamSid: "BROWSER", mediaFormat: { encoding: "audio/x-mulaw", sampleRate: 8000, channels: 1 } }
@@ -180,18 +188,20 @@ async function startCall() {
       stopButton.disabled = false;
       setStatus("Connected. Listen for the consent question, then speak.");
     };
-    socket.onmessage = message => {
+    callSocket.onmessage = message => {
+      if (socket !== callSocket || generation !== callGeneration) return;
       try {
         const data = JSON.parse(message.data);
         if (data.event === "media") {
-          const source = playMuLaw(data.media.payload);
+          micSuppressed = true;
+          const source = playMuLaw(data.media.payload, generation);
           if (initialPromptPending) {
             initialPromptPending = false;
             initialPromptSource = source;
             setStatus("Consent prompt playing. Microphone opens when it finishes.");
             return;
           }
-          setStatus("Agent speaking. Speak to interrupt.");
+          setStatus("Agent speaking. Please wait to reply.");
         } else if (data.event === "clear") {
           clearPlayback();
           setStatus("Barge-in detected. Listening…");
@@ -206,8 +216,11 @@ async function startCall() {
         setStatus(`Audio/event error: ${error.message}`);
       }
     };
-    socket.onerror = () => setStatus("WebSocket connection error.");
-    socket.onclose = () => {
+    callSocket.onerror = () => {
+      if (socket === callSocket && generation === callGeneration) setStatus("WebSocket connection error.");
+    };
+    callSocket.onclose = () => {
+      if (socket !== callSocket) return;
       stopLocalAudio();
       socket = null;
       stopButton.disabled = true;
@@ -222,13 +235,18 @@ async function startCall() {
 }
 
 function endCall() {
-  if (socket && socket.readyState === WebSocket.OPEN) {
-    socket.send(JSON.stringify({ event: "stop", streamSid: "BROWSER" }));
-  }
+  ++callGeneration;
+  const callSocket = socket;
   stopLocalAudio();
-  if (socket && socket.readyState < WebSocket.CLOSING) socket.close();
-  socket = null;
-  startButton.disabled = false;
+  if (callSocket && callSocket.readyState === WebSocket.OPEN) {
+    callSocket.send(JSON.stringify({ event: "stop", streamSid: "BROWSER" }));
+  }
+  if (callSocket && callSocket.readyState !== WebSocket.CLOSED) {
+    if (callSocket.readyState < WebSocket.CLOSING) callSocket.close();
+  } else {
+    if (socket === callSocket) socket = null;
+    startButton.disabled = false;
+  }
   stopButton.disabled = true;
   setStatus("Call ended.");
 }

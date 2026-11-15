@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import os
+import hashlib
+import json
 import sqlite3
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel, Field
@@ -27,6 +29,9 @@ def initialize() -> None:
         CREATE TABLE IF NOT EXISTS call_outcomes (id INTEGER PRIMARY KEY, customer_id TEXT, outcome TEXT);
         CREATE TABLE IF NOT EXISTS callbacks (id INTEGER PRIMARY KEY, customer_id TEXT, requested_at TEXT);
         CREATE TABLE IF NOT EXISTS payment_links (id INTEGER PRIMARY KEY, customer_id TEXT, link TEXT);
+        CREATE TABLE IF NOT EXISTS idempotency_records (
+            key TEXT PRIMARY KEY, operation TEXT NOT NULL, request_hash TEXT NOT NULL, response_json TEXT NOT NULL
+        );
         """)
         db.execute("INSERT OR IGNORE INTO customers VALUES ('cust-demo-1','Asha Example','1990-01-02','0134')")
         db.execute("INSERT OR IGNORE INTO loans VALUES ('loan-demo-1','cust-demo-1','due','1200','2030-01-15')")
@@ -60,6 +65,25 @@ class OutcomeRequest(BaseModel):
 class CallbackRequest(BaseModel):
     customer_id: str = Field(min_length=1, max_length=64)
     requested_at: str = Field(min_length=1, max_length=40)
+
+
+def run_idempotent(db: sqlite3.Connection, key: str | None, operation: str,
+                   payload: dict[str, Any], action: Callable[[], dict[str, Any]]) -> dict[str, Any]:
+    if key is None:
+        return action()
+    if not key or len(key) > 128:
+        raise HTTPException(status_code=422, detail="invalid idempotency key")
+    db.execute("BEGIN IMMEDIATE")
+    request_hash = hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    row = db.execute("SELECT operation,request_hash,response_json FROM idempotency_records WHERE key=?", (key,)).fetchone()
+    if row:
+        if row["operation"] != operation or row["request_hash"] != request_hash:
+            raise HTTPException(status_code=409, detail="idempotency key reused with different request")
+        return json.loads(row["response_json"])
+    response = action()
+    db.execute("INSERT INTO idempotency_records VALUES (?,?,?,?)",
+               (key, operation, request_hash, json.dumps(response, sort_keys=True)))
+    return response
 
 
 def customer_exists(customer_id: str, db: sqlite3.Connection) -> bool:
@@ -104,44 +128,75 @@ def get_loan(loan_id: str, x_api_key: str | None = Header(default=None), x_verif
     return dict(row)
 
 
+@crm_app.get("/customers/{customer_id}/loans/first")
+def get_first_loan(customer_id: str, x_api_key: str | None = Header(default=None),
+                   x_verified_customer: str | None = Header(default=None)) -> dict[str, Any]:
+    require_key(x_api_key)
+    if customer_id != x_verified_customer:
+        raise HTTPException(status_code=403, detail="identity verification required")
+    with connect() as db:
+        row = db.execute(
+            "SELECT id,status,amount,due_date FROM loans WHERE customer_id=? ORDER BY id LIMIT 1",
+            (customer_id,),
+        ).fetchone()
+    if not row:
+        raise HTTPException(status_code=404, detail="loan not found")
+    return dict(row)
+
+
 @crm_app.post("/log_call_outcome")
-def log_call_outcome(payload: OutcomeRequest, x_api_key: str | None = Header(default=None), x_verified_customer: str | None = Header(default=None)) -> dict[str, bool]:
+def log_call_outcome(payload: OutcomeRequest, x_api_key: str | None = Header(default=None), x_verified_customer: str | None = Header(default=None), x_idempotency_key: str | None = Header(default=None)) -> dict[str, bool]:
     require_key(x_api_key)
     if payload.customer_id != x_verified_customer:
         raise HTTPException(status_code=403, detail="identity verification required")
     with connect() as db:
         if not customer_exists(payload.customer_id, db):
             raise HTTPException(status_code=404, detail="customer not found")
-        db.execute("INSERT INTO call_outcomes(customer_id,outcome) VALUES (?,?)", (payload.customer_id, payload.outcome))
+        return run_idempotent(db, x_idempotency_key, "log_call_outcome", payload.model_dump(), lambda: _insert_outcome(db, payload))
+
+
+def _insert_outcome(db: sqlite3.Connection, payload: OutcomeRequest) -> dict[str, bool]:
+    db.execute("INSERT INTO call_outcomes(customer_id,outcome) VALUES (?,?)", (payload.customer_id, payload.outcome))
     return {"logged": True}
 
 
 @crm_app.post("/schedule_callback")
-def schedule_callback(payload: CallbackRequest, x_api_key: str | None = Header(default=None), x_verified_customer: str | None = Header(default=None)) -> dict[str, bool]:
+def schedule_callback(payload: CallbackRequest, x_api_key: str | None = Header(default=None), x_verified_customer: str | None = Header(default=None), x_idempotency_key: str | None = Header(default=None)) -> dict[str, bool]:
     require_key(x_api_key)
     if payload.customer_id != x_verified_customer:
         raise HTTPException(status_code=403, detail="identity verification required")
     with connect() as db:
         if not customer_exists(payload.customer_id, db):
             raise HTTPException(status_code=404, detail="customer not found")
-        db.execute("INSERT INTO callbacks(customer_id,requested_at) VALUES (?,?)", (payload.customer_id, payload.requested_at))
+        return run_idempotent(db, x_idempotency_key, "schedule_callback", payload.model_dump(), lambda: _insert_callback(db, payload))
+
+
+def _insert_callback(db: sqlite3.Connection, payload: CallbackRequest) -> dict[str, bool]:
+    db.execute("INSERT INTO callbacks(customer_id,requested_at) VALUES (?,?)", (payload.customer_id, payload.requested_at))
     return {"scheduled": True}
 
 
 @crm_app.post("/create_payment_link")
-def create_payment_link(customer_id: str, x_api_key: str | None = Header(default=None), x_verified_customer: str | None = Header(default=None)) -> dict[str, str]:
+def create_payment_link(customer_id: str, x_api_key: str | None = Header(default=None), x_verified_customer: str | None = Header(default=None), x_idempotency_key: str | None = Header(default=None)) -> dict[str, str]:
     require_key(x_api_key)
     if customer_id != x_verified_customer:
         raise HTTPException(status_code=403, detail="identity verification required")
     with connect() as db:
         if not customer_exists(customer_id, db):
             raise HTTPException(status_code=404, detail="customer not found")
-        link = f"https://example.invalid/mock-payment/{customer_id}"
-        db.execute("INSERT INTO payment_links(customer_id,link) VALUES (?,?)", (customer_id, link))
+        return run_idempotent(db, x_idempotency_key, "create_payment_link", {"customer_id": customer_id},
+                              lambda: _insert_payment_link(db, customer_id))
+
+
+def _insert_payment_link(db: sqlite3.Connection, customer_id: str) -> dict[str, str]:
+    link = f"https://example.invalid/mock-payment/{customer_id}"
+    db.execute("INSERT INTO payment_links(customer_id,link) VALUES (?,?)", (customer_id, link))
     return {"link": link, "mock": "true"}
 
 
 @crm_app.post("/escalate_to_human")
-def escalate_to_human(customer_id: str, x_api_key: str | None = Header(default=None)) -> dict[str, str]:
+def escalate_to_human(customer_id: str, x_api_key: str | None = Header(default=None), x_idempotency_key: str | None = Header(default=None)) -> dict[str, str]:
     require_key(x_api_key)
-    return {"status": "queued", "customer_id": customer_id, "mock": "true"}
+    with connect() as db:
+        return run_idempotent(db, x_idempotency_key, "escalate_to_human", {"customer_id": customer_id},
+                              lambda: {"status": "queued", "customer_id": customer_id, "mock": "true"})

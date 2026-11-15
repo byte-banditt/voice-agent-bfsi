@@ -1,5 +1,5 @@
 from app.guardrails import (CONDUCT_FALLBACK, IdentityGate, SAFE_FALLBACK,
-                            declines_recording_consent, enforce_conduct,
+                            declines_recording_consent, enforce_action_claims, enforce_conduct,
                             enforce_grounding, grants_recording_consent, redact_pii)
 
 
@@ -35,10 +35,26 @@ def test_grounding_replaces_unsubstantiated_financial_claim() -> None:
     assert reply == SAFE_FALLBACK
 
 
+def test_grounding_blocks_unverified_amounts_and_dates_spoken_as_words() -> None:
+    reply, violated = enforce_grounding("Your EMI amount is one thousand two hundred rupees.", [{"amount": "1200"}])
+    assert violated and reply == SAFE_FALLBACK
+    reply, violated = enforce_grounding("Your payment is due on January fifteenth.", [{"due_date": "2030-01-15"}])
+    assert violated and reply == SAFE_FALLBACK
+
+
 def test_grounding_accepts_tool_backed_claim() -> None:
     reply, violated = enforce_grounding("Your account number is loan-demo-1", [{"id": "loan-demo-1"}])
     assert not violated
     assert "loan-demo-1" in reply
+
+
+def test_action_claims_require_backend_confirmation() -> None:
+    reply, violated = enforce_action_claims("Your payment has been received.", [])
+    assert violated and reply == SAFE_FALLBACK
+    reply, violated = enforce_action_claims("Your callback is scheduled.", [{"status": "due"}])
+    assert violated and reply == SAFE_FALLBACK
+    reply, violated = enforce_action_claims("Your callback is scheduled.", [{"scheduled": True}])
+    assert not violated and reply == "Your callback is scheduled."
 
 
 def test_conduct_guard_rejects_threats_and_pressure() -> None:

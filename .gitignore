@@ -7,6 +7,8 @@ __pycache__/
 *.db
 raw-results/*
 !raw-results/.gitkeep
+!raw-results/scenarios-fake-post-fix.json
+!raw-results/scenarios-ollama-1_7b-post-fix.json
 data/recordings/
 models/
 synthetic-data/

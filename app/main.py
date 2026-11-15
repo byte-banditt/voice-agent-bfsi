@@ -115,11 +115,12 @@ async def media_stream(websocket: WebSocket) -> None:
     call_started = False
     real_mode = os.getenv("VOICE_AGENT_REAL_PROVIDERS", "false").lower() == "true"
     flow_name = os.getenv("VOICE_AGENT_FLOW", "emi_reminder")
+    call_id = str(uuid.uuid4())
     engine = ConversationEngine(flow_name, BFSIToolExecutor(
         os.getenv("CRM_URL", "http://127.0.0.1:8001"), os.getenv("CRM_API_KEY", ""),
-        os.getenv("CRM_CUSTOMER_ID", "cust-demo-1"),
+        os.getenv("CRM_CUSTOMER_ID", "cust-demo-1"), call_id,
     ))
-    trace = {"call_id": str(uuid.uuid4()), "provider_mode": "REAL" if real_mode else "MOCK",
+    trace = {"call_id": call_id, "provider_mode": "REAL" if real_mode else "MOCK",
              "model_versions": {"asr": getattr(asr, "model_name", "FAKE"),
                                 "llm": getattr(llm, "model", "FAKE"),
                                 "tts": os.path.basename(getattr(tts, "voice_path", "FAKE"))},
@@ -217,6 +218,12 @@ async def media_stream(websocket: WebSocket) -> None:
                     consent_status = "granted"
                     trace["consent_status"] = "granted"
                     trace["guardrail_events"].append("recording_consent_granted")
+                    audio = await tts.synthesize(
+                        "Thank you. To verify your identity, please provide your date of birth and the last four digits of your phone number."
+                    )
+                    telephony_audio = pcm16_to_mulaw(pcm16_resample(audio, 16000, 8000))
+                    await websocket.send_json({"event": "media", "streamSid": stream_sid,
+                        "media": {"payload": base64.b64encode(telephony_audio).decode("ascii")}})
                 elif declines_recording_consent(transcript):
                     consent_status = "declined"
                     trace["consent_status"] = "declined"
