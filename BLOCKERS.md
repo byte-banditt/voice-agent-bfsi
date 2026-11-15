@@ -1,5 +1,6 @@
 # Blockers and deferred work
 
+- Step 0 CI on pushed SHA `468de6c7fe63ee25372d2b160aef4dba7d668f46` failed in run `43719643851` (6 failed, 28 passed). Five WebSocket tests ran outside the configured assumed calling window and closed before their assertions; tests need a fixed in-hours clock. The account-like ID redaction test failed in CI's base test install, where optional Presidio is absent and the regex fallback does not redact account references. Full log: `raw-results/step0-ci-failure.txt`.
 - Docker CLI/Engine is unavailable in this WSL2 distribution; `docker compose up --build` exits 1 because `docker` is missing. The shell recommends enabling Docker Desktop WSL integration; container build remains **NOT EXECUTED** (`raw-results/docker-compose-probe.txt`).
 - The required 30+ turn end-to-end latency run is **NOT EXECUTED**. The WebSocket now has WebRTC VAD, flow-state prompt/tool handling, and tool-layer identity enforcement, but local CRM + Ollama + ASR + TTS have not been exercised together.
 - No real recordings were provided; real-recording WER is **NOT EXECUTED**. The repo contains no user recordings.

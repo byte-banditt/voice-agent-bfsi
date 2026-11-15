@@ -1,0 +1,225 @@
+test	Run python -m pytest -ra	﻿2026-11-15T13:33:59.1820535Z ##[group]Run python -m pytest -ra
+test	Run python -m pytest -ra	2026-11-15T13:33:59.1820762Z [36;1mpython -m pytest -ra[0m
+test	Run python -m pytest -ra	2026-11-15T13:33:59.1865254Z shell: /usr/bin/bash -e {0}
+test	Run python -m pytest -ra	2026-11-15T13:33:59.1865420Z env:
+test	Run python -m pytest -ra	2026-11-15T13:33:59.1865592Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pytest -ra	2026-11-15T13:33:59.1865843Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+test	Run python -m pytest -ra	2026-11-15T13:33:59.1866091Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pytest -ra	2026-11-15T13:33:59.1866317Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pytest -ra	2026-11-15T13:33:59.1866544Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pytest -ra	2026-11-15T13:33:59.1866767Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+test	Run python -m pytest -ra	2026-11-15T13:33:59.1866953Z ##[endgroup]
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6869074Z ................F..........FF..FFF                                       [100%]
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6869519Z =================================== FAILURES ===================================
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6869937Z ____________ test_presidio_redacts_indian_phone_and_account_like_id ____________
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6870258Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6870473Z     def test_presidio_redacts_indian_phone_and_account_like_id() -> None:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6870870Z         redacted = redact_pii("Call +91 9876543210 about account: AB12345678")
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6871210Z         assert "+91 9876543210" not in redacted
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6871460Z >       assert "AB12345678" not in redacted
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6871793Z E       AssertionError: assert 'AB12345678' not in 'Call [REDAC...: AB12345678'
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6872102Z E         
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6872275Z E         'AB12345678' is contained here:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6872585Z E           Call [REDACTED_PHONE] about account: AB12345678
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6872843Z E         ?                                      ++++++++++
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6872962Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6873037Z tests/test_guardrails.py:53: AssertionError
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6873264Z ____________________ test_simulator_media_stream_round_trip ____________________
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6873424Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6873566Z monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x77c20ad71bf0>
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6873737Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6873838Z     def test_simulator_media_stream_round_trip(monkeypatch) -> None:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6874067Z         monkeypatch.setattr(main, "WebRTCVAD", FakeVAD)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6874369Z         monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR("yes"), FakeLLM(), FakeTTS()))
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6874637Z         client = TestClient(app)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6874814Z         with client.websocket_connect("/ws") as socket:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6875133Z             socket.send_json({"event": "start", "start": {"mediaFormat": {"encoding": "audio/x-mulaw", "sampleRate": 8000, "channels": 1}}})
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6875455Z             assert socket.receive_json()["event"] == "media"
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6875767Z             socket.send_json({"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}})
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6876126Z             socket.send_json({"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}})
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6876399Z >           response = socket.receive_json()
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6876566Z                        ^^^^^^^^^^^^^^^^^^^^^
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6876664Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6876730Z tests/test_websocket.py:32: 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6876904Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6877224Z /opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/starlette/testclient.py:190: in receive_json
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6877552Z     self._raise_on_close(message)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6877726Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6877853Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6877982Z self = <starlette.testclient.WebSocketTestSession object at 0x77c20acd38c0>
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6878868Z message = {'type': 'websocket.close', 'code': 1000, 'reason': ''}
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6879070Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6879152Z     def _raise_on_close(self, message: Message) -> None:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6879351Z         if message["type"] == "websocket.close":
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6879772Z >           raise WebSocketDisconnect(code=message.get("code", 1000), reason=message.get("reason", ""))
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6880210Z E           starlette.websockets.WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6880405Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6880718Z /opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/starlette/testclient.py:143: WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6881299Z _______________________ test_empty_media_returns_silence _______________________
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6881535Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6881660Z     def test_empty_media_returns_silence() -> None:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6881940Z         client = TestClient(app)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6882210Z         with client.websocket_connect("/ws") as socket:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6882504Z             socket.send_json({"event": "start"})
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6882796Z             assert socket.receive_json()["event"] == "media"
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6883152Z             socket.send_json({"event": "media", "media": {"payload": ""}})
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6883516Z >           assert socket.receive_json() == {"event": "silence"}
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6883802Z                    ^^^^^^^^^^^^^^^^^^^^^
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6883951Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6884051Z tests/test_websocket.py:45: 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6884319Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6884810Z /opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/starlette/testclient.py:190: in receive_json
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6885267Z     self._raise_on_close(message)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6885461Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6885602Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6885733Z self = <starlette.testclient.WebSocketTestSession object at 0x77c20ace7c50>
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6886000Z message = {'type': 'websocket.close', 'code': 1000, 'reason': ''}
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6886141Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6886230Z     def _raise_on_close(self, message: Message) -> None:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6886426Z         if message["type"] == "websocket.close":
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6886693Z >           raise WebSocketDisconnect(code=message.get("code", 1000), reason=message.get("reason", ""))
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6886971Z E           starlette.websockets.WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6887101Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6887289Z /opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/starlette/testclient.py:143: WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6887918Z __________ test_declined_consent_exits_without_persisting_transcript ___________
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6888150Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6888267Z monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x77c20b2bad50>
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6888432Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6888780Z     def test_declined_consent_exits_without_persisting_transcript(monkeypatch) -> None:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6889139Z         class Store:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6889333Z             trace = None
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6889520Z     
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6889641Z             def save_trace(self, trace):
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6889798Z                 self.trace = dict(trace)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6889943Z     
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6890058Z         store = Store()
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6890207Z         monkeypatch.setattr(main, "store", store)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6890400Z         monkeypatch.setattr(main, "WebRTCVAD", FakeVAD)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6890679Z         monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR("no"), FakeLLM(), FakeTTS()))
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6891019Z         speech = {"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}}
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6891291Z         with TestClient(app).websocket_connect("/ws") as socket:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6891766Z             socket.send_json({"event": "start"})
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6892032Z             assert socket.receive_json()["event"] == "media"  # Recording-consent prompt.
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6892270Z             socket.send_json(speech)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6892468Z >           assert socket.receive_json()["event"] == "media"  # Polite exit.
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6892670Z                    ^^^^^^^^^^^^^^^^^^^^^
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6892764Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6892827Z tests/test_websocket.py:102: 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6893000Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6893306Z /opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/starlette/testclient.py:190: in receive_json
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6893589Z     self._raise_on_close(message)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6893763Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6893898Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6894025Z self = <starlette.testclient.WebSocketTestSession object at 0x77c20ad329e0>
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6894293Z message = {'type': 'websocket.close', 'code': 1000, 'reason': ''}
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6894436Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6894520Z     def _raise_on_close(self, message: Message) -> None:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6894714Z         if message["type"] == "websocket.close":
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6894975Z >           raise WebSocketDisconnect(code=message.get("code", 1000), reason=message.get("reason", ""))
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6895250Z E           starlette.websockets.WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6895379Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6895565Z /opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/starlette/testclient.py:143: WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6895930Z ______________________ test_barge_in_cancels_inflight_llm ______________________
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6896101Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6896220Z monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x77c20ad6f110>
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6896386Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6896488Z     def test_barge_in_cancels_inflight_llm(monkeypatch) -> None:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6896686Z         class SlowFirstReply:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6896825Z             calls = 0
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6896943Z     
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6897124Z             async def stream_reply(self, transcript: str) -> AsyncIterator[str]:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6897340Z                 self.calls += 1
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6897484Z                 if self.calls == 1:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6897643Z                     await asyncio.sleep(10)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6897804Z                 yield "I can help."
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6897940Z     
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6898059Z         provider = SlowFirstReply()
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6898236Z         monkeypatch.setattr(main, "WebRTCVAD", FakeVAD)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6898675Z         monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR("yes"), provider, FakeTTS()))
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6899017Z         media = {"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}}
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6899293Z         with TestClient(app).websocket_connect("/ws") as socket:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6899496Z             socket.send_json({"event": "start"})
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6899691Z             assert socket.receive_json()["event"] == "media"
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6899874Z             socket.send_json(media)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6900075Z             socket.send_json(media)  # Consent turn, then first assistant turn.
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6900283Z             time.sleep(0.05)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6900426Z             socket.send_json(media)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6900594Z >           assert socket.receive_json()["event"] == "clear"
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6900769Z                    ^^^^^^^^^^^^^^^^^^^^^
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6900870Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6900928Z tests/test_websocket.py:128: 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6901097Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6901514Z /opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/starlette/testclient.py:190: in receive_json
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6901885Z     self._raise_on_close(message)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6902055Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6902186Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6902306Z self = <starlette.testclient.WebSocketTestSession object at 0x77c20ad32780>
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6902572Z message = {'type': 'websocket.close', 'code': 1000, 'reason': ''}
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6902719Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6902797Z     def _raise_on_close(self, message: Message) -> None:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6902987Z         if message["type"] == "websocket.close":
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6903254Z >           raise WebSocketDisconnect(code=message.get("code", 1000), reason=message.get("reason", ""))
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6903530Z E           starlette.websockets.WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6903653Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6903843Z /opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/starlette/testclient.py:143: WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6904190Z __________________ test_silence_does_not_cancel_inflight_llm ___________________
+test	Run python -m pytest -ra	2026-11-15T13:34:00.6904367Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7412359Z monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x77c208bc8910>
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7412800Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7412955Z     def test_silence_does_not_cancel_inflight_llm(monkeypatch) -> None:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7413269Z         class FirstSpeechOnlyVAD:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7413492Z             def __init__(self):
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7413700Z                 self.calls = 0
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7413910Z                 self.frame_bytes = 640
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7414129Z     
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7414299Z             def is_speech(self, frame):
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7414516Z                 self.calls += 1
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7414758Z                 return self.calls <= 2 or 18 <= self.calls <= 19
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7415010Z     
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7415187Z         class SlowReply:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7415369Z             calls = 0
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7415544Z     
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7415786Z             async def stream_reply(self, transcript: str) -> AsyncIterator[str]:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7416124Z                 self.calls += 1
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7416350Z                 await asyncio.sleep(10)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7416592Z                 yield "I can help."
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7416815Z     
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7416991Z         provider = SlowReply()
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7417285Z         monkeypatch.setattr(main, "WebRTCVAD", FirstSpeechOnlyVAD)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7417766Z         monkeypatch.setattr(main, "configured_providers", lambda: (FakeASR("yes"), provider, FakeTTS()))
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7418310Z         speech = {"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}}
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7418921Z         silence = {"event": "media", "media": {"payload": base64.b64encode(b"\xff" * 160 * 17).decode()}}
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7419202Z         with TestClient(app).websocket_connect("/ws") as socket:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7419411Z             socket.send_json({"event": "start"})
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7419596Z             assert socket.receive_json()["event"] == "media"
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7419776Z             socket.send_json(speech)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7419929Z             time.sleep(0.05)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7420072Z             socket.send_json(silence)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7420224Z             time.sleep(0.05)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7420366Z             socket.send_json(silence)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7420514Z             time.sleep(0.05)
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7420659Z >           assert provider.calls == 1
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7420812Z E           assert 0 == 1
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7421096Z E            +  where 0 = <test_websocket.test_silence_does_not_cancel_inflight_llm.<locals>.SlowReply object at 0x77c20acd3620>.calls
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7421348Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7421422Z tests/test_websocket.py:165: AssertionError
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7421935Z =============================== warnings summary ===============================
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7422369Z ../../../../../opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/fastapi/testclient.py:1
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7423038Z   /opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7423660Z     from starlette.testclient import TestClient as TestClient  # noqa
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7423837Z 
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7423981Z -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7424264Z =========================== short test summary info ============================
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7424837Z FAILED tests/test_guardrails.py::test_presidio_redacts_indian_phone_and_account_like_id - AssertionError: assert 'AB12345678' not in 'Call [REDAC...: AB12345678'
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7425214Z   
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7425349Z   'AB12345678' is contained here:
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7425535Z     Call [REDACTED_PHONE] about account: AB12345678
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7425738Z   ?                                      ++++++++++
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7426058Z FAILED tests/test_websocket.py::test_simulator_media_stream_round_trip - starlette.websockets.WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7426529Z FAILED tests/test_websocket.py::test_empty_media_returns_silence - starlette.websockets.WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7427014Z FAILED tests/test_websocket.py::test_declined_consent_exits_without_persisting_transcript - starlette.websockets.WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7427462Z FAILED tests/test_websocket.py::test_barge_in_cancels_inflight_llm - starlette.websockets.WebSocketDisconnect
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7427847Z FAILED tests/test_websocket.py::test_silence_does_not_cancel_inflight_llm - assert 0 == 1
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7428282Z  +  where 0 = <test_websocket.test_silence_does_not_cancel_inflight_llm.<locals>.SlowReply object at 0x77c20acd3620>.calls
+test	Run python -m pytest -ra	2026-11-15T13:34:00.7428846Z 6 failed, 28 passed, 1 warning in 0.90s
+test	Run python -m pytest -ra	2026-11-15T13:34:00.8551146Z ##[error]Process completed with exit code 1.
