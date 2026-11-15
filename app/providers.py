@@ -89,7 +89,7 @@ class OllamaLLM:
 
 
 class FasterWhisperASR:
-    def __init__(self, model_name: str = "base.en", device: str = "cpu", compute_type: str = "int8", beam_size: int = 5) -> None:
+    def __init__(self, model_name: str = "base", device: str = "cpu", compute_type: str = "int8", beam_size: int = 5) -> None:
         self.model_name, self.device, self.compute_type, self.beam_size = model_name, device, compute_type, beam_size
         self._model = None
 
@@ -149,7 +149,7 @@ def configured_providers() -> tuple[ASRProvider, LLMProvider, TTSProvider]:
     if os.getenv("VOICE_AGENT_REAL_PROVIDERS", "false").lower() != "true":
         return FakeASR(), FakeLLM(), FakeTTS()
     return (
-        FasterWhisperASR(os.getenv("ASR_MODEL", "base.en"), os.getenv("ASR_DEVICE", "cpu"), os.getenv("ASR_COMPUTE_TYPE", "int8")),
+        FasterWhisperASR(os.getenv("ASR_MODEL", "base"), os.getenv("ASR_DEVICE", "cpu"), os.getenv("ASR_COMPUTE_TYPE", "int8")),
         OllamaLLM(os.getenv("OLLAMA_MODEL", "qwen3:1.7b"), os.getenv("OLLAMA_URL", "http://localhost:11434"), think=False),
         PiperTTS(os.getenv("PIPER_VOICE_PATH", "")),
     )
