@@ -57,13 +57,16 @@ class BFSIToolExecutor:
         if name not in self.allowed_tools or not self.identity.authorize(self.customer_id):
             return {"error": "identity verification required"}
         method, path = _VERIFIED_TOOLS[name]
+        payload = dict(arguments)
+        if name in {"log_call_outcome", "schedule_callback"}:
+            payload["customer_id"] = self.customer_id
         try:
             async with httpx.AsyncClient(timeout=3.0) as client:
                 response = await client.request(
                     method,
                     f"{self.crm_url}{path.format(customer_id=arguments.get('customer_id', self.customer_id), loan_id=arguments.get('loan_id', ''))}",
                     headers={"X-API-Key": self.api_key, "X-Verified-Customer": self.customer_id},
-                    json=arguments if method == "POST" else None,
+                    json=payload if method == "POST" else None,
                     params={"customer_id": self.customer_id} if name == "create_payment_link" else None,
                 )
                 response.raise_for_status()

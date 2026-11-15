@@ -22,6 +22,19 @@ _TOOL_SCHEMAS: dict[str, dict[str, object]] = {
 }
 
 
+def _validate_tool_arguments(name: str, arguments: dict[str, Any]) -> None:
+    function = _TOOL_SCHEMAS[name]["function"]
+    schema = function["parameters"]
+    properties = schema.get("properties", {})
+    required = schema.get("required", [])
+    if set(arguments) - set(properties):
+        raise ValueError("unexpected tool argument")
+    if set(required) - set(arguments):
+        raise ValueError("missing tool argument")
+    if any(not isinstance(value, str) or not value.strip() for value in arguments.values()):
+        raise ValueError("tool arguments must be nonempty strings")
+
+
 class ConversationEngine:
     """One flow and tool executor per call; tool permissions come from the active flow state."""
 
@@ -31,7 +44,7 @@ class ConversationEngine:
         self.executor = executor
         self.state = "identity_check"
         self.prompt_version = self.flow["states"][self.state]["prompt_version"]
-        prompt_name = f"{flow_name}-v1.txt"
+        prompt_name = f"{flow_name}-v{self.prompt_version.rsplit('-', 1)[-1]}.txt"
         self.system_prompt = (_ROOT / "prompts" / prompt_name).read_text()
         self.tool_results: list[dict[str, object]] = []
         self.end_call = False
@@ -94,6 +107,7 @@ class ConversationEngine:
                     if name not in {item["function"]["name"] for item in tools}:
                         output = {"error": "tool not allowed in current state"}
                     else:
+                        _validate_tool_arguments(name, args)
                         output = await self.executor.execute(name, args)
                         if name == "verify_identity" and output.get("verified"):
                             self.state = "verified"

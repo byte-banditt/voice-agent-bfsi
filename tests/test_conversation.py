@@ -73,3 +73,18 @@ def test_stop_request_uses_polite_exit_and_ends_call():
     reply = asyncio.run(engine.respond(ToolLLM(), "Please end the call", trace))
     assert reply == "Understood. I will end the call now."
     assert engine.end_call
+
+
+def test_malformed_tool_arguments_are_rejected_without_execution():
+    class InvalidArgsLLM:
+        async def chat_with_tools(self, messages, tools):
+            return {"content": "", "tool_calls": [{"function": {
+                "name": "verify_identity", "arguments": {"dob": "1990-01-01"}}}]}
+
+    engine = ConversationEngine("emi_reminder", BFSIToolExecutor("http://127.0.0.1:1", "key", "cust-demo-1"))
+    async def must_not_execute(name, args):
+        raise AssertionError("invalid tool call reached executor")
+    engine.executor.execute = must_not_execute
+    trace = {"tool_calls": [], "guardrail_events": []}
+    asyncio.run(engine.respond(InvalidArgsLLM(), "verify me", trace))
+    assert trace["tool_calls"][0]["result"] == {"error": "invalid tool arguments"}
