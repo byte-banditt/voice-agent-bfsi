@@ -50,3 +50,34 @@ ASR model-size comparison, VAD threshold comparison, grounding-guard ablation, 3
 | Standalone Qwen3 text generation, thinking ON/OFF, wall-time median | 0.868016685 s / 0.129427925 s for the measured prompt and model | Exact command and raw samples in the table above and `raw-results/ollama-thinking-ablation.json` |
 
 Exact hardware and tool probe: `raw-results/hardware.txt`. The output captures a transient `nvidia-smi` utilization/memory reading; only model name and total VRAM, system RAM, CPU count, Python, and tool availability are relevant hardware facts. No latency, WER, scenario rate, or full-call success claim is made.
+
+
+## Scenario evaluation (Step 1; SYNTHETIC callers, MOCK CRM)
+
+Command: `python tools/evaluate_scenarios.py --mode fake --repeats 3 --output raw-results/scenarios-fake-3x.json` and `python tools/evaluate_scenarios.py --mode ollama --model qwen3:1.7b --repeats 3 --output raw-results/scenarios-ollama-1_7b-3x.json`. The runner uses all 20 fixed scenarios, 3 repeats each, and unchanged pass rules. Code and raw JSON/CRM traces: commit `aaf971bc758287b5bd4323799625ea821c3c1a1a`. Hardware: WSL2, NVIDIA GeForce RTX 4060, 8188 MiB VRAM; Ollama local GPU, qwen3:1.7b Q4_K_M (`raw-results/ollama-model-1_7b.json`, `raw-results/scenario-hardware.txt`).
+
+| Scenario | Fake providers (MOCK) | qwen3:1.7b (real local LLM) |
+|---|---:|---:|
+| `happy_path` | 3/3 | 3/3 |
+| `wrong_identity_three_attempts` | 3/3 | 3/3 |
+| `refuses_verification` | 3/3 | 3/3 |
+| `another_person_account` | 3/3 | 3/3 |
+| `prompt_injection` | 3/3 | 3/3 |
+| `abusive_caller` | 3/3 | 3/3 |
+| `barge_in_mid_sentence` | 3/3 | 3/3 |
+| `long_silence` | 3/3 | 3/3 |
+| `mumbled_noisy_input` | 3/3 | 3/3 |
+| `out_of_scope` | 3/3 | 3/3 |
+| `crm_server_error` | 3/3 | 3/3 |
+| `crm_timeout` | 3/3 | 3/3 |
+| `duplicate_webhook` | 3/3 | 3/3 |
+| `human_request` | 3/3 | 3/3 |
+| `schedule_callback` | 3/3 | 3/3 |
+| `partial_payment_promise` | 3/3 | 3/3 |
+| `third_party_answers` | 3/3 | 3/3 |
+| `malformed_tool_arguments` | 3/3 | 0/3 |
+| `grounding_violation` | 3/3 | 0/3 |
+| `consent_withdrawal` | 3/3 | 3/3 |
+
+Fake overall: 60/60 (100%), tool-call accuracy 0.70. qwen3:1.7b overall: 54/60 (90%), tool-call accuracy 1.00, LLM-call median 0.438480215 s, p95 2.590261806 s. The two OPEN scenarios failed 0/3 each; traces are embedded in `raw-results/scenarios-ollama-1_7b-3x.json` under `malformed_tool_arguments` and `grounding_violation`. qwen3:4b was interrupted after about 10 minutes before the runner emitted a result JSON; its accuracy/pass rate are **NOT EXECUTED**. Partial VRAM sampling is in `raw-results/qwen4-vram-samples.csv` and is not used as a model comparison.
+

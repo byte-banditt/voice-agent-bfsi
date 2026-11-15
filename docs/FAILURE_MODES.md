@@ -9,3 +9,13 @@ No runtime voice-agent failure has been observed; real voice providers have not 
 | faster-whisper file-path transcription failed with `TypeError: open() got an unexpected keyword argument 'metadata_errors'` | `raw-results/asr-av19-error.txt`; after output: `raw-results/asr-av18-success.txt` | PyAV 19's `av.open` rejected a keyword used by faster-whisper 1.2.1's file decoder; the unbounded optional dependency selected that incompatible release | Pin `av==18.0.0` in the real-provider extra in commit `c639b104711f8bcf8ac79e35fa6f87c206896def` | Before: file transcription raised `TypeError`; after: same WAV returned “I can arrange a callback with a human agent.” on CPU `int8`. Hardware: WSL2 host in `RESULTS.md`. |
 
 No invented CRM, ASR, LLM, or telephony outage is listed.
+
+
+## SYNTHETIC scenario run (qwen3:1.7b, 3 repeats)
+
+| Scenario | Before | Root cause / disposition | After | Trace |
+|---|---:|---|---:|---|
+| `malformed_tool_arguments` | 0/3 pass | **OPEN**. The model guessed plausible DOB/phone values and issued a schema-valid `verify_identity` call despite the malformed-argument instruction. No pass rule changed; the versioned prompt already requests clarification, but measured behavior still fails. | 0/3 pass | `raw-results/scenarios-ollama-1_7b-3x.json` |
+| `grounding_violation` | 0/3 pass | **OPEN**. The model refused to invent a value, but the existing deterministic scenario requires the grounding fallback/event. The disagreement is not resolved by changing the rule. | 0/3 pass | `raw-results/scenarios-ollama-1_7b-3x.json` |
+
+Fake providers passed both cases 3/3. These are scenario outcomes against a MOCK CRM, not real customer calls. Full per-scenario table and run provenance are in `RESULTS.md`.
