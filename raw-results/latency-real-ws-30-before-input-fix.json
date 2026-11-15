@@ -1,0 +1,1668 @@
+{
+  "classification": "SYNTHETIC audio; MOCK CRM; real local ASR/LLM/TTS",
+  "providers": {
+    "asr": "base.en",
+    "asr_device": "cpu",
+    "asr_compute_type": "int8",
+    "llm": "qwen3:1.7b",
+    "llm_quantization": "Q4_K_M",
+    "thinking": false,
+    "tts": "en_US-lessac-medium",
+    "vad": "WebRTC VAD"
+  },
+  "requested_turns": 30,
+  "turns": [
+    {
+      "turn": 1,
+      "user_stop_to_first_tts_byte_seconds": 6.753732509001566,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "9d13a5a8-36f8-4f7b-948b-720fddba257a",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6840179580030963,
+          "llm_first_token": 1.6870627200005401,
+          "llm_first_sentence": 1.6871010360009677,
+          "tts_first_audio": 0.09066163399984362
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6840179580030963,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 1.6871010360009677,
+      "tts_first_audio_byte_seconds": 0.09066163399984362
+    },
+    {
+      "turn": 2,
+      "user_stop_to_first_tts_byte_seconds": 3.239998100001685,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "9d03a232-1b6b-4c12-87c5-d017e4a00bd7",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6923233529996651,
+          "llm_first_token": 0.7823047680030868,
+          "llm_first_sentence": 0.782327154000086,
+          "tts_first_audio": 0.1231448239996098
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6923233529996651,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.782327154000086,
+      "tts_first_audio_byte_seconds": 0.1231448239996098
+    },
+    {
+      "turn": 3,
+      "user_stop_to_first_tts_byte_seconds": 2.1152201740005694,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "b4fbb957-83d3-4a7e-9b3b-d5181801452a",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6038608460003161,
+          "llm_first_token": 0.790372108000156,
+          "llm_first_sentence": 0.7903947340018931,
+          "tts_first_audio": 0.11904140000115149
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6038608460003161,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7903947340018931,
+      "tts_first_audio_byte_seconds": 0.11904140000115149
+    },
+    {
+      "turn": 4,
+      "user_stop_to_first_tts_byte_seconds": 2.7292553939987556,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "cfa19a3a-4513-4455-9cec-8ee5a484572b",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5790675370008103,
+          "llm_first_token": 0.8348053490008169,
+          "llm_first_sentence": 0.8348459040025773,
+          "tts_first_audio": 0.15066275500066695
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5790675370008103,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.8348459040025773,
+      "tts_first_audio_byte_seconds": 0.15066275500066695
+    },
+    {
+      "turn": 5,
+      "user_stop_to_first_tts_byte_seconds": 2.067973395998706,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "770c538e-154a-46ac-934f-f5f34fc6bf38",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6129435010007,
+          "llm_first_token": 0.6556682540031034,
+          "llm_first_sentence": 0.6557311510005093,
+          "tts_first_audio": 0.19898076800018316
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6129435010007,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.6557311510005093,
+      "tts_first_audio_byte_seconds": 0.19898076800018316
+    },
+    {
+      "turn": 6,
+      "user_stop_to_first_tts_byte_seconds": 2.4126241939993633,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "1072498a-395d-432f-abe0-6cb52223daaa",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6400147130007099,
+          "llm_first_token": 0.7815301150003506,
+          "llm_first_sentence": 0.781553131997498,
+          "tts_first_audio": 0.08310003099904861
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "phone_last4": "0134",
+              "dob": "January 2, 1990"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6400147130007099,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.781553131997498,
+      "tts_first_audio_byte_seconds": 0.08310003099904861
+    },
+    {
+      "turn": 7,
+      "user_stop_to_first_tts_byte_seconds": 2.255719427997974,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "f68444c7-96d2-48c0-86d6-d27ba7603083",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.590879291001329,
+          "llm_first_token": 0.7792157260009844,
+          "llm_first_sentence": 0.7792433229988092,
+          "tts_first_audio": 0.19604529900243506
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "phone_last4": "0134",
+              "dob": "January 2, 1990"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.590879291001329,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7792433229988092,
+      "tts_first_audio_byte_seconds": 0.19604529900243506
+    },
+    {
+      "turn": 8,
+      "user_stop_to_first_tts_byte_seconds": 2.2499441919972014,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "91d26a9b-e865-47e4-80af-fab74674e4b7",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5987052119999134,
+          "llm_first_token": 0.9072417229981511,
+          "llm_first_sentence": 0.9072634779986402,
+          "tts_first_audio": 0.15970515200024238
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5987052119999134,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.9072634779986402,
+      "tts_first_audio_byte_seconds": 0.15970515200024238
+    },
+    {
+      "turn": 9,
+      "user_stop_to_first_tts_byte_seconds": 1.9254254750012478,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "3aefcaeb-c388-4178-ac92-084ea6725ff7",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5697632689989405,
+          "llm_first_token": 0.7225209540010837,
+          "llm_first_sentence": 0.7225480720007909,
+          "tts_first_audio": 0.17809340799794882
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5697632689989405,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7225480720007909,
+      "tts_first_audio_byte_seconds": 0.17809340799794882
+    },
+    {
+      "turn": 10,
+      "user_stop_to_first_tts_byte_seconds": 2.0260945560003165,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "3f330511-7606-48f0-8aa4-99cd0f747e97",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5965162809989124,
+          "llm_first_token": 0.8068212460020732,
+          "llm_first_sentence": 0.8068413959990721,
+          "tts_first_audio": 0.15533850700012408
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5965162809989124,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.8068413959990721,
+      "tts_first_audio_byte_seconds": 0.15533850700012408
+    },
+    {
+      "turn": 11,
+      "user_stop_to_first_tts_byte_seconds": 2.102073122998263,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "39e9e6e5-56b0-4f8f-8441-449d102b54c1",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5921636340026453,
+          "llm_first_token": 0.8132438430002367,
+          "llm_first_sentence": 0.813264693999372,
+          "tts_first_audio": 0.17958241800079122
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5921636340026453,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.813264693999372,
+      "tts_first_audio_byte_seconds": 0.17958241800079122
+    },
+    {
+      "turn": 12,
+      "user_stop_to_first_tts_byte_seconds": 2.2325045130019134,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "a3265570-9e5f-47d7-953d-b335ab8854c1",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6179267510015052,
+          "llm_first_token": 1.015650301000278,
+          "llm_first_sentence": 1.01567223299935,
+          "tts_first_audio": 0.16109178600163432
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6179267510015052,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 1.01567223299935,
+      "tts_first_audio_byte_seconds": 0.16109178600163432
+    },
+    {
+      "turn": 13,
+      "user_stop_to_first_tts_byte_seconds": 1.8700715249979112,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "3a3bcb9a-88d2-4e50-b5f4-5a5c9032161d",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5841024330002256,
+          "llm_first_token": 0.7078356050005823,
+          "llm_first_sentence": 0.7078749279971817,
+          "tts_first_audio": 0.15645211699666106
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5841024330002256,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7078749279971817,
+      "tts_first_audio_byte_seconds": 0.15645211699666106
+    },
+    {
+      "turn": 14,
+      "user_stop_to_first_tts_byte_seconds": 2.035304044999066,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "521fc03c-f43d-4d31-8b67-c7bc58d8dac3",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5975023169994529,
+          "llm_first_token": 0.7275193639979989,
+          "llm_first_sentence": 0.7275423539977055,
+          "tts_first_audio": 0.18767456400019
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "phone_last4": "0134",
+              "dob": "January 2, 1990"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5975023169994529,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7275423539977055,
+      "tts_first_audio_byte_seconds": 0.18767456400019
+    },
+    {
+      "turn": 15,
+      "user_stop_to_first_tts_byte_seconds": 2.2042157769974438,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "2eb4fd0f-ad18-4c02-8317-a6eaede69577",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5946293220004009,
+          "llm_first_token": 0.9272118720000435,
+          "llm_first_sentence": 0.9272377969973604,
+          "tts_first_audio": 0.10253456700229435
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "phone_last4": "0134",
+              "dob": "January 2, 1990"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5946293220004009,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.9272377969973604,
+      "tts_first_audio_byte_seconds": 0.10253456700229435
+    },
+    {
+      "turn": 16,
+      "user_stop_to_first_tts_byte_seconds": 2.0870271820022026,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "3a181320-7d77-427f-bde8-b0fda95b7c52",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5710612799994124,
+          "llm_first_token": 0.77302758299993,
+          "llm_first_sentence": 0.7730652469981578,
+          "tts_first_audio": 0.1606056510026974
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5710612799994124,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7730652469981578,
+      "tts_first_audio_byte_seconds": 0.1606056510026974
+    },
+    {
+      "turn": 17,
+      "user_stop_to_first_tts_byte_seconds": 2.6185270400019363,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "17667aa9-98b2-4c9c-bc24-72d4336d1d80",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.8231909960013581,
+          "llm_first_token": 0.7569441810010176,
+          "llm_first_sentence": 0.7569714590026706,
+          "tts_first_audio": 0.09376813300332287
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.8231909960013581,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7569714590026706,
+      "tts_first_audio_byte_seconds": 0.09376813300332287
+    },
+    {
+      "turn": 18,
+      "user_stop_to_first_tts_byte_seconds": 2.010254647997499,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "fb1744cf-5df4-49e4-a059-f84f14888025",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5928927539971482,
+          "llm_first_token": 0.7716215319996991,
+          "llm_first_sentence": 0.7716514439998718,
+          "tts_first_audio": 0.12055791500097257
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5928927539971482,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7716514439998718,
+      "tts_first_audio_byte_seconds": 0.12055791500097257
+    },
+    {
+      "turn": 19,
+      "user_stop_to_first_tts_byte_seconds": 1.8934781690004456,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "4029f1e6-607c-4989-98bd-bd185f1e9667",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5760400609979115,
+          "llm_first_token": 0.7657623880004394,
+          "llm_first_sentence": 0.7657889729998715,
+          "tts_first_audio": 0.17490950600040378
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "phone_last4": "0134",
+              "dob": "January 2, 1990"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5760400609979115,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7657889729998715,
+      "tts_first_audio_byte_seconds": 0.17490950600040378
+    },
+    {
+      "turn": 20,
+      "user_stop_to_first_tts_byte_seconds": 1.9568096289985988,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "89bd7007-ac01-4e31-bcee-f362924b4eb1",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6104874709999422,
+          "llm_first_token": 0.7744361049990403,
+          "llm_first_sentence": 0.7744709939979657,
+          "tts_first_audio": 0.16600016899974435
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6104874709999422,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7744709939979657,
+      "tts_first_audio_byte_seconds": 0.16600016899974435
+    },
+    {
+      "turn": 21,
+      "user_stop_to_first_tts_byte_seconds": 1.976353415997437,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "5a38b579-39d6-4d14-b9b1-985732468d8d",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5702659399976255,
+          "llm_first_token": 0.8094983579976542,
+          "llm_first_sentence": 0.8095425389983575,
+          "tts_first_audio": 0.1976009130012244
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5702659399976255,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.8095425389983575,
+      "tts_first_audio_byte_seconds": 0.1976009130012244
+    },
+    {
+      "turn": 22,
+      "user_stop_to_first_tts_byte_seconds": 2.0407475149986567,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "4fd05cec-cf46-4e75-8f91-f697065baa93",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6219225919994642,
+          "llm_first_token": 0.7653158549983345,
+          "llm_first_sentence": 0.7653370560001349,
+          "tts_first_audio": 0.19550618399807718
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6219225919994642,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7653370560001349,
+      "tts_first_audio_byte_seconds": 0.19550618399807718
+    },
+    {
+      "turn": 23,
+      "user_stop_to_first_tts_byte_seconds": 2.0574200629998813,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "bd830eaf-7d5f-462f-b30d-a7d33cdb6cb7",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6030395239977224,
+          "llm_first_token": 0.7188087739996263,
+          "llm_first_sentence": 0.7188442070000747,
+          "tts_first_audio": 0.11225424300209852
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6030395239977224,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7188442070000747,
+      "tts_first_audio_byte_seconds": 0.11225424300209852
+    },
+    {
+      "turn": 24,
+      "user_stop_to_first_tts_byte_seconds": 1.945063172999653,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "25c1713c-d8bd-4e0d-88f3-ef626e1cc840",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.564773073001561,
+          "llm_first_token": 0.7849247340018337,
+          "llm_first_sentence": 0.7849532809996163,
+          "tts_first_audio": 0.16753333100132295
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.564773073001561,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7849532809996163,
+      "tts_first_audio_byte_seconds": 0.16753333100132295
+    },
+    {
+      "turn": 25,
+      "user_stop_to_first_tts_byte_seconds": 2.208440733000316,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "6911d7c0-fea2-467a-9924-3557b350e1f5",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.624783846000355,
+          "llm_first_token": 0.9841260859975591,
+          "llm_first_sentence": 0.9841831879966776,
+          "tts_first_audio": 0.07285227699685493
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.624783846000355,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.9841831879966776,
+      "tts_first_audio_byte_seconds": 0.07285227699685493
+    },
+    {
+      "turn": 26,
+      "user_stop_to_first_tts_byte_seconds": 2.0813817149974057,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "58b048d9-abf8-4a5e-bc12-6548c807cc8f",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6051688200022909,
+          "llm_first_token": 0.8796623069974885,
+          "llm_first_sentence": 0.879683044997364,
+          "tts_first_audio": 0.14966752200052724
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6051688200022909,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.879683044997364,
+      "tts_first_audio_byte_seconds": 0.14966752200052724
+    },
+    {
+      "turn": 27,
+      "user_stop_to_first_tts_byte_seconds": 2.09115718600151,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "fd180309-ec1f-4e89-82cf-f2e680c94295",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5941529310002807,
+          "llm_first_token": 0.8079028559986909,
+          "llm_first_sentence": 0.8079948919985327,
+          "tts_first_audio": 0.16571095799736213
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5941529310002807,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.8079948919985327,
+      "tts_first_audio_byte_seconds": 0.16571095799736213
+    },
+    {
+      "turn": 28,
+      "user_stop_to_first_tts_byte_seconds": 1.9637166170032287,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "90abf218-57c4-471c-aedb-644d65d0ced8",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.5847839699999895,
+          "llm_first_token": 0.7664042260003043,
+          "llm_first_sentence": 0.7664288080013648,
+          "tts_first_audio": 0.18636630399851128
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.5847839699999895,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.7664288080013648,
+      "tts_first_audio_byte_seconds": 0.18636630399851128
+    },
+    {
+      "turn": 29,
+      "user_stop_to_first_tts_byte_seconds": 2.1028178360029415,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "14063203-a4b7-4dfe-8f1c-c95d8246f1ed",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6036471570005233,
+          "llm_first_token": 0.8269485819982947,
+          "llm_first_sentence": 0.8269813299993984,
+          "tts_first_audio": 0.1690493139976752
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "January 2, 1990",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6036471570005233,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.8269813299993984,
+      "tts_first_audio_byte_seconds": 0.1690493139976752
+    },
+    {
+      "turn": 30,
+      "user_stop_to_first_tts_byte_seconds": 2.2037609619983414,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "7b52e579-ee8b-43be-bc49-1ce3869442ad",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is January 2, 1990, and my registered phone number ends in 0134. Please check my [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.6026949459992466,
+          "llm_first_token": 0.6656823839985009,
+          "llm_first_sentence": 0.6657065180006612,
+          "tts_first_audio": 0.10483550400022068
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "phone_last4": "0134",
+              "dob": "January 2, 1990"
+            },
+            "result": {
+              "error": "identity service unavailable",
+              "detail": "HTTPStatusError"
+            },
+            "state": "identity_check",
+            "state_before": "identity_check",
+            "state_after": "identity_check",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.6026949459992466,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 0.6657065180006612,
+      "tts_first_audio_byte_seconds": 0.10483550400022068
+    }
+  ],
+  "metrics_seconds": {
+    "vad_end_to_asr_done_seconds": {
+      "p50": 0.5975023169994529,
+      "p95": 0.6923233529996651,
+      "samples": 30
+    },
+    "llm_first_token_seconds": {
+      "p50": null,
+      "p95": null,
+      "samples": 0
+    },
+    "first_sentence_seconds": {
+      "p50": 0.781553131997498,
+      "p95": 1.01567223299935,
+      "samples": 30
+    },
+    "tts_first_audio_byte_seconds": {
+      "p50": 0.15970515200024238,
+      "p95": 0.1976009130012244,
+      "samples": 30
+    },
+    "user_stop_to_first_tts_byte_seconds": {
+      "p50": 2.0870271820022026,
+      "p95": 3.239998100001685,
+      "samples": 30
+    }
+  },
+  "notes": [
+    "LLM uses non-streaming structured tool calls; true first-token latency is unavailable."
+  ],
+  "completed_turns": 30,
+  "failed_turns": 0
+}

@@ -1,0 +1,41 @@
+Sun Nov 15 15:12:00 UTC 2026
+Sun Nov 15 15:12:01 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 615.78.05              KMD Version: 617.42        CUDA UMD Version: 13.4     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 4060 ...    On  |   00000000:01:00.0 Off |                  N/A |
+| N/A   39C    P8              1W /  113W |    1753MiB /   8188MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A           43257      C   /llama-server                         N/A      |
++-----------------------------------------------------------------------------------------+
+NAME          ID              SIZE      PROCESSOR    CONTEXT    UNTIL              
+qwen3:1.7b    8f68893c685c    1.7 GB    100% GPU     4096       4 minutes from now    
+[
+  {
+    "name": "qwen3:1.7b",
+    "size": 1359293444,
+    "details": {
+      "parent_model": "",
+      "format": "gguf",
+      "family": "qwen3",
+      "families": [
+        "qwen3"
+      ],
+      "parameter_size": "2.0B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 40960,
+      "embedding_length": 2048
+    }
+  }
+]

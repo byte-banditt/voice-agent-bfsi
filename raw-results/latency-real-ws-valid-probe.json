@@ -1,0 +1,123 @@
+{
+  "classification": "SYNTHETIC audio; MOCK CRM; real local ASR/LLM/TTS",
+  "providers": {
+    "asr": "base.en",
+    "asr_device": "cpu",
+    "asr_compute_type": "int8",
+    "llm": "qwen3:1.7b",
+    "llm_quantization": "Q4_K_M",
+    "thinking": false,
+    "tts": "en_US-lessac-medium",
+    "vad": "WebRTC VAD"
+  },
+  "requested_turns": 1,
+  "turns": [
+    {
+      "turn": 1,
+      "user_stop_to_first_tts_byte_seconds": 9.758512635002262,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "7fbc4f74-4bc1-45ac-902f-3a275139a90d",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My date of birth is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.3204584810009692,
+          "llm_first_token": 2.0920982559982804,
+          "llm_first_sentence": 2.093169013998704,
+          "tts_first_audio": 1.1309214949978923
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "demo-1"
+            },
+            "result": {
+              "error": "CRM rejected tool request",
+              "status": 404
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.3204584810009692,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.093169013998704,
+      "tts_first_audio_byte_seconds": 1.1309214949978923
+    }
+  ],
+  "metrics_seconds": {
+    "vad_end_to_asr_done_seconds": {
+      "p50": 1.3204584810009692,
+      "p95": 1.3204584810009692,
+      "samples": 1
+    },
+    "llm_first_token_seconds": {
+      "p50": null,
+      "p95": null,
+      "samples": 0
+    },
+    "first_sentence_seconds": {
+      "p50": 2.093169013998704,
+      "p95": 2.093169013998704,
+      "samples": 1
+    },
+    "tts_first_audio_byte_seconds": {
+      "p50": 1.1309214949978923,
+      "p95": 1.1309214949978923,
+      "samples": 1
+    },
+    "user_stop_to_first_tts_byte_seconds": {
+      "p50": 9.758512635002262,
+      "p95": 9.758512635002262,
+      "samples": 1
+    }
+  },
+  "notes": [
+    "LLM uses non-streaming structured tool calls; true first-token latency is unavailable."
+  ],
+  "completed_turns": 1,
+  "failed_turns": 0
+}

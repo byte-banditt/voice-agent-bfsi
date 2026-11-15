@@ -1,0 +1,126 @@
+{
+  "classification": "SYNTHETIC audio; MOCK CRM; real local ASR/LLM/TTS",
+  "providers": {
+    "asr": "base.en",
+    "asr_device": "cpu",
+    "asr_compute_type": "int8",
+    "llm": "qwen3:1.7b",
+    "llm_quantization": "Q4_K_M",
+    "thinking": false,
+    "tts": "en_US-lessac-medium",
+    "vad": "WebRTC VAD"
+  },
+  "requested_turns": 1,
+  "turns": [
+    {
+      "turn": 1,
+      "user_stop_to_first_tts_byte_seconds": 8.17355077799948,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "c18fed98-6639-4b7f-a04a-d34351843f7f",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.1120263890006754,
+          "llm_first_token": 2.282858380000107,
+          "llm_first_sentence": 2.2839509030018235,
+          "tts_first_audio": 1.3905563320004148
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.1120263890006754,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.2839509030018235,
+      "tts_first_audio_byte_seconds": 1.3905563320004148
+    }
+  ],
+  "metrics_seconds": {
+    "vad_end_to_asr_done_seconds": {
+      "p50": 1.1120263890006754,
+      "p95": 1.1120263890006754,
+      "samples": 1
+    },
+    "llm_first_token_seconds": {
+      "p50": null,
+      "p95": null,
+      "samples": 0
+    },
+    "first_sentence_seconds": {
+      "p50": 2.2839509030018235,
+      "p95": 2.2839509030018235,
+      "samples": 1
+    },
+    "tts_first_audio_byte_seconds": {
+      "p50": 1.3905563320004148,
+      "p95": 1.3905563320004148,
+      "samples": 1
+    },
+    "user_stop_to_first_tts_byte_seconds": {
+      "p50": 8.17355077799948,
+      "p95": 8.17355077799948,
+      "samples": 1
+    }
+  },
+  "notes": [
+    "LLM uses non-streaming structured tool calls; true first-token latency is unavailable."
+  ],
+  "completed_turns": 1,
+  "failed_turns": 0
+}

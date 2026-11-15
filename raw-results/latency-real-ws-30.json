@@ -1,0 +1,2317 @@
+{
+  "classification": "SYNTHETIC audio; MOCK CRM; real local ASR/LLM/TTS",
+  "providers": {
+    "asr": "base.en",
+    "asr_device": "cpu",
+    "asr_compute_type": "int8",
+    "llm": "qwen3:1.7b",
+    "llm_quantization": "Q4_K_M",
+    "thinking": false,
+    "tts": "en_US-lessac-medium",
+    "vad": "WebRTC VAD"
+  },
+  "requested_turns": 30,
+  "turns": [
+    {
+      "turn": 1,
+      "user_stop_to_first_tts_byte_seconds": 16.48429542699887,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "07836960-3b8a-4c62-98ce-1c347c5f1834",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 2.6748156459980237,
+          "llm_first_token": 3.5660686809969775,
+          "llm_first_sentence": 3.567470546997356,
+          "tts_first_audio": 2.450835689000087
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 2.6748156459980237,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 3.567470546997356,
+      "tts_first_audio_byte_seconds": 2.450835689000087
+    },
+    {
+      "turn": 2,
+      "user_stop_to_first_tts_byte_seconds": 16.62822980999772,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "67af6af8-4379-4056-8d9f-835191ac40a6",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.8324155939990305,
+          "llm_first_token": 3.103369324999221,
+          "llm_first_sentence": 3.1047435920008866,
+          "tts_first_audio": 5.682385423002415
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.8324155939990305,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 3.1047435920008866,
+      "tts_first_audio_byte_seconds": 5.682385423002415
+    },
+    {
+      "turn": 3,
+      "user_stop_to_first_tts_byte_seconds": 8.290255332001834,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "db038140-4e5a-4dc2-baa8-c7aeea27c641",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.3612877759987896,
+          "llm_first_token": 1.7246240990025399,
+          "llm_first_sentence": 1.7254263760005415,
+          "tts_first_audio": 0.6964558159997978
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted",
+          "grounding_violation"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.3612877759987896,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 1.7254263760005415,
+      "tts_first_audio_byte_seconds": 0.6964558159997978
+    },
+    {
+      "turn": 4,
+      "user_stop_to_first_tts_byte_seconds": 9.94673166800203,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "3846c34e-ae00-4516-9693-b17c4e43e8cb",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.6455741239988129,
+          "llm_first_token": 1.8729475910004112,
+          "llm_first_sentence": 1.8737853489983536,
+          "tts_first_audio": 0.7588383910006087
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "phone_last4": "0134",
+              "dob": "1990-01-02"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.6455741239988129,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 1.8737853489983536,
+      "tts_first_audio_byte_seconds": 0.7588383910006087
+    },
+    {
+      "turn": 5,
+      "user_stop_to_first_tts_byte_seconds": 17.3706304490006,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "0f31d1d0-3a79-45f2-9c53-b1cd0dec08be",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.7011896350013558,
+          "llm_first_token": 2.396389925997937,
+          "llm_first_sentence": 2.39803165199919,
+          "tts_first_audio": 5.242601400997955
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.7011896350013558,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.39803165199919,
+      "tts_first_audio_byte_seconds": 5.242601400997955
+    },
+    {
+      "turn": 6,
+      "user_stop_to_first_tts_byte_seconds": 18.039389336998283,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "57f15345-6c1f-4e1b-9ccc-6b7c461d09c7",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.4377442309996695,
+          "llm_first_token": 2.8576564159993723,
+          "llm_first_sentence": 2.859137395000289,
+          "tts_first_audio": 8.029947974999232
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "phone_last4": "0134",
+              "dob": "1990-01-02"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.4377442309996695,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.859137395000289,
+      "tts_first_audio_byte_seconds": 8.029947974999232
+    },
+    {
+      "turn": 7,
+      "user_stop_to_first_tts_byte_seconds": 10.262992864001717,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "772925e9-ce7e-4c9f-a36d-8073ba2a4c24",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.3798101779975696,
+          "llm_first_token": 2.681288609997864,
+          "llm_first_sentence": 2.6818588969981647,
+          "tts_first_audio": 1.0990538719997858
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.3798101779975696,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.6818588969981647,
+      "tts_first_audio_byte_seconds": 1.0990538719997858
+    },
+    {
+      "turn": 8,
+      "user_stop_to_first_tts_byte_seconds": 14.606462551997538,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "d5744e3c-fc47-4dfe-8f32-f95507692c43",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 3.7800065349983925,
+          "llm_first_token": 3.036380501998792,
+          "llm_first_sentence": 3.0378480719991785,
+          "tts_first_audio": 1.6831777820007119
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 3.7800065349983925,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 3.0378480719991785,
+      "tts_first_audio_byte_seconds": 1.6831777820007119
+    },
+    {
+      "turn": 9,
+      "user_stop_to_first_tts_byte_seconds": 9.254714457998489,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "cd3e4c7c-0008-43de-8a80-b9738d194d50",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.2161097289972531,
+          "llm_first_token": 2.438914129998011,
+          "llm_first_sentence": 2.439717061999545,
+          "tts_first_audio": 0.8154638160012837
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.2161097289972531,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.439717061999545,
+      "tts_first_audio_byte_seconds": 0.8154638160012837
+    },
+    {
+      "turn": 10,
+      "user_stop_to_first_tts_byte_seconds": 9.724938570998347,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "75768d52-d737-42a7-ab6d-44dac0b542e0",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 2.0255818879995786,
+          "llm_first_token": 2.0728205610030273,
+          "llm_first_sentence": 2.0737668400033726,
+          "tts_first_audio": 0.7080620060005458
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 2.0255818879995786,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.0737668400033726,
+      "tts_first_audio_byte_seconds": 0.7080620060005458
+    },
+    {
+      "turn": 11,
+      "user_stop_to_first_tts_byte_seconds": 10.798078286999953,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "bdda13d0-3e00-4788-8ef7-9ab718d70250",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.9412943819988868,
+          "llm_first_token": 2.969443379002769,
+          "llm_first_sentence": 2.9703644270011864,
+          "tts_first_audio": 1.3629407240005094
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.9412943819988868,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.9703644270011864,
+      "tts_first_audio_byte_seconds": 1.3629407240005094
+    },
+    {
+      "turn": 12,
+      "user_stop_to_first_tts_byte_seconds": 16.659360836001724,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "18be7471-0757-4bf8-8f94-2eed84c26960",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.9137835740002629,
+          "llm_first_token": 3.2642753530017217,
+          "llm_first_sentence": 3.2658788510016166,
+          "tts_first_audio": 6.1029610769983265
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.9137835740002629,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 3.2658788510016166,
+      "tts_first_audio_byte_seconds": 6.1029610769983265
+    },
+    {
+      "turn": 13,
+      "user_stop_to_first_tts_byte_seconds": 16.589702805998968,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "e39eabf2-ba8b-4209-8294-5c96d1cd3e27",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.5417248769990692,
+          "llm_first_token": 2.5056937520021165,
+          "llm_first_sentence": 2.50678925900138,
+          "tts_first_audio": 6.147427683998103
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.5417248769990692,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.50678925900138,
+      "tts_first_audio_byte_seconds": 6.147427683998103
+    },
+    {
+      "turn": 14,
+      "user_stop_to_first_tts_byte_seconds": 8.494919492997724,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "f3e1cd50-d7f7-4cb8-b80f-f4e344e1c6dd",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.382894832000602,
+          "llm_first_token": 2.0553020340012154,
+          "llm_first_sentence": 2.056362548002653,
+          "tts_first_audio": 0.4089752399995632
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.382894832000602,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.056362548002653,
+      "tts_first_audio_byte_seconds": 0.4089752399995632
+    },
+    {
+      "turn": 15,
+      "user_stop_to_first_tts_byte_seconds": 16.7095114679978,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "091adc66-ea00-44be-a1e7-09ef6e5e1afd",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 2.257158429998526,
+          "llm_first_token": 2.1110283349989913,
+          "llm_first_sentence": 2.112123105998762,
+          "tts_first_audio": 5.975639827000123
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 2.257158429998526,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.112123105998762,
+      "tts_first_audio_byte_seconds": 5.975639827000123
+    },
+    {
+      "turn": 16,
+      "user_stop_to_first_tts_byte_seconds": 15.880636270998366,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "146eaa97-49e3-44f6-909c-93473b431f2c",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.5747240609998698,
+          "llm_first_token": 1.9238280760000634,
+          "llm_first_sentence": 1.9246315299969865,
+          "tts_first_audio": 5.776710153000749
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.5747240609998698,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 1.9246315299969865,
+      "tts_first_audio_byte_seconds": 5.776710153000749
+    },
+    {
+      "turn": 17,
+      "user_stop_to_first_tts_byte_seconds": 19.094748538002023,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "2fb48592-ef0b-4da9-bea6-b7942902a187",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.1368785749982635,
+          "llm_first_token": 2.025054937999812,
+          "llm_first_sentence": 2.0258982710001874,
+          "tts_first_audio": 9.146227198001725
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.1368785749982635,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.0258982710001874,
+      "tts_first_audio_byte_seconds": 9.146227198001725
+    },
+    {
+      "turn": 18,
+      "user_stop_to_first_tts_byte_seconds": 15.765651742000045,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "86d67efc-99de-4b7c-acaf-4bcad3410e91",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.7191589350004506,
+          "llm_first_token": 1.804961384001217,
+          "llm_first_sentence": 1.8062478290012223,
+          "tts_first_audio": 4.901259656999173
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "phone_last4": "0134",
+              "dob": "1990-01-02"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.7191589350004506,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 1.8062478290012223,
+      "tts_first_audio_byte_seconds": 4.901259656999173
+    },
+    {
+      "turn": 19,
+      "user_stop_to_first_tts_byte_seconds": 15.429324976001226,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "bb746796-d6cb-445a-9090-33b8418b0b60",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 2.2157200900001044,
+          "llm_first_token": 1.9745660590015177,
+          "llm_first_sentence": 1.9755045489982876,
+          "tts_first_audio": 5.004697323001892
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 2.2157200900001044,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 1.9755045489982876,
+      "tts_first_audio_byte_seconds": 5.004697323001892
+    },
+    {
+      "turn": 20,
+      "user_stop_to_first_tts_byte_seconds": 10.12130172900288,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "0539674c-4b8e-49ee-bbd6-f209178e21ae",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.5317553400018369,
+          "llm_first_token": 2.592946890999883,
+          "llm_first_sentence": 2.594092974002706,
+          "tts_first_audio": 0.6648495869994804
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.5317553400018369,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.594092974002706,
+      "tts_first_audio_byte_seconds": 0.6648495869994804
+    },
+    {
+      "turn": 21,
+      "user_stop_to_first_tts_byte_seconds": 14.159473453000828,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "d8a65f34-ea64-4169-93ce-5b63cd20d611",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 0.9989298019972921,
+          "llm_first_token": 1.9710150990031252,
+          "llm_first_sentence": 1.9717841220008268,
+          "tts_first_audio": 5.764950173997931
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 0.9989298019972921,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 1.9717841220008268,
+      "tts_first_audio_byte_seconds": 5.764950173997931
+    },
+    {
+      "turn": 22,
+      "user_stop_to_first_tts_byte_seconds": 10.513996580000821,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "9e70792b-5bc4-44e2-abb1-147a8bad7e51",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.641151751999132,
+          "llm_first_token": 2.22618864299875,
+          "llm_first_sentence": 2.22668393999993,
+          "tts_first_audio": 1.163211022001633
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.641151751999132,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.22668393999993,
+      "tts_first_audio_byte_seconds": 1.163211022001633
+    },
+    {
+      "turn": 23,
+      "user_stop_to_first_tts_byte_seconds": 18.705481124998187,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "3eafdc08-d9fe-4e36-bc50-5973b42d865d",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 3.917658731999836,
+          "llm_first_token": 2.8806117509993783,
+          "llm_first_sentence": 2.882400181999401,
+          "tts_first_audio": 5.876857519997429
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 3.917658731999836,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.882400181999401,
+      "tts_first_audio_byte_seconds": 5.876857519997429
+    },
+    {
+      "turn": 24,
+      "user_stop_to_first_tts_byte_seconds": 12.23955621499772,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "2fd37cb4-089e-4e54-a934-829bd371bb38",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 2.2370736860029865,
+          "llm_first_token": 2.559418389999337,
+          "llm_first_sentence": 2.560806138000771,
+          "tts_first_audio": 1.2954627860017354
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 2.2370736860029865,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.560806138000771,
+      "tts_first_audio_byte_seconds": 1.2954627860017354
+    },
+    {
+      "turn": 25,
+      "user_stop_to_first_tts_byte_seconds": 9.704869477001921,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "278062e2-cdb9-4f0b-9989-78fbd5ec1d25",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.3057531819977157,
+          "llm_first_token": 2.4580111840004975,
+          "llm_first_sentence": 2.459372205001273,
+          "tts_first_audio": 1.331291186001181
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.3057531819977157,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.459372205001273,
+      "tts_first_audio_byte_seconds": 1.331291186001181
+    },
+    {
+      "turn": 26,
+      "user_stop_to_first_tts_byte_seconds": 14.84136802699868,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "60435a1c-f1f7-4bb2-8bab-a40846d6affc",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.67575596000097,
+          "llm_first_token": 1.8623508409982605,
+          "llm_first_sentence": 1.8630013949987188,
+          "tts_first_audio": 6.031522221001069
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.67575596000097,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 1.8630013949987188,
+      "tts_first_audio_byte_seconds": 6.031522221001069
+    },
+    {
+      "turn": 27,
+      "user_stop_to_first_tts_byte_seconds": 11.403669703999185,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "2e4da1f3-cc6b-4923-9d1c-f5d7656b748e",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.1406393610013765,
+          "llm_first_token": 2.318305661003251,
+          "llm_first_sentence": 2.319844681001996,
+          "tts_first_audio": 1.1900007069998537
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.1406393610013765,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.319844681001996,
+      "tts_first_audio_byte_seconds": 1.1900007069998537
+    },
+    {
+      "turn": 28,
+      "user_stop_to_first_tts_byte_seconds": 10.613562127000478,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "a7b985d0-ce2c-4493-a691-426eb30e6f57",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.2550785140010703,
+          "llm_first_token": 2.9542371409988846,
+          "llm_first_sentence": 2.9558405889983987,
+          "tts_first_audio": 0.7222182620025706
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.2550785140010703,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.9558405889983987,
+      "tts_first_audio_byte_seconds": 0.7222182620025706
+    },
+    {
+      "turn": 29,
+      "user_stop_to_first_tts_byte_seconds": 16.36207574400032,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "fbcc8b12-7caf-4c55-83f0-cc40e7447e8f",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.9107941139991453,
+          "llm_first_token": 2.1535331570012204,
+          "llm_first_sentence": 2.154674760000489,
+          "tts_first_audio": 5.546753280999837
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "dob": "1990-01-02",
+              "phone_last4": "0134"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.9107941139991453,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 2.154674760000489,
+      "tts_first_audio_byte_seconds": 5.546753280999837
+    },
+    {
+      "turn": 30,
+      "user_stop_to_first_tts_byte_seconds": 10.913953570998274,
+      "first_audio_received": true,
+      "trace": {
+        "call_id": "29f30708-7e16-4edd-b50b-fbb46b7bd067",
+        "provider_mode": "REAL",
+        "model_versions": {
+          "asr": "base.en",
+          "llm": "qwen3:1.7b",
+          "tts": "en_US-lessac-medium.onnx"
+        },
+        "prompt_version": "emi-4",
+        "flow": "emi_reminder",
+        "transcript": "My DIOB is [REDACTED_PHONE], my phone last 4 digits are 0134, please tell me the status of a loan, the exact identifier is [REDACTED_ACCOUNT_ID].",
+        "stage_seconds": {
+          "asr": 1.6975259150021884,
+          "llm_first_token": 3.042971253002179,
+          "llm_first_sentence": 3.044310276000033,
+          "tts_first_audio": 0.692070306999085
+        },
+        "tool_calls": [
+          {
+            "name": "verify_identity",
+            "arguments": {
+              "phone_last4": "0134",
+              "dob": "1990-01-02"
+            },
+            "result": {
+              "verified": true,
+              "attempts_remaining": 3
+            },
+            "state": "verified",
+            "state_before": "identity_check",
+            "state_after": "verified",
+            "allowed_tools": [
+              "escalate_to_human",
+              "verify_identity"
+            ],
+            "arguments_valid": true
+          },
+          {
+            "name": "get_loan_status",
+            "arguments": {
+              "loan_id": "loan-demo-1"
+            },
+            "result": {
+              "id": "loan-demo-1",
+              "customer_id": "cust-demo-1",
+              "status": "due",
+              "amount": "1200",
+              "due_date": "2030-01-15"
+            },
+            "state": "verified",
+            "state_before": "verified",
+            "state_after": "verified",
+            "allowed_tools": [
+              "create_payment_link",
+              "escalate_to_human",
+              "get_loan_status",
+              "log_call_outcome",
+              "schedule_callback"
+            ],
+            "arguments_valid": true
+          }
+        ],
+        "guardrail_events": [
+          "recording_consent_requested",
+          "recording_consent_granted"
+        ],
+        "errors": [],
+        "consent_status": "granted"
+      },
+      "vad_end_to_asr_done_seconds": 1.6975259150021884,
+      "llm_first_token_seconds": null,
+      "first_sentence_seconds": 3.044310276000033,
+      "tts_first_audio_byte_seconds": 0.692070306999085
+    }
+  ],
+  "metrics_seconds": {
+    "vad_end_to_asr_done_seconds": {
+      "p50": 1.6433629379989725,
+      "p95": 3.7800065349983925,
+      "samples": 30
+    },
+    "llm_first_token_seconds": {
+      "p50": null,
+      "p95": null,
+      "samples": 0
+    },
+    "first_sentence_seconds": {
+      "p50": 2.4188743569993676,
+      "p95": 3.2658788510016166,
+      "samples": 30
+    },
+    "tts_first_audio_byte_seconds": {
+      "p50": 2.0670067355003994,
+      "p95": 8.029947974999232,
+      "samples": 30
+    },
+    "user_stop_to_first_tts_byte_seconds": {
+      "p50": 14.382968002499183,
+      "p95": 18.705481124998187,
+      "samples": 30
+    }
+  },
+  "notes": [
+    "LLM uses non-streaming structured tool calls; true first-token latency is unavailable."
+  ],
+  "completed_turns": 30,
+  "failed_turns": 0
+}
