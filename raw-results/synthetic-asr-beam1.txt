@@ -1,0 +1,1 @@
+hypotheses_written=/tmp/voice-agent-synthetic/hypotheses-beam1.csv model=base.en device=cpu compute_type=int8 beam_size=1

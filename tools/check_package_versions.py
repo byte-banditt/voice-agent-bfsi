@@ -8,7 +8,7 @@ def main() -> None:
     packages = (
         "fastapi", "uvicorn", "prometheus-client", "httpx", "python-dotenv",
         "pytest", "numpy", "faster-whisper", "piper-tts", "presidio-analyzer",
-        "presidio-anonymizer", "jiwer", "PyYAML", "websockets",
+        "presidio-anonymizer", "jiwer", "PyYAML", "websockets", "av",
     )
     for name in packages:
         with urllib.request.urlopen(f"https://pypi.org/pypi/{name}/json") as response:

@@ -1,0 +1,1 @@
+classification=SYNTHETIC utterances=20 clean=10 noisy=10 gaussian_noise_scale=250 seed=17 piper_noise_scale=0.0 piper_noise_w_scale=0.0 output=/tmp/voice-agent-synthetic
