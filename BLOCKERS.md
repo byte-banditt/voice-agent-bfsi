@@ -6,4 +6,4 @@
 - A complete conversation loop that invokes `BFSIToolExecutor`, loads YAML flow policy, and applies conduct/consent rules is not wired; the full scenario suite and per-scenario pass rate are **NOT EXECUTED**.
 - Presidio recognizer pipeline, webhook sender/retry, CRM-backed dashboard query, and conduct/consent enforcement in the live call loop are not complete.
 - RBI recovery-calling-hours source was not verified; the configured-hours policy is only an assumption and is not enforced.
-- GitHub Actions remote run was not executed or verified; no status badge is shown.
+- Docker Compose execution and end-to-end provider/CRM integration remain **NOT EXECUTED**; the remote CI run is recorded in RESULTS.md.

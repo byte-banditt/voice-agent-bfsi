@@ -1,0 +1,289 @@
+test	Set up job	﻿2026-11-15T08:44:20.6782187Z Current runner version: '2.338.2'
+test	Set up job	2026-11-15T08:44:20.6801994Z ##[group]Runner Image Provisioner
+test	Set up job	2026-11-15T08:44:20.6802658Z Hosted Compute Agent
+test	Set up job	2026-11-15T08:44:20.6803031Z Version: 20261103.629
+test	Set up job	2026-11-15T08:44:20.6803454Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+test	Set up job	2026-11-15T08:44:20.6803964Z Build Date: 2026-11-03T17:26:59Z
+test	Set up job	2026-11-15T08:44:20.6804390Z Worker ID: {9fbb098a-74ee-4fe1-90fa-cba2296aefe5}
+test	Set up job	2026-11-15T08:44:20.6804894Z Region: centralus
+test	Set up job	2026-11-15T08:44:20.6805238Z Cloud: Azure
+test	Set up job	2026-11-15T08:44:20.6805598Z ##[endgroup]
+test	Set up job	2026-11-15T08:44:20.6806811Z ##[group]Operating System
+test	Set up job	2026-11-15T08:44:20.6807204Z Ubuntu
+test	Set up job	2026-11-15T08:44:20.6807513Z 26.04.1
+test	Set up job	2026-11-15T08:44:20.6807885Z LTS
+test	Set up job	2026-11-15T08:44:20.6808232Z ##[endgroup]
+test	Set up job	2026-11-15T08:44:20.6808606Z ##[group]Runner Image
+test	Set up job	2026-11-15T08:44:20.6808995Z Image: ubuntu-26.04
+test	Set up job	2026-11-15T08:44:20.6809348Z Version: 20261111.196.1
+test	Set up job	2026-11-15T08:44:20.6810080Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261111.196/images/ubuntu/Ubuntu2604-Readme.md
+test	Set up job	2026-11-15T08:44:20.6811207Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261111.196
+test	Set up job	2026-11-15T08:44:20.6811795Z ##[endgroup]
+test	Set up job	2026-11-15T08:44:20.6812569Z ##[group]GITHUB_TOKEN Permissions
+test	Set up job	2026-11-15T08:44:20.6813934Z Contents: read
+test	Set up job	2026-11-15T08:44:20.6814267Z Metadata: read
+test	Set up job	2026-11-15T08:44:20.6814774Z Packages: read
+test	Set up job	2026-11-15T08:44:20.6815122Z ##[endgroup]
+test	Set up job	2026-11-15T08:44:20.6816977Z Secret source: Actions
+test	Set up job	2026-11-15T08:44:20.6817613Z Cache mode: write
+test	Set up job	2026-11-15T08:44:20.6818098Z Prepare workflow directory
+test	Set up job	2026-11-15T08:44:20.7073300Z Prepare all required actions
+test	Set up job	2026-11-15T08:44:20.7105679Z Getting action download info
+test	Set up job	2026-11-15T08:44:20.9131399Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+test	Set up job	2026-11-15T08:44:20.9819416Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+test	Set up job	2026-11-15T08:44:21.1279797Z Complete job name: test
+test	Run actions/checkout@v4	﻿2026-11-15T08:44:21.1860607Z ##[group]Run actions/checkout@v4
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1861067Z with:
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1861340Z   repository: byte-banditt/voice-agent-bfsi
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1863523Z   token: ***
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1863770Z   ssh-strict: true
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1864024Z   ssh-user: git
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1864282Z   persist-credentials: true
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1864564Z   clean: true
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1864816Z   sparse-checkout-cone-mode: true
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1865114Z   fetch-depth: 1
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1865358Z   fetch-tags: false
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1865612Z   show-progress: true
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1865876Z   lfs: false
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1866110Z   submodules: false
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1866484Z   set-safe-directory: true
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1866768Z   allow-unsafe-pr-checkout: false
+test	Run actions/checkout@v4	2026-11-15T08:44:21.1867141Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3658589Z Syncing repository: byte-banditt/voice-agent-bfsi
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3659946Z ##[group]Getting Git version info
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3660424Z Working directory is '/home/runner/work/voice-agent-bfsi/voice-agent-bfsi'
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3661332Z [command]/usr/bin/git version
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3681295Z git version 2.56.1
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3693329Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3703808Z Temporarily overriding HOME='/home/runner/work/_temp/0e7082cd-c6e4-41c9-80e2-c3a2d6ed7146' before making global git config changes
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3705248Z Adding repository directory to the temporary git global config as a safe directory
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3707820Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/voice-agent-bfsi/voice-agent-bfsi
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3759610Z Deleting the contents of '/home/runner/work/voice-agent-bfsi/voice-agent-bfsi'
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3762242Z ##[group]Initializing the repository
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3765951Z [command]/usr/bin/git init /home/runner/work/voice-agent-bfsi/voice-agent-bfsi
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3841808Z hint: Using 'master' as the name for the initial branch. This default branch name
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3843396Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3844275Z hint: to use in all of your new repositories, which will suppress this warning,
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3845016Z hint: call:
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3845782Z hint:
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3846436Z hint: 	git config --global init.defaultBranch <name>
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3847079Z hint:
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3847683Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3848631Z hint: 'development'. The just-created branch can be renamed via this command:
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3849360Z hint:
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3849789Z hint: 	git branch -m <name>
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3850298Z hint:
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3850947Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3852014Z Initialized empty Git repository in /home/runner/work/voice-agent-bfsi/voice-agent-bfsi/.git/
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3859693Z [command]/usr/bin/git remote add origin https://github.com/byte-banditt/voice-agent-bfsi
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3905096Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3905981Z ##[group]Disabling automatic garbage collection
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3908473Z [command]/usr/bin/git config --local gc.auto 0
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3940855Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3941550Z ##[group]Setting up auth
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3946722Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	Run actions/checkout@v4	2026-11-15T08:44:21.3976763Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	Run actions/checkout@v4	2026-11-15T08:44:21.4331661Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	Run actions/checkout@v4	2026-11-15T08:44:21.4360930Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	Run actions/checkout@v4	2026-11-15T08:44:21.4585120Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	Run actions/checkout@v4	2026-11-15T08:44:21.4615800Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	Run actions/checkout@v4	2026-11-15T08:44:21.4833877Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test	Run actions/checkout@v4	2026-11-15T08:44:21.4869826Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-15T08:44:21.4870573Z ##[group]Fetching the repository
+test	Run actions/checkout@v4	2026-11-15T08:44:21.4877396Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3f1818984773c21e9c60f37c26cea83638e66603:refs/remotes/origin/feat/voice-agent-mvp
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7757488Z From https://github.com/byte-banditt/voice-agent-bfsi
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7758415Z  * [new ref]         3f1818984773c21e9c60f37c26cea83638e66603 -> origin/feat/voice-agent-mvp
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7760733Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7762880Z ##[group]Determining the checkout info
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7763461Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7767187Z [command]/usr/bin/git sparse-checkout disable
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7812138Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7840551Z ##[group]Checking out the ref
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7851432Z [command]/usr/bin/git checkout --progress --force -B feat/voice-agent-mvp refs/remotes/origin/feat/voice-agent-mvp
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7927683Z Switched to a new branch 'feat/voice-agent-mvp'
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7929922Z branch 'feat/voice-agent-mvp' set up to track 'origin/feat/voice-agent-mvp'.
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7935886Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7975393Z [command]/usr/bin/git log -1 --format=%H
+test	Run actions/checkout@v4	2026-11-15T08:44:21.7997382Z 3f1818984773c21e9c60f37c26cea83638e66603
+test	Run actions/setup-python@v5	﻿2026-11-15T08:44:21.8227955Z ##[group]Run actions/setup-python@v5
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.8228356Z with:
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.8228616Z   python-version: 3.13
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.8229033Z   check-latest: false
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.8231211Z   token: ***
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.8231485Z   update-environment: true
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.8231805Z   allow-prereleases: false
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.8232130Z   freethreaded: false
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.8232420Z ##[endgroup]
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.9213664Z ##[group]Installed versions
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.9299225Z (node:2193) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.9300655Z (Use `node --trace-deprecation ...` to show where the warning was created)
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.9301420Z Successfully set up CPython (3.13.18)
+test	Run actions/setup-python@v5	2026-11-15T08:44:21.9302295Z ##[endgroup]
+test	Run python -m pip install -e '.[test]'	﻿2026-11-15T08:44:21.9550931Z ##[group]Run python -m pip install -e '.[test]'
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:21.9551613Z [36;1mpython -m pip install -e '.[test]'[0m
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:21.9693466Z shell: /usr/bin/bash -e {0}
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:21.9693920Z env:
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:21.9694260Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:21.9694792Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:21.9695275Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:21.9695714Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:21.9696153Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:21.9696713Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:21.9697117Z ##[endgroup]
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:24.3534188Z Obtaining file:///home/runner/work/voice-agent-bfsi/voice-agent-bfsi
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:24.3545656Z   Installing build dependencies: started
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:25.1114274Z   Installing build dependencies: finished with status 'done'
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:25.1122284Z   Checking if build backend supports build_editable: started
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:25.4942989Z   Checking if build backend supports build_editable: finished with status 'done'
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:25.4950135Z   Getting requirements to build editable: started
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:25.7524902Z   Getting requirements to build editable: finished with status 'done'
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:25.7533175Z   Preparing editable metadata (pyproject.toml): started
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:25.8905630Z   Preparing editable metadata (pyproject.toml): finished with status 'done'
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:25.9833965Z Collecting fastapi==0.163.0 (from voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.0367783Z   Downloading fastapi-0.163.0-py3-none-any.whl.metadata (27 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.0698029Z Collecting uvicorn==0.54.0 (from uvicorn[standard]==0.54.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.0857132Z   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.1085164Z Collecting prometheus-client==0.26.0 (from voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.1243009Z   Downloading prometheus_client-0.26.0-py3-none-any.whl.metadata (2.1 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.1476602Z Collecting httpx==0.28.1 (from voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.1633408Z   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.1868220Z Collecting python-dotenv==1.2.4 (from voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.2023407Z   Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.2381815Z Collecting pytest==9.2.0 (from voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.2537365Z   Downloading pytest-9.2.0-py3-none-any.whl.metadata (7.9 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.2822615Z Collecting starlette>=0.46.0 (from fastapi==0.163.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.2982202Z   Downloading starlette-1.10.0-py3-none-any.whl.metadata (6.6 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.3261526Z Collecting anyio>=4.1.0 (from fastapi==0.163.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.3418389Z   Downloading anyio-4.16.0-py3-none-any.whl.metadata (4.7 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.4210692Z Collecting pydantic>=2.9.0 (from fastapi==0.163.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.4370358Z   Downloading pydantic-2.14.3-py3-none-any.whl.metadata (141 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.4812178Z Collecting typing-extensions>=4.8.0 (from fastapi==0.163.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.4969849Z   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.5180804Z Collecting typing-inspection>=0.4.2 (from fastapi==0.163.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.5337518Z   Downloading typing_inspection-0.4.5-py3-none-any.whl.metadata (2.6 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.5553809Z Collecting annotated-doc>=0.0.2 (from fastapi==0.163.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.5712005Z   Downloading annotated_doc-0.0.6-py3-none-any.whl.metadata (6.5 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.5963552Z Collecting opentelemetry-api>=1.44.0 (from fastapi==0.163.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.6121892Z   Downloading opentelemetry_api-1.45.2-py3-none-any.whl.metadata (1.4 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.6390842Z Collecting certifi (from httpx==0.28.1->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.6549259Z   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.6894449Z Collecting httpcore==1.* (from httpx==0.28.1->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.7052763Z   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.7286025Z Collecting idna (from httpx==0.28.1->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.7442933Z   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.7662426Z Collecting iniconfig>=2 (from pytest==9.2.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.7820469Z   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.8051805Z Collecting packaging>=24 (from pytest==9.2.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.8217144Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.8432106Z Collecting pluggy<2,>=1.6 (from pytest==9.2.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.8591325Z   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.8868123Z Collecting pygments>=2.15 (from pytest==9.2.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.9024677Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.9276456Z Collecting click>=7.0 (from uvicorn==0.54.0->uvicorn[standard]==0.54.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.9431638Z   Downloading click-8.5.1-py3-none-any.whl.metadata (2.6 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.9642345Z Collecting h11>=0.8 (from uvicorn==0.54.0->uvicorn[standard]==0.54.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:26.9798044Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.0124138Z Collecting httptools>=0.8.0 (from uvicorn[standard]==0.54.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.0282638Z   Downloading httptools-0.9.0-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.5 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.0787830Z Collecting pyyaml>=5.1 (from uvicorn[standard]==0.54.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.0941798Z   Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.1262891Z Collecting uvloop>=0.15.1 (from uvicorn[standard]==0.54.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.1415890Z   Downloading uvloop-0.23.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.1 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.1939964Z Collecting watchfiles>=0.20 (from uvicorn[standard]==0.54.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.2095891Z   Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.2841851Z Collecting websockets>=13.0 (from uvicorn[standard]==0.54.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.2997766Z   Downloading websockets-17.4-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.3 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.3239063Z Collecting annotated-types>=0.6.0 (from pydantic>=2.9.0->fastapi==0.163.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.3392042Z   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.6857437Z Collecting pydantic-core==2.50.4 (from pydantic>=2.9.0->fastapi==0.163.0->voice-agent-bfsi==0.1.0)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.7015093Z   Downloading pydantic_core-2.50.4-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (6.6 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.7251981Z Downloading fastapi-0.163.0-py3-none-any.whl (154 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.7477064Z Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.7653268Z Downloading prometheus_client-0.26.0-py3-none-any.whl (64 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.7827961Z Downloading pytest-9.2.0-py3-none-any.whl (411 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.8153018Z Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.8325621Z Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.8503332Z Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.8702942Z Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.8877312Z Downloading annotated_doc-0.0.6-py3-none-any.whl (5.3 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.9051195Z Downloading anyio-4.16.0-py3-none-any.whl (134 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.9228468Z Downloading click-8.5.1-py3-none-any.whl (126 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.9406513Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.9583132Z Downloading httptools-0.9.0-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (520 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.9799737Z Downloading idna-3.20-py3-none-any.whl (69 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:27.9972900Z Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.0143748Z Downloading opentelemetry_api-1.45.2-py3-none-any.whl (60 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.0316427Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.0494586Z Downloading pydantic-2.14.3-py3-none-any.whl (494 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.0701871Z Downloading pydantic_core-2.50.4-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (2.3 MB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.1045635Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 65.7 MB/s  0:00:00
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.1205461Z Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.1381070Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.1436573Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 269.9 MB/s  0:00:00
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.1595175Z Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (801 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.1637139Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 801.6/801.6 kB 210.4 MB/s  0:00:00
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.1793923Z Downloading starlette-1.10.0-py3-none-any.whl (80 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.1967093Z Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.2140321Z Downloading typing_inspection-0.4.5-py3-none-any.whl (14 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.2312472Z Downloading uvloop-0.23.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (4.5 MB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.2745158Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 101.7 MB/s  0:00:00
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.2903712Z Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (458 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.3084397Z Downloading websockets-17.4-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (226 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.3258687Z Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.3730563Z Building wheels for collected packages: voice-agent-bfsi
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.3737001Z   Building editable for voice-agent-bfsi (pyproject.toml): started
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5202899Z   Building editable for voice-agent-bfsi (pyproject.toml): finished with status 'done'
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5209238Z   /tmp/pip-build-env-umg5kr3u/overlay/lib/python3.13/site-packages/setuptools/command/editable_wheel.py:354: BuildBackendWarning: Editable installation.
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5209814Z   !!
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5210310Z   
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5210543Z           ********************************************************************************
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5211307Z           Please be careful with folders in your working directory with the same
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5211741Z           name as your package as they may take precedence during imports.
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5212075Z           ********************************************************************************
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5212374Z   
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5212553Z   !!
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5212796Z     with strategy, WheelFile(wheel_path, "w") as wheel_obj:
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5213445Z   Created wheel for voice-agent-bfsi: filename=voice_agent_bfsi-0.1.0-0.editable-py3-none-any.whl size=3051 sha256=e0388776e3c9becef4c0dad6e686de93325d56c14b314d035017e2af2d6f9cc6
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5214210Z   Stored in directory: /tmp/pip-ephem-wheel-cache-1hxn7qcg/wheels/7a/e3/eb/f6196ebf62cc2b86645c469d7a08c7ce06bcebd44302fa0048
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5223947Z Successfully built voice-agent-bfsi
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:28.5558022Z Installing collected packages: websockets, uvloop, typing-extensions, pyyaml, python-dotenv, pygments, prometheus-client, pluggy, packaging, iniconfig, idna, httptools, h11, click, certifi, annotated-types, annotated-doc, uvicorn, typing-inspection, pytest, pydantic-core, opentelemetry-api, httpcore, anyio, watchfiles, starlette, pydantic, httpx, fastapi, voice-agent-bfsi
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:30.3699176Z 
+test	Run python -m pip install -e '.[test]'	2026-11-15T08:44:30.3719427Z Successfully installed annotated-doc-0.0.6 annotated-types-0.8.0 anyio-4.16.0 certifi-2026.10.23 click-8.5.1 fastapi-0.163.0 h11-0.16.0 httpcore-1.0.9 httptools-0.9.0 httpx-0.28.1 idna-3.20 iniconfig-2.3.1 opentelemetry-api-1.45.2 packaging-26.3 pluggy-1.7.0 prometheus-client-0.26.0 pydantic-2.14.3 pydantic-core-2.50.4 pygments-2.21.0 pytest-9.2.0 python-dotenv-1.2.4 pyyaml-6.0.3 starlette-1.10.0 typing-extensions-4.16.0 typing-inspection-0.4.5 uvicorn-0.54.0 uvloop-0.23.0 voice-agent-bfsi-0.1.0 watchfiles-1.3.0 websockets-17.4
+test	Run python -m pytest -ra	﻿2026-11-15T08:44:30.5062192Z ##[group]Run python -m pytest -ra
+test	Run python -m pytest -ra	2026-11-15T08:44:30.5062460Z [36;1mpython -m pytest -ra[0m
+test	Run python -m pytest -ra	2026-11-15T08:44:30.5105425Z shell: /usr/bin/bash -e {0}
+test	Run python -m pytest -ra	2026-11-15T08:44:30.5105590Z env:
+test	Run python -m pytest -ra	2026-11-15T08:44:30.5105770Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pytest -ra	2026-11-15T08:44:30.5106031Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+test	Run python -m pytest -ra	2026-11-15T08:44:30.5106471Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pytest -ra	2026-11-15T08:44:30.5106709Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pytest -ra	2026-11-15T08:44:30.5106928Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+test	Run python -m pytest -ra	2026-11-15T08:44:30.5107154Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+test	Run python -m pytest -ra	2026-11-15T08:44:30.5107349Z ##[endgroup]
+test	Run python -m pytest -ra	2026-11-15T08:44:32.2195272Z ...................                                                      [100%]
+test	Run python -m pytest -ra	2026-11-15T08:44:32.2195746Z =============================== warnings summary ===============================
+test	Run python -m pytest -ra	2026-11-15T08:44:32.2196374Z ../../../../../opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/fastapi/testclient.py:1
+test	Run python -m pytest -ra	2026-11-15T08:44:32.2197375Z   /opt/hostedtoolcache/Python/3.13.18/x64/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+test	Run python -m pytest -ra	2026-11-15T08:44:32.2198147Z     from starlette.testclient import TestClient as TestClient  # noqa
+test	Run python -m pytest -ra	2026-11-15T08:44:32.2198390Z 
+test	Run python -m pytest -ra	2026-11-15T08:44:32.2198597Z -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+test	Run python -m pytest -ra	2026-11-15T08:44:32.2198995Z 19 passed, 1 warning in 0.73s
+test	Post Run actions/setup-python@v5	﻿2026-11-15T08:44:32.3283908Z Post job cleanup.
+test	Post Run actions/setup-python@v5	2026-11-15T08:44:32.4145365Z (node:2269) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+test	Post Run actions/setup-python@v5	2026-11-15T08:44:32.4145878Z (Use `node --trace-deprecation ...` to show where the warning was created)
+test	Post Run actions/checkout@v4	﻿2026-11-15T08:44:32.4305094Z Post job cleanup.
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.4877875Z [command]/usr/bin/git version
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.4911506Z git version 2.56.1
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.4939762Z Temporarily overriding HOME='/home/runner/work/_temp/0a09e5cf-67c0-4565-9729-bc5b5cb6cfcd' before making global git config changes
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.4940320Z Adding repository directory to the temporary git global config as a safe directory
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.4943770Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/voice-agent-bfsi/voice-agent-bfsi
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.4985399Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.5019754Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.5280173Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.5310358Z http.https://github.com/.extraheader
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.5320149Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.5354730Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.5597900Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	Post Run actions/checkout@v4	2026-11-15T08:44:32.5627302Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	Complete job	﻿2026-11-15T08:44:32.5978173Z Cleaning up orphan processes
+test	Complete job	2026-11-15T08:44:32.6235532Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

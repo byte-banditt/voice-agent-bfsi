@@ -1,5 +1,7 @@
 # Local BFSI voice-agent prototype
 
+[![CI](https://github.com/byte-banditt/voice-agent-bfsi/actions/workflows/ci.yml/badge.svg?branch=feat%2Fvoice-agent-mvp)](https://github.com/byte-banditt/voice-agent-bfsi/actions/workflows/ci.yml)
+
 Local portfolio prototype for EMI reminders and KYC identity checks. Provider integrations are swappable; **MOCK** providers remain the default. No real customer information or recordings belong in this repository.
 
 ## Quickstart
