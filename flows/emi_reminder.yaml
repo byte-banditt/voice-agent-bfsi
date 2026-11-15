@@ -1,0 +1,15 @@
+version: "1"
+name: emi_reminder
+states:
+  greeting:
+    allowed_tools: []
+    prompt_version: emi-1
+  identity_check:
+    allowed_tools: [verify_identity]
+    prompt_version: emi-1
+  verified:
+    allowed_tools: [get_loan_status, schedule_callback, create_payment_link, escalate_to_human]
+    prompt_version: emi-1
+  ended:
+    allowed_tools: [log_call_outcome]
+    prompt_version: emi-1
