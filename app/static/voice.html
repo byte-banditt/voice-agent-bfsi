@@ -98,7 +98,12 @@ function playMuLaw(payload) {
   const startAt = Math.max(audioContext.currentTime + 0.025, nextPlaybackTime);
   nextPlaybackTime = startAt + buffer.duration;
   playbackSources.add(source);
-  source.onended = () => playbackSources.delete(source);
+  source.onended = () => {
+    playbackSources.delete(source);
+    if (playbackSources.size === 0 && socket && socket.readyState === WebSocket.OPEN) {
+      setStatus("Listening. Speak when ready.");
+    }
+  };
   source.start(startAt);
 }
 
